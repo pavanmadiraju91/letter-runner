@@ -28,3 +28,11 @@ export function startLoop(update, render) {
 export function stopLoop() {
   running = false;
 }
+
+export function resumeLoop() {
+  if (!running) {
+    running = true;
+    lastTime = performance.now();
+    requestAnimationFrame(tick);
+  }
+}
