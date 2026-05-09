@@ -150,9 +150,9 @@
 | UI-11 | 6 | Complete |
 | UI-12 | 6 | Complete |
 | UI-13 | 3 | Complete |
-| VFX-01 | 7 | Pending |
-| VFX-02 | 7 | Pending |
-| VFX-03 | 7 | Pending |
+| VFX-01 | 7 | Complete |
+| VFX-02 | 7 | Complete |
+| VFX-03 | 7 | Complete |
 | VFX-04 | 8 | Pending |
 | VFX-05 | 8 | Pending |
 | VFX-06 | 8 | Pending |
