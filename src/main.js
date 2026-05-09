@@ -20,6 +20,8 @@ events.emit('CANVAS_READY', { width: getWidth(), height: getHeight() });
 createStateMachine();
 createLives();
 resetLives();
+createScore();
+resetScore();
 createHUD();
 
 const ground = createGround();
@@ -38,6 +40,7 @@ events.on('CANVAS_RESIZE', ({ width, height }) => {
 // Restart game: reset lives, clear obstacles, reset spawner, flip state
 function restartGame() {
   resetLives();
+  resetScore();
   obstaclePool.getActive().slice().forEach(o => obstaclePool.release(o));
   spawner.timer = 0;
   requestRestart();
@@ -58,6 +61,7 @@ function update(dt) {
   updateSpawner(spawner, dt, GAME.SCROLL_SPEED, groundY);
   updateObstacles(obstaclePool, dt);
   cleanupOffscreen(obstaclePool);
+  updateScore(dt);
 }
 
 function render() {
