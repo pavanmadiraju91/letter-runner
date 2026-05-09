@@ -16,6 +16,7 @@ import { createHUD, renderHUD } from './systems/hud.js';
 import { createDifficulty, resetDifficulty, getDifficultyParams } from './systems/difficulty.js';
 import { createLevelAnnounce, updateLevelAnnounce, renderLevelAnnounce } from './systems/level-announce.js';
 import { renderStartScreen } from './screens/start.js';
+import { createGameOverScreen, updateGameOverScreen, renderGameOverScreen, isReadyToRestart } from './screens/game-over.js';
 import { getPersonalBest, setPersonalBest } from './systems/storage.js';
 
 initCanvas();
@@ -29,6 +30,7 @@ resetScore();
 createDifficulty();
 resetDifficulty();
 createLevelAnnounce();
+createGameOverScreen();
 createHUD();
 
 const ground = createGround();
@@ -66,12 +68,16 @@ events.on('KEY_PRESS', () => {
   const state = getState();
   if (state === STATES.MENU) {
     requestStart();
-  } else if (state === STATES.GAME_OVER) {
+  } else if (state === STATES.GAME_OVER && isReadyToRestart()) {
     restartGame();
   }
 });
 
 function update(dt) {
+  if (getState() === STATES.GAME_OVER) {
+    updateGameOverScreen(dt);
+    return;
+  }
   if (getState() !== STATES.PLAYING) return;
 
   const params = getDifficultyParams();
@@ -104,19 +110,9 @@ function render() {
   renderHUD(ctx, w);
   renderLevelAnnounce(ctx, w, h);
 
-  // Game Over overlay
+  // Game Over screen
   if (getState() === STATES.GAME_OVER) {
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-    ctx.fillRect(0, 0, w, h);
-
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 36px monospace';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('GAME OVER', w / 2, h / 2 - 20);
-
-    ctx.font = '18px monospace';
-    ctx.fillText('Press any key to restart', w / 2, h / 2 + 20);
+    renderGameOverScreen(ctx, w, h);
   }
 }
 
