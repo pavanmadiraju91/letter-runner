@@ -102,6 +102,9 @@ Recent decisions affecting current work:
 - [D-0801-1] Ring buffer size 10 for FPS averaging (responsive but smooth)
 - [D-0801-2] Particle gravity at 400 px/s^2 for natural downward arc
 - [D-0801-3] Pool pre-allocates 40 (10 buffer over 30 max) to avoid runtime alloc
+- [D-0802-1] Spawn 3 batches of 3 particles (9 total) with different colors for variety
+- [D-0802-2] Player flash uses 60% alpha white rect overlay (simple, effective for pixel art)
+- [D-0802-3] Flash duration 100ms — short enough to feel snappy, long enough to notice
 - [D-0803-1] Listen to LIFE_LOST (not OBSTACLE_MISSED) for screen flash — semantically correct damage signal
 - [D-0803-2] 30% max opacity magenta overlay — noticeable but not blinding
 - [D-0803-3] Timer reset (assign) not accumulate — prevents flicker on rapid hits
