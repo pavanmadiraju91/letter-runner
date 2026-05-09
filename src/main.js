@@ -13,6 +13,8 @@ import { initMatcher } from './systems/matcher.js';
 import { createLives, resetLives } from './systems/lives.js';
 import { createScore, resetScore, updateScore, getScore } from './systems/score.js';
 import { createHUD, renderHUD } from './systems/hud.js';
+import { createFPSMonitor, updateFPS } from './systems/fps-monitor.js';
+import { createParticleSystem, updateParticles, renderParticles } from './systems/particles.js';
 import { createDifficulty, resetDifficulty, getDifficultyParams } from './systems/difficulty.js';
 import { createLevelAnnounce, updateLevelAnnounce, renderLevelAnnounce } from './systems/level-announce.js';
 import { renderStartScreen } from './screens/start.js';
@@ -32,6 +34,8 @@ resetDifficulty();
 createLevelAnnounce();
 createGameOverScreen();
 createHUD();
+createFPSMonitor();
+createParticleSystem();
 
 const ground = createGround();
 const player = createPlayer();
@@ -74,6 +78,8 @@ events.on('KEY_PRESS', () => {
 });
 
 function update(dt) {
+  updateFPS(dt);
+
   if (getState() === STATES.GAME_OVER) {
     updateGameOverScreen(dt);
     return;
@@ -88,6 +94,7 @@ function update(dt) {
   cleanupOffscreen(obstaclePool);
   updateScore(dt);
   updateLevelAnnounce(dt);
+  updateParticles(dt);
 }
 
 function render() {
@@ -109,6 +116,7 @@ function render() {
   renderPlayer(ctx, player);
   renderHUD(ctx, w);
   renderLevelAnnounce(ctx, w, h);
+  renderParticles(ctx);
 
   // Game Over screen
   if (getState() === STATES.GAME_OVER) {
