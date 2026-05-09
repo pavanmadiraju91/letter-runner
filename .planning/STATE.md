@@ -2,16 +2,16 @@
 
 ## Current Status
 
-**Active phase:** 06-screens-flow (Phase 6 of 10)
-**Last action:** Completed 06-01-PLAN.md (start screen & storage)
-**Last updated:** 2026-05-09
+**Active phase:** 07-visual-style (Phase 7 of 10)
+**Last action:** Completed 06-03-PLAN.md (game over screen, leaderboard, name entry)
+**Last updated:** 2026-05-10
 
 ## Project Reference
 
 See: .planning/PROJECT.md (updated 2026-05-09)
 
 **Core value:** The game must feel immediately fun
-**Current focus:** Phase 6 in progress - start screen & personal best persistence complete
+**Current focus:** Phase 6 complete - all screens and flow done. Ready for Phase 7 (Visual Style).
 
 ## Phase Progress
 
@@ -22,20 +22,20 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 | 3 | Lives & Game State | ● Complete | 3/3 |
 | 4 | Scoring & HUD | ● Complete | 2/2 |
 | 5 | Difficulty Progression | ● Complete | 3/3 |
-| 6 | Screens & Flow | ◐ In Progress | 2/3 |
+| 6 | Screens & Flow | ● Complete | 3/3 |
 | 7 | Visual Style | ○ Pending | 0/3 |
 | 8 | Particle Effects & Juice | ○ Pending | 0/4 |
 | 9 | Audio | ○ Pending | 0/3 |
 | 10 | Performance & Deployment | ○ Pending | 0/4 |
 
-Progress: ███████████████░░░░░░░░░░░░░░░░░ 15/30 (50%)
+Progress: ████████████████░░░░░░░░░░░░░░░░ 16/30 (53%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 15
+- Total plans completed: 16
 - Average duration: ~45 seconds
-- Total execution time: ~11 minutes
+- Total execution time: ~12 minutes
 
 ## Accumulated Context
 
@@ -90,6 +90,9 @@ Recent decisions affecting current work:
 - [D-0601-1] MENU state as initial (game no longer auto-starts)
 - [D-0601-2] localStorage wrapped in try/catch for private browsing compat
 - [D-0601-3] Personal best saved on STATE_CHANGE to GAME_OVER (event-driven)
+- [D-0603-1] Separate keydown listener for name entry (not extending core input.js)
+- [D-0603-2] Phase-based game-over screen ('display'|'name-entry'|'done') controls flow
+- [D-0603-3] isReadyToRestart() export gates KEY_PRESS to prevent restart during name entry
 
 ### Pending Todos
 
@@ -101,16 +104,16 @@ None.
 
 ## Context for Next Session
 
-- Phase 6 IN PROGRESS: plans 01 + 02 complete (start screen, level-up announcement)
-- MENU state is now initial state; game starts in start screen
-- Start screen: src/screens/start.js with logo, tagline, blinking prompt, personal best
-- Storage: src/systems/storage.js wraps localStorage for personal best persistence
-- Level announce: src/systems/level-announce.js subscribes to LEVEL_UP, renders fading "LEVEL X" overlay
-- GAME_START event transitions MENU -> PLAYING; requestStart() triggers it
-- Next: Phase 6 plan 03 (game over screen improvements, transitions)
+- Phase 6 COMPLETE: all 3 plans done (start screen, level-up announce, game over screen)
+- Game over screen: src/screens/game-over.js with score/PB delta, top-10 leaderboard, 3-char name entry
+- Leaderboard: src/systems/leaderboard.js (mocked local data, localStorage persistence)
+- Name entry uses dedicated keydown listener scoped to name-entry phase
+- isReadyToRestart() gates restart to prevent accidental restart during name entry
+- Full game flow: MENU -> PLAYING -> GAME_OVER -> (name entry if qualifying) -> restart
+- Next: Phase 7 (Visual Style) - player sprites, obstacle art, background layers
 
 ## Session Continuity
 
-Last session: 2026-05-09T21:57:21Z
-Stopped at: Completed 06-01-PLAN.md
+Last session: 2026-05-09T22:00:13Z
+Stopped at: Completed 06-03-PLAN.md
 Resume file: None
