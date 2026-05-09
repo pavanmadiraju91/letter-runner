@@ -3,7 +3,7 @@
 ## Current Status
 
 **Active phase:** 03-lives-game-state (Phase 3 of 10)
-**Last action:** Completed 03-02-PLAN.md (Game State Machine)
+**Last action:** Completed 03-03-PLAN.md (Wrong-Key Penalty & Focus Pause)
 **Last updated:** 2026-05-09
 
 ## Project Reference
@@ -11,7 +11,7 @@
 See: .planning/PROJECT.md (updated 2026-05-09)
 
 **Core value:** The game must feel immediately fun
-**Current focus:** Phase 3 in progress - lives + state machine done; wrong-key penalty next
+**Current focus:** Phase 3 COMPLETE - lives, state machine, wrong-key penalty all delivered
 
 ## Phase Progress
 
@@ -19,7 +19,7 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 |-------|------|--------|-------|
 | 1 | Foundation | ● Complete | 2/2 |
 | 2 | Movement & Input | ● Complete | 3/3 |
-| 3 | Lives & Game State | ◐ In Progress | 2/3 |
+| 3 | Lives & Game State | ● Complete | 3/3 |
 | 4 | Scoring & HUD | ○ Pending | 0/2 |
 | 5 | Difficulty Progression | ○ Pending | 0/3 |
 | 6 | Screens & Flow | ○ Pending | 0/5 |
@@ -28,14 +28,14 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 | 9 | Audio | ○ Pending | 0/3 |
 | 10 | Performance & Deployment | ○ Pending | 0/4 |
 
-Progress: ███████░░░░░░░░░░░░░░░░░░░░░░░░░ 7/32 (22%)
+Progress: ████████░░░░░░░░░░░░░░░░░░░░░░░░ 8/32 (25%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
-- Average duration: ~40 seconds
-- Total execution time: ~5 minutes
+- Total plans completed: 8
+- Average duration: ~45 seconds
+- Total execution time: ~6 minutes
 
 ## Accumulated Context
 
@@ -66,6 +66,9 @@ Recent decisions affecting current work:
 - [D-0302-1] Module-level closure for state (consistent with lives, input systems)
 - [D-0302-2] No MENU state yet — deferred to Phase 6 (Screens & Flow)
 - [D-0302-3] Restart is pure state reset (no reload) for instant feedback
+- [D-0303-1] Track game state via STATE_CHANGE events rather than importing state.js directly (avoids circular deps)
+- [D-0303-2] WRONG_KEY only emits when obstacles exist in danger zone (prevents false penalties)
+- [D-0303-3] resumeLoop() reuses stored updateFn/renderFn so input.js needs no main.js refs
 
 ### Pending Todos
 
@@ -77,17 +80,17 @@ None.
 
 ## Context for Next Session
 
-- Phase 3 Plan 02 COMPLETE: state machine delivered
-- State flow: GAME_OVER event -> state=game_over -> update() frozen -> render shows overlay -> KEY_PRESS -> restartGame() -> state=playing -> resumes
-- Module graph now includes: state.js in src/core/
-- STATES.PLAYING and STATES.GAME_OVER exported
-- getState() available for any system to check state
-- requestRestart() emits GAME_RESTART for clean transition
-- STATE_CHANGE event available for Phase 4 HUD
-- Next step: 03-03 (Wrong-Key Penalty) — already committed ahead
+- Phase 3 COMPLETE: all 3 plans delivered
+- Wrong-key flow: KEY_PRESS -> matcher checks zone -> no match + obstacles exist -> WRONG_KEY -> input checks level -> (if 4+) locks for 300ms
+- Visibility flow: tab hidden -> stopLoop() + GAME_PAUSED -> tab visible -> (if playing) resumeLoop() + GAME_RESUMED
+- resumeLoop() exported from game-loop.js (reuses stored update/render fns)
+- resetInput() exported for restart flow
+- LEVEL_UP subscription ready for Phase 5 difficulty
+- GAME_PAUSED/GAME_RESUMED events available for Phase 4 HUD
+- Next step: Phase 4 (Scoring & HUD) — score tracking and on-screen display
 
 ## Session Continuity
 
-Last session: 2026-05-09T21:34:11Z
-Stopped at: Completed 03-02-PLAN.md
+Last session: 2026-05-09T21:35:00Z
+Stopped at: Completed 03-03-PLAN.md
 Resume file: None
