@@ -4,12 +4,17 @@ import { events } from './core/events.js';
 import { COLORS, GAME } from './config.js';
 import { createPlayer, resetPlayer, renderPlayer } from './entities/player.js';
 import { createGround, updateGround, renderGround } from './entities/ground.js';
+import { createPool } from './systems/pool.js';
+import { createObstacleFactory, updateObstacles, cleanupOffscreen, renderObstacles } from './entities/obstacle.js';
+import { createSpawner, updateSpawner } from './systems/spawner.js';
 
 initCanvas();
 events.emit('CANVAS_READY', { width: getWidth(), height: getHeight() });
 
 const player = createPlayer();
 const ground = createGround();
+const obstaclePool = createPool(createObstacleFactory(), 20);
+const spawner = createSpawner(obstaclePool);
 
 resetPlayer(player, getWidth(), getHeight(), ground.height);
 
@@ -19,6 +24,10 @@ events.on('CANVAS_RESIZE', ({ width, height }) => {
 
 function update(dt) {
   updateGround(ground, dt, GAME.SCROLL_SPEED);
+  const groundY = getHeight() - ground.height;
+  updateSpawner(spawner, dt, GAME.SCROLL_SPEED, groundY);
+  updateObstacles(obstaclePool, dt);
+  cleanupOffscreen(obstaclePool);
 }
 
 function render() {
@@ -30,6 +39,7 @@ function render() {
   ctx.fillRect(0, 0, w, h);
 
   renderGround(ctx, ground, w, h);
+  renderObstacles(ctx, obstaclePool.getActive());
   renderPlayer(ctx, player);
 
   ctx.fillStyle = COLORS.DEBUG_TEXT;
