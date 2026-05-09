@@ -1,16 +1,29 @@
-const canvas = document.getElementById('game');
-const ctx = canvas.getContext('2d');
+import { initCanvas, getCtx, getWidth, getHeight } from './core/canvas.js';
+import { startLoop } from './core/game-loop.js';
+import { events } from './core/events.js';
+import { COLORS } from './config.js';
 
-function resize() {
-  const dpr = window.devicePixelRatio || 1;
-  canvas.width = window.innerWidth * dpr;
-  canvas.height = window.innerHeight * dpr;
-  canvas.style.width = window.innerWidth + 'px';
-  canvas.style.height = window.innerHeight + 'px';
-  ctx.scale(dpr, dpr);
-  ctx.fillStyle = '#0a0a0f';
-  ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+initCanvas();
+events.emit('CANVAS_READY', { width: getWidth(), height: getHeight() });
+
+function update(dt) {
+  // Future: entity updates, physics, input polling
 }
 
-resize();
-window.addEventListener('resize', resize);
+function render() {
+  const ctx = getCtx();
+  const w = getWidth();
+  const h = getHeight();
+
+  ctx.fillStyle = COLORS.BG;
+  ctx.fillRect(0, 0, w, h);
+
+  ctx.fillStyle = COLORS.DEBUG_TEXT;
+  ctx.font = '12px monospace';
+  ctx.fillText(`${w}x${h} @${window.devicePixelRatio}x`, 8, 20);
+}
+
+startLoop(update, render);
+events.emit('LOOP_START', {});
+
+console.log('[Letter Runner] Game loop started');
