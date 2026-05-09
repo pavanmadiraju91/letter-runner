@@ -2,8 +2,8 @@
 
 ## Current Status
 
-**Active phase:** 09-audio (Phase 9 of 10)
-**Last action:** Completed 09-01-PLAN.md (Web Audio infrastructure with procedural synthesis)
+**Active phase:** 10-performance-deployment (Phase 10 of 10)
+**Last action:** Completed 09-02-PLAN.md (Event wiring and music toggle - Phase 9 complete)
 **Last updated:** 2026-05-10
 
 ## Project Reference
@@ -11,7 +11,7 @@
 See: .planning/PROJECT.md (updated 2026-05-09)
 
 **Core value:** The game must feel immediately fun
-**Current focus:** Phase 9 in progress - audio infrastructure complete (09-01). Event wiring (09-02) next.
+**Current focus:** Phase 9 COMPLETE. All audio wired. Ready for Phase 10 (Performance & Deployment).
 
 ## Phase Progress
 
@@ -25,17 +25,17 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 | 6 | Screens & Flow | ● Complete | 3/3 |
 | 7 | Visual Style | ◐ In Progress | 2/3 |
 | 8 | Particle Effects & Juice | ◐ In Progress | 2/3 |
-| 9 | Audio | ◐ In Progress | 1/2 |
+| 9 | Audio | ● Complete | 2/2 |
 | 10 | Performance & Deployment | ○ Pending | 0/4 |
 
-Progress: █████████████████████░░░░░░░░░░░ 21/30 (70%)
+Progress: ██████████████████████░░░░░░░░░░ 22/30 (73%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 21
-- Average duration: ~51 seconds
-- Total execution time: ~17 minutes
+- Total plans completed: 22
+- Average duration: ~50 seconds
+- Total execution time: ~18 minutes
 
 ## Accumulated Context
 
@@ -111,6 +111,9 @@ Recent decisions affecting current work:
 - [D-0901-1] AudioContext created on first keydown (not on load) for autoplay policy compliance
 - [D-0901-2] Music muted by default, toggle-on design
 - [D-0901-3] Gain node chain: master -> sfx/music (separate volume control per channel)
+- [D-0902-1] Consolidated STATE_CHANGE listener handles both playGameOver and stopMusic
+- [D-0902-2] M-key listener is separate from audio-resume keydown (not merged)
+- [D-0902-3] HUD hint uses DIM palette color for unobtrusive visibility
 
 ### Pending Todos
 
@@ -122,16 +125,16 @@ None.
 
 ## Context for Next Session
 
-- Phase 9 plan 01 COMPLETE (audio infrastructure)
-- src/systems/audio.js exports: createAudioSystem, playPop, playThud, playGameOver, playLevelUp, toggleMusic, isMusicPlaying
-- AUDIO config in src/config.js: volumes, frequencies, music params
-- AudioContext lazy-created on first keydown (autoplay-safe)
-- Music: sawtooth 110Hz through lowpass 800Hz, muted by default, toggleable
-- STATE_CHANGE listener already in audio.js (stops music on game_over, starts on playing if enabled)
-- Next: 09-02 wires sound functions to game events (OBSTACLE_DESTROYED -> playPop, etc.)
+- Phase 9 COMPLETE - all audio wired to game events
+- src/systems/audio.js: OBSTACLE_DESTROYED->playPop, LIFE_LOST->playThud, LEVEL_UP->playLevelUp, STATE_CHANGE(game_over)->playGameOver+stopMusic
+- M-key toggles music, "[M] Music" HUD hint in bottom-right
+- All 6 AUD requirements satisfied (AUD-01 through AUD-06)
+- Zero audio files — 100% procedural Web Audio API synthesis
+- Build: 20.04kB / 7.23kB gzipped (29 modules)
+- Next: Phase 10 (Performance & Deployment)
 
 ## Session Continuity
 
-Last session: 2026-05-09T22:23:32Z
-Stopped at: Completed 09-01-PLAN.md
+Last session: 2026-05-09T22:25:34Z
+Stopped at: Completed 09-02-PLAN.md (Phase 9 complete)
 Resume file: None
