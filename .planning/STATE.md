@@ -2,8 +2,8 @@
 
 ## Current Status
 
-**Active phase:** 02-movement-input (Phase 2 of 10)
-**Last action:** Completed 02-02-PLAN.md (Obstacle Spawner)
+**Active phase:** 03-lives-game-state (Phase 3 of 10)
+**Last action:** Completed 02-03-PLAN.md (Input & Matching)
 **Last updated:** 2026-05-09
 
 ## Project Reference
@@ -11,14 +11,14 @@
 See: .planning/PROJECT.md (updated 2026-05-09)
 
 **Core value:** The game must feel immediately fun
-**Current focus:** Phase 2 in progress - player, ground, and obstacles done; input next
+**Current focus:** Phase 2 complete - full gameplay loop working; Phase 3 next (lives, game state)
 
 ## Phase Progress
 
 | Phase | Name | Status | Plans |
 |-------|------|--------|-------|
 | 1 | Foundation | ● Complete | 2/2 |
-| 2 | Movement & Input | ◐ In Progress | 2/3 |
+| 2 | Movement & Input | ● Complete | 3/3 |
 | 3 | Lives & Game State | ○ Pending | 0/3 |
 | 4 | Scoring & HUD | ○ Pending | 0/2 |
 | 5 | Difficulty Progression | ○ Pending | 0/3 |
@@ -28,14 +28,14 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 | 9 | Audio | ○ Pending | 0/3 |
 | 10 | Performance & Deployment | ○ Pending | 0/4 |
 
-Progress: ████░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 4/32 (12%)
+Progress: █████░░░░░░░░░░░░░░░░░░░░░░░░░░░ 5/32 (16%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: ~40 seconds
-- Total execution time: ~2.5 minutes
+- Total plans completed: 5
+- Average duration: ~42 seconds
+- Total execution time: ~3.5 minutes
 
 ## Accumulated Context
 
@@ -58,6 +58,9 @@ Recent decisions affecting current work:
 - [D-0202-1] Object pool uses splice for release (max 4 active, O(n) trivial)
 - [D-0202-2] Letter uniqueness via Set of active letters with 26-attempt random selection
 - [D-0202-3] Obstacles render after ground but before player (correct z-order)
+- [D-0203-1] No preventDefault on keydown — preserves browser shortcuts
+- [D-0203-2] Matcher iterates obstacles in reverse for rightmost-first priority
+- [D-0203-3] Pressed Set tracks held keys at module level for repeat prevention
 
 ### Pending Todos
 
@@ -69,18 +72,17 @@ None.
 
 ## Context for Next Session
 
-- Phase 2 Plan 2 complete: object pool + obstacle entity + spawner system
-- Pool pre-allocates 20 obstacles; spawner acquires/releases automatically
-- Obstacles spawn from right edge every 2s with unique uppercase letters
-- Neon pink (#ff2266) rectangles with white bold 24px monospace letter centered
-- OBSTACLE_MISSED event fires when obstacle exits left (for Phase 3 life system)
-- Module graph: main.js -> canvas, game-loop, events, config, player, ground, pool, obstacle, spawner
-- Update order: ground -> spawner -> obstacles -> cleanup
-- Render order: ground -> obstacles -> player
-- Next step: 02-03 (Keyboard Input) - jump and duck mechanics
+- Phase 2 COMPLETE: all 3 plans delivered (player/ground, obstacles/pool, input/matching)
+- Full gameplay loop working: player runs, obstacles scroll, correct keypress destroys them
+- Event flow: keydown -> KEY_PRESS -> matcher checks danger zone -> OBSTACLE_DESTROYED
+- OBSTACLE_MISSED fires when obstacle exits left edge (ready for Phase 3 life system)
+- Module graph: main.js -> canvas, game-loop, events, config, player, ground, pool, obstacle, spawner, input, matcher
+- 15 modules total in build (from Vite output)
+- Danger zone: 30% to 100% of screen width (configurable via GAME.DANGER_ZONE_START)
+- Next step: Phase 3 (Lives & Game State) — life counter, game-over condition, state machine
 
 ## Session Continuity
 
-Last session: 2026-05-09T21:24:00Z
-Stopped at: Completed 02-02-PLAN.md
+Last session: 2026-05-09T21:27:00Z
+Stopped at: Completed 02-03-PLAN.md
 Resume file: None
