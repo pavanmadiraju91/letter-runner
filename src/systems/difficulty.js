@@ -23,6 +23,27 @@ export function createDifficulty() {
   events.on('GAME_RESTART', () => {
     resetDifficulty();
   });
+
+  // DIFF-09: Development-mode difficulty curve dump for tuning verification
+  if (import.meta.env.DEV) {
+    console.table(
+      Array.from({ length: 10 }, (_, i) => {
+        const level = i + 1;
+        const saved = currentLevel;
+        currentLevel = level;
+        const p = getDifficultyParams();
+        currentLevel = saved;
+        return {
+          level,
+          scrollSpeed: Math.round(p.scrollSpeed),
+          spawnInterval: p.spawnInterval.toFixed(2),
+          maxObstacles: p.maxObstacles,
+          multiplier: p.multiplier.toFixed(1),
+          tallObstacles: p.tallObstacles
+        };
+      })
+    );
+  }
 }
 
 /**
