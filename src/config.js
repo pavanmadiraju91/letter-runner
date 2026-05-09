@@ -76,6 +76,12 @@ export const DIFFICULTY = {
   MIN_SPAWN_INTERVAL: 0.6,
 };
 
+export const PARTICLES = {
+  MAX_ACTIVE: 30,        // VFX-09: hard cap on simultaneous particles
+  POOL_SIZE: 40,         // pre-allocate slightly more than max
+  MIN_FPS: 30,           // VFX-10: skip particle spawning below this threshold
+};
+
 export const GAME = {
   TARGET_FPS: 60,
   MAX_DT: 1 / 30,
