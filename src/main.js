@@ -14,6 +14,7 @@ import { createLives, resetLives } from './systems/lives.js';
 import { createScore, resetScore, updateScore } from './systems/score.js';
 import { createHUD, renderHUD } from './systems/hud.js';
 import { createDifficulty, resetDifficulty, getDifficultyParams } from './systems/difficulty.js';
+import { createLevelAnnounce, updateLevelAnnounce, renderLevelAnnounce } from './systems/level-announce.js';
 
 initCanvas();
 events.emit('CANVAS_READY', { width: getWidth(), height: getHeight() });
@@ -25,6 +26,7 @@ createScore();
 resetScore();
 createDifficulty();
 resetDifficulty();
+createLevelAnnounce();
 createHUD();
 
 const ground = createGround();
@@ -67,6 +69,7 @@ function update(dt) {
   updateObstacles(obstaclePool, dt);
   cleanupOffscreen(obstaclePool);
   updateScore(dt);
+  updateLevelAnnounce(dt);
 }
 
 function render() {
@@ -81,6 +84,7 @@ function render() {
   renderObstacles(ctx, obstaclePool.getActive());
   renderPlayer(ctx, player);
   renderHUD(ctx, w);
+  renderLevelAnnounce(ctx, w, h);
 
   // Game Over overlay
   if (getState() === STATES.GAME_OVER) {
