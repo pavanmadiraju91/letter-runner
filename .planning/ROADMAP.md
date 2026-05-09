@@ -18,7 +18,7 @@ Letter Runner goes from empty repo to shippable game across 10 phases. The build
 - [x] **Phase 6: Screens & Flow** - Start screen, game over screen, leaderboard UI, name entry
 - [x] **Phase 7: Visual Style** - Pixel-art aesthetic, sprites, neon colour palette
 - [x] **Phase 8: Particle Effects & Juice** - Destroy particles, flashes, level-up overlay
-- [ ] **Phase 9: Audio** - Sound effects, background music, autoplay policy handling
+- [x] **Phase 9: Audio** - Sound effects, background music, autoplay policy handling
 - [ ] **Phase 10: Performance & Deployment** - Cross-browser, responsive scaling, optimization, deploy
 
 ## Phase Details
@@ -197,12 +197,11 @@ Plans:
 4. An optional lo-fi background loop can be toggled, muted by default
 5. Audio works on first interaction in all browsers (AudioContext resumed on user gesture)
 
-**Plans:** TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 09-01: Web Audio API setup and autoplay policy handling
-- [ ] 09-02: Gameplay sound effects (pop, thud, game over, level-up)
-- [ ] 09-03: Background music loop with mute toggle
+- [ ] 09-01-PLAN.md — Web Audio API infrastructure, procedural synthesis, autoplay policy handling, background music
+- [ ] 09-02-PLAN.md — Wire sound effects to game events and add M-key music toggle
 
 ---
 
