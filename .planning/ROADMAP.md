@@ -14,7 +14,7 @@ Letter Runner goes from empty repo to shippable game across 10 phases. The build
 - [x] **Phase 2: Movement & Input** - Player runs, obstacles scroll, keyboard destroys them
 - [x] **Phase 3: Lives & Game State** - Life system, game over, state machine, restart
 - [x] **Phase 4: Scoring & HUD** - Points, multipliers, survival bonus, heads-up display
-- [ ] **Phase 5: Difficulty Progression** - Level system, speed ramp, obstacle count scaling
+- [x] **Phase 5: Difficulty Progression** - Level system, speed ramp, obstacle count scaling
 - [ ] **Phase 6: Screens & Flow** - Start screen, game over screen, leaderboard UI, name entry
 - [ ] **Phase 7: Visual Style** - Pixel-art aesthetic, sprites, neon colour palette
 - [ ] **Phase 8: Particle Effects & Juice** - Destroy particles, flashes, level-up overlay
@@ -115,12 +115,12 @@ Plans:
 4. All visible obstacles always have unique letters (no repeats on screen)
 5. Difficulty curve feels logarithmic (noticeable early jumps, gentler increases at high levels)
 
-**Plans:** TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 05-01: Config-driven difficulty tiers and level-up logic
-- [ ] 05-02: Spawn rate, speed, and obstacle count scaling
-- [ ] 05-03: Unique letter enforcement and logarithmic curve tuning
+- [ ] 05-01-PLAN.md — Config-driven difficulty tiers and level-up emission system
+- [ ] 05-02-PLAN.md — Wire dynamic difficulty into spawner and main game loop
+- [ ] 05-03-PLAN.md — Unique letter enforcement hardening and logarithmic curve validation
 
 ---
 
