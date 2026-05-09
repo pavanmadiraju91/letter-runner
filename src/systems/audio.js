@@ -45,9 +45,15 @@ export function createAudioSystem() {
 
   window.addEventListener('keydown', initAudio);
 
-  // Stop music on game over, start on playing (if toggled on)
+  // Wire sound effects to game events
+  events.on('OBSTACLE_DESTROYED', () => { playPop(); });
+  events.on('LIFE_LOST', () => { playThud(); });
+  events.on('LEVEL_UP', () => { playLevelUp(); });
+
+  // Consolidated STATE_CHANGE listener: game-over sound + music control
   events.on('STATE_CHANGE', ({ state }) => {
     if (state === 'game_over') {
+      playGameOver();
       stopMusic();
     } else if (state === 'playing' && musicEnabled) {
       startMusic();
