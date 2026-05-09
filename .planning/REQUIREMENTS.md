@@ -121,11 +121,11 @@
 | LOOP-02 | 2 | Complete |
 | LOOP-03 | 2 | Complete |
 | LOOP-04 | 2 | Complete |
-| LOOP-05 | 4 | Pending |
+| LOOP-05 | 4 | Complete |
 | LOOP-06 | 3 | Complete |
 | LOOP-07 | 3 | Complete |
 | LOOP-08 | 3 | Complete |
-| LOOP-09 | 4 | Pending |
+| LOOP-09 | 4 | Complete |
 | LOOP-10 | 3 | Complete |
 | LOOP-11 | 3 | Complete |
 | DIFF-01 | 5 | Pending |
@@ -141,9 +141,9 @@
 | UI-02 | 6 | Pending |
 | UI-03 | 6 | Pending |
 | UI-04 | 6 | Pending |
-| UI-05 | 4 | Pending |
-| UI-06 | 4 | Pending |
-| UI-07 | 4 | Pending |
+| UI-05 | 4 | Complete |
+| UI-06 | 4 | Complete |
+| UI-07 | 4 | Complete |
 | UI-08 | 6 | Pending |
 | UI-09 | 6 | Pending |
 | UI-10 | 6 | Pending |

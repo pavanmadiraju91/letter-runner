@@ -13,7 +13,7 @@ Letter Runner goes from empty repo to shippable game across 10 phases. The build
 - [x] **Phase 1: Foundation** - Project scaffolding, game loop, canvas rendering infrastructure
 - [x] **Phase 2: Movement & Input** - Player runs, obstacles scroll, keyboard destroys them
 - [x] **Phase 3: Lives & Game State** - Life system, game over, state machine, restart
-- [ ] **Phase 4: Scoring & HUD** - Points, multipliers, survival bonus, heads-up display
+- [x] **Phase 4: Scoring & HUD** - Points, multipliers, survival bonus, heads-up display
 - [ ] **Phase 5: Difficulty Progression** - Level system, speed ramp, obstacle count scaling
 - [ ] **Phase 6: Screens & Flow** - Start screen, game over screen, leaderboard UI, name entry
 - [ ] **Phase 7: Visual Style** - Pixel-art aesthetic, sprites, neon colour palette
@@ -95,11 +95,11 @@ Plans:
 3. HUD displays current score (top-left), level (top-center), and lives as heart icons (top-right)
 4. HUD updates in real time without causing layout shifts or flickering
 
-**Plans:** TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 04-01: Score system (destroy points and survival bonus)
-- [ ] 04-02: HUD renderer (score, level, lives)
+- [ ] 04-01-PLAN.md — Score system (destroy points + survival bonus + reset)
+- [ ] 04-02-PLAN.md — HUD renderer (score top-left, level top-center, hearts top-right)
 
 ---
 
