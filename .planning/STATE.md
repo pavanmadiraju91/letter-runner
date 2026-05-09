@@ -3,7 +3,7 @@
 ## Current Status
 
 **Active phase:** 06-screens-flow (Phase 6 of 10)
-**Last action:** Completed 06-02-PLAN.md (level-up announcement overlay)
+**Last action:** Completed 06-01-PLAN.md (start screen & storage)
 **Last updated:** 2026-05-09
 
 ## Project Reference
@@ -11,7 +11,7 @@
 See: .planning/PROJECT.md (updated 2026-05-09)
 
 **Core value:** The game must feel immediately fun
-**Current focus:** Phase 6 in progress - level-up announcement overlay complete
+**Current focus:** Phase 6 in progress - start screen & personal best persistence complete
 
 ## Phase Progress
 
@@ -22,20 +22,20 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 | 3 | Lives & Game State | ● Complete | 3/3 |
 | 4 | Scoring & HUD | ● Complete | 2/2 |
 | 5 | Difficulty Progression | ● Complete | 3/3 |
-| 6 | Screens & Flow | ◐ In Progress | 1/3 |
+| 6 | Screens & Flow | ◐ In Progress | 2/3 |
 | 7 | Visual Style | ○ Pending | 0/3 |
 | 8 | Particle Effects & Juice | ○ Pending | 0/4 |
 | 9 | Audio | ○ Pending | 0/3 |
 | 10 | Performance & Deployment | ○ Pending | 0/4 |
 
-Progress: ██████████████░░░░░░░░░░░░░░░░░░ 14/30 (47%)
+Progress: ███████████████░░░░░░░░░░░░░░░░░ 15/30 (50%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 14
+- Total plans completed: 15
 - Average duration: ~45 seconds
-- Total execution time: ~10 minutes
+- Total execution time: ~11 minutes
 
 ## Accumulated Context
 
@@ -87,6 +87,9 @@ Recent decisions affecting current work:
 - [D-0602-1] Quadratic ease-out for alpha fade (alpha*alpha) gives snappier visual feel
 - [D-0602-2] Glow effect via canvas shadowColor/shadowBlur for visual interest without complexity
 - [D-0602-3] Render after HUD but before Game Over overlay for correct z-ordering
+- [D-0601-1] MENU state as initial (game no longer auto-starts)
+- [D-0601-2] localStorage wrapped in try/catch for private browsing compat
+- [D-0601-3] Personal best saved on STATE_CHANGE to GAME_OVER (event-driven)
 
 ### Pending Todos
 
@@ -98,15 +101,16 @@ None.
 
 ## Context for Next Session
 
-- Phase 6 IN PROGRESS: plan 02 complete (level-up announcement overlay)
+- Phase 6 IN PROGRESS: plans 01 + 02 complete (start screen, level-up announcement)
+- MENU state is now initial state; game starts in start screen
+- Start screen: src/screens/start.js with logo, tagline, blinking prompt, personal best
+- Storage: src/systems/storage.js wraps localStorage for personal best persistence
 - Level announce: src/systems/level-announce.js subscribes to LEVEL_UP, renders fading "LEVEL X" overlay
-- Quadratic alpha fade (alpha^2) over 1.5s with cyan glow effect
-- Renders after HUD, before Game Over overlay (correct z-order)
-- GAME_RESTART clears any in-progress announcement
-- Next: Phase 6 plans 01 + 03 (start screen, game over screen, transitions)
+- GAME_START event transitions MENU -> PLAYING; requestStart() triggers it
+- Next: Phase 6 plan 03 (game over screen improvements, transitions)
 
 ## Session Continuity
 
-Last session: 2026-05-09T21:56:54Z
-Stopped at: Completed 06-02-PLAN.md
+Last session: 2026-05-09T21:57:21Z
+Stopped at: Completed 06-01-PLAN.md
 Resume file: None
