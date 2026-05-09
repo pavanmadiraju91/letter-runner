@@ -117,10 +117,10 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| LOOP-01 | 2 | Pending |
-| LOOP-02 | 2 | Pending |
-| LOOP-03 | 2 | Pending |
-| LOOP-04 | 2 | Pending |
+| LOOP-01 | 2 | Complete |
+| LOOP-02 | 2 | Complete |
+| LOOP-03 | 2 | Complete |
+| LOOP-04 | 2 | Complete |
 | LOOP-05 | 4 | Pending |
 | LOOP-06 | 3 | Pending |
 | LOOP-07 | 3 | Pending |
@@ -172,11 +172,11 @@
 | TECH-04 | 10 | Pending |
 | TECH-05 | 10 | Pending |
 | TECH-06 | 10 | Pending |
-| TECH-07 | 2 | Pending |
+| TECH-07 | 2 | Complete |
 | TECH-08 | 6 | Pending |
 | TECH-09 | 3 | Pending |
 | TECH-10 | 10 | Pending |
-| TECH-11 | 2 | Pending |
+| TECH-11 | 2 | Complete |
 | TECH-12 | 1 | Complete |
 
 **Coverage:**

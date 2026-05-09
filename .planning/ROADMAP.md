@@ -11,7 +11,7 @@ Letter Runner goes from empty repo to shippable game across 10 phases. The build
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
 - [x] **Phase 1: Foundation** - Project scaffolding, game loop, canvas rendering infrastructure
-- [ ] **Phase 2: Movement & Input** - Player runs, obstacles scroll, keyboard destroys them
+- [x] **Phase 2: Movement & Input** - Player runs, obstacles scroll, keyboard destroys them
 - [ ] **Phase 3: Lives & Game State** - Life system, game over, state machine, restart
 - [ ] **Phase 4: Scoring & HUD** - Points, multipliers, survival bonus, heads-up display
 - [ ] **Phase 5: Difficulty Progression** - Level system, speed ramp, obstacle count scaling
@@ -54,12 +54,12 @@ Plans:
 4. Pressing a non-matching key has no visible effect
 5. Object pooling is used for obstacles (no garbage collection hitches during play)
 
-**Plans:** TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 02-01: Player entity, ground plane, and scrolling
-- [ ] 02-02: Obstacle spawner with letter assignment and object pooling
-- [ ] 02-03: Keyboard input handler and letter-matching collision
+- [ ] 02-01-PLAN.md — Player entity, ground plane, and scrolling
+- [ ] 02-02-PLAN.md — Obstacle spawner with letter assignment and object pooling
+- [ ] 02-03-PLAN.md — Keyboard input handler and letter-matching collision
 
 ---
 
@@ -240,7 +240,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | Phase | Plans Complete | Status | Completed |
 |-------|---------------|--------|-----------|
 | 1. Foundation | 2/2 | ✓ Complete | 2026-05-09 |
-| 2. Movement & Input | 0/3 | Not started | - |
+| 2. Movement & Input | 0/3 | Planned | - |
 | 3. Lives & Game State | 0/3 | Not started | - |
 | 4. Scoring & HUD | 0/2 | Not started | - |
 | 5. Difficulty Progression | 0/3 | Not started | - |
