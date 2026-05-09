@@ -1,7 +1,7 @@
 import { events } from '../core/events.js';
 import { getScore } from '../systems/score.js';
 import { getLives } from '../systems/lives.js';
-import { GAME } from '../config.js';
+import { GAME, COLORS } from '../config.js';
 
 let currentLevel = 1;
 
@@ -49,11 +49,12 @@ export function renderHUD(ctx, canvasWidth) {
   ctx.textAlign = 'left';
   ctx.textBaseline = 'top';
   ctx.font = 'bold 20px monospace';
-  ctx.fillStyle = '#ffffff';
+  ctx.fillStyle = COLORS.PALETTE.SCORE_TEXT;
   ctx.fillText('SCORE ' + getScore(), 16, 12);
 
   // Level — top-center
   ctx.textAlign = 'center';
+  ctx.fillStyle = COLORS.PALETTE.LEVEL_TEXT;
   ctx.fillText('LV ' + currentLevel, canvasWidth / 2, 12);
 
   // Lives — top-right as heart icons
@@ -66,7 +67,7 @@ export function renderHUD(ctx, canvasWidth) {
 
   for (let i = 0; i < totalLives; i++) {
     const hx = startX - (i * spacing);
-    const color = i < remaining ? '#ff3366' : '#2a2a3a';
+    const color = i < remaining ? COLORS.PALETTE.HEART_FULL : COLORS.PALETTE.HEART_EMPTY;
     drawHeart(ctx, hx, heartY, heartSize, color);
   }
 

@@ -1,4 +1,5 @@
 import { events } from '../core/events.js';
+import { COLORS } from '../config.js';
 
 let active = false;
 let timer = 0;
@@ -51,9 +52,9 @@ export function renderLevelAnnounce(ctx, width, height) {
 
   ctx.save();
   ctx.globalAlpha = alpha;
-  ctx.fillStyle = '#ffffff';
-  ctx.shadowColor = '#00ffcc';
-  ctx.shadowBlur = 20;
+  ctx.fillStyle = COLORS.PALETTE.WHITE;
+  ctx.shadowColor = COLORS.PALETTE.CYAN;
+  ctx.shadowBlur = 30;
   ctx.font = 'bold 64px monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
