@@ -3,7 +3,7 @@
 ## Current Status
 
 **Active phase:** 07-visual-style (Phase 7 of 10)
-**Last action:** Completed 07-01-PLAN.md (neon palette, player sprite, obstacle styling)
+**Last action:** Completed 07-02-PLAN.md (palette applied to screens, HUD, ground, overlays)
 **Last updated:** 2026-05-10
 
 ## Project Reference
@@ -11,7 +11,7 @@
 See: .planning/PROJECT.md (updated 2026-05-09)
 
 **Core value:** The game must feel immediately fun
-**Current focus:** Phase 7 in progress - palette and entity visuals done. Next: ground/background and screen styling.
+**Current focus:** Phase 7 in progress - palette, entity visuals, and screen/UI styling done. Next: 07-03 (remaining visual polish).
 
 ## Phase Progress
 
@@ -23,19 +23,19 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 | 4 | Scoring & HUD | ● Complete | 2/2 |
 | 5 | Difficulty Progression | ● Complete | 3/3 |
 | 6 | Screens & Flow | ● Complete | 3/3 |
-| 7 | Visual Style | ◐ In Progress | 1/3 |
+| 7 | Visual Style | ◐ In Progress | 2/3 |
 | 8 | Particle Effects & Juice | ○ Pending | 0/4 |
 | 9 | Audio | ○ Pending | 0/3 |
 | 10 | Performance & Deployment | ○ Pending | 0/4 |
 
-Progress: █████████████████░░░░░░░░░░░░░░░ 17/30 (57%)
+Progress: ██████████████████░░░░░░░░░░░░░░ 18/30 (60%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 17
-- Average duration: ~47 seconds
-- Total execution time: ~13 minutes
+- Total plans completed: 18
+- Average duration: ~48 seconds
+- Total execution time: ~14 minutes
 
 ## Accumulated Context
 
@@ -96,6 +96,9 @@ Recent decisions affecting current work:
 - [D-0701-1] Pixel sprite stored as 16x16 2D array with colour indices (0=transparent, 1-3=palette)
 - [D-0701-2] Shadow reset to transparent after obstacle loop to prevent glow bleed
 - [D-0701-3] Math.ceil for pixel size ensures no sub-pixel gaps in sprite rendering
+- [D-0702-1] Start title uses cyan glow (shadowBlur 15) for neon pop
+- [D-0702-2] Game-over title uses magenta glow for dramatic contrast against cyan start
+- [D-0702-3] Ground horizon line drawn at 30% opacity cyan for subtle neon edge
 
 ### Pending Todos
 
@@ -107,15 +110,15 @@ None.
 
 ## Context for Next Session
 
-- Phase 7 plan 1 COMPLETE: palette, player sprite, obstacle styling
+- Phase 7 plans 1+2 COMPLETE: palette, entity visuals, screen/UI styling all use PALETTE tokens
 - COLORS.PALETTE in src/config.js has 30+ named neon-on-dark tokens
-- Player: 16x16 pixel-art sprite using SPRITE array + fillRect at scale
-- Obstacles: dark body + magenta neon border + glow + white letter
-- Sprite structure supports future animation (swap/cycle SPRITE arrays)
-- Next: 07-02 (ground/background visual layers) then 07-03 (screen styling)
+- No inline hex colours remain in any render file (verified via grep)
+- Visual pattern: cyan for player/positive, magenta for dramatic/negative, yellow for best/score
+- Glow pattern: shadowColor + shadowBlur + reset after each draw established
+- Next: 07-03 (final visual polish or background effects)
 
 ## Session Continuity
 
-Last session: 2026-05-09T22:05:32Z
-Stopped at: Completed 07-01-PLAN.md
+Last session: 2026-05-10T22:06:54Z
+Stopped at: Completed 07-02-PLAN.md
 Resume file: None
