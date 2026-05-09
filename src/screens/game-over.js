@@ -3,6 +3,7 @@ import { getState, STATES } from '../core/state.js';
 import { getScore } from '../systems/score.js';
 import { getPersonalBest } from '../systems/storage.js';
 import { getLeaderboard, qualifiesForLeaderboard, insertScore } from '../systems/leaderboard.js';
+import { COLORS } from '../config.js';
 
 let phase = 'display'; // 'display' | 'name-entry' | 'done'
 let initials = '';
@@ -97,38 +98,42 @@ export function renderGameOverScreen(ctx, width, height) {
   ctx.save();
 
   // Dark overlay
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.85)';
+  ctx.fillStyle = COLORS.PALETTE.PANEL;
   ctx.fillRect(0, 0, width, height);
 
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
 
-  // GAME OVER title
-  ctx.fillStyle = '#ffffff';
+  // GAME OVER title with magenta glow
+  ctx.fillStyle = COLORS.PALETTE.MAGENTA;
+  ctx.shadowColor = COLORS.PALETTE.MAGENTA;
+  ctx.shadowBlur = 15;
   ctx.font = 'bold 36px monospace';
   ctx.fillText('GAME OVER', width / 2, height * 0.15);
+  ctx.shadowBlur = 0;
 
   // Final score
+  ctx.fillStyle = COLORS.PALETTE.WHITE;
   ctx.font = 'bold 28px monospace';
   ctx.fillText('SCORE: ' + finalScore, width / 2, height * 0.25);
 
   // Personal best and delta
   ctx.font = '18px monospace';
-  ctx.fillStyle = '#ffcc00';
+  ctx.fillStyle = COLORS.PALETTE.BEST_TEXT;
   ctx.fillText('BEST: ' + personalBest, width / 2, height * 0.32);
 
   const delta = finalScore - personalBest;
   if (delta > 0) {
-    ctx.fillStyle = '#00ff88';
+    ctx.fillStyle = COLORS.PALETTE.GREEN;
     ctx.fillText('+' + delta + ' NEW BEST!', width / 2, height * 0.37);
   } else {
-    ctx.fillStyle = '#ff4466';
+    ctx.fillStyle = COLORS.PALETTE.MAGENTA;
     ctx.fillText(String(delta), width / 2, height * 0.37);
   }
 
   // Leaderboard
   const board = getLeaderboard();
-  ctx.fillStyle = '#aaaaaa';
+  ctx.fillStyle = COLORS.PALETTE.MID;
   ctx.font = '16px monospace';
   ctx.fillText('TOP 10', width / 2, height * 0.43);
 
@@ -142,9 +147,9 @@ export function renderGameOverScreen(ctx, width, height) {
 
     // Highlight player's new entry
     if (playerRank > 0 && i === playerRank - 1) {
-      ctx.fillStyle = '#00ffcc';
+      ctx.fillStyle = COLORS.PALETTE.CYAN;
     } else {
-      ctx.fillStyle = '#cccccc';
+      ctx.fillStyle = COLORS.PALETTE.LIGHT;
     }
 
     ctx.font = '14px monospace';
@@ -161,7 +166,7 @@ export function renderGameOverScreen(ctx, width, height) {
 
   // Name entry or play again
   if (phase === 'name-entry') {
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = COLORS.PALETTE.WHITE;
     ctx.font = '18px monospace';
     ctx.fillText('ENTER YOUR INITIALS', width / 2, height * 0.86);
 
@@ -180,13 +185,13 @@ export function renderGameOverScreen(ctx, width, height) {
     ctx.font = 'bold 24px monospace';
     ctx.fillText(display.trim(), width / 2, height * 0.91);
 
-    ctx.fillStyle = '#888888';
+    ctx.fillStyle = COLORS.PALETTE.MID;
     ctx.font = '12px monospace';
     ctx.fillText('(ENTER to confirm)', width / 2, height * 0.95);
   } else if (phase === 'done') {
     const show = Math.floor(flashTimer * 2) % 2 === 0;
     if (show) {
-      ctx.fillStyle = '#ffffff';
+      ctx.fillStyle = COLORS.PALETTE.WHITE;
       ctx.font = '18px monospace';
       ctx.fillText('Press any key to play again', width / 2, height * 0.90);
     }
