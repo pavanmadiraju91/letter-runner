@@ -1,4 +1,4 @@
-import { GAME } from '../config.js';
+import { GAME, COLORS } from '../config.js';
 import { events } from '../core/events.js';
 
 /**
@@ -46,25 +46,41 @@ export function cleanupOffscreen(pool) {
 }
 
 /**
- * Render all obstacles — neon pink body with centered white letter.
+ * Render all obstacles — neon-styled blocks with glow, border, and centered letter.
  */
 export function renderObstacles(ctx, obstacles) {
-  ctx.fillStyle = '#ff2266';
   for (let i = 0; i < obstacles.length; i++) {
     const obs = obstacles[i];
-    ctx.fillRect(Math.round(obs.x), Math.round(obs.y), obs.width, obs.height);
+    const x = Math.round(obs.x);
+    const y = Math.round(obs.y);
+    const w = obs.width;
+    const h = obs.height;
+
+    // Neon glow effect
+    ctx.shadowColor = COLORS.PALETTE.OBSTACLE_GLOW;
+    ctx.shadowBlur = 8;
+
+    // Body fill
+    ctx.fillStyle = COLORS.PALETTE.OBSTACLE_BODY;
+    ctx.fillRect(x, y, w, h);
+
+    // Neon border (2px inset)
+    ctx.strokeStyle = COLORS.PALETTE.OBSTACLE_BORDER;
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x + 1, y + 1, w - 2, h - 2);
+
+    // Reset shadow before text
+    ctx.shadowBlur = 0;
+
+    // Centered letter
+    ctx.fillStyle = COLORS.PALETTE.OBSTACLE_LETTER;
+    ctx.font = 'bold 22px monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(obs.letter, x + w / 2, y + h / 2);
   }
 
-  ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 24px monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  for (let i = 0; i < obstacles.length; i++) {
-    const obs = obstacles[i];
-    ctx.fillText(
-      obs.letter,
-      Math.round(obs.x + obs.width / 2),
-      Math.round(obs.y + obs.height / 2)
-    );
-  }
+  // Ensure shadow is fully reset after loop
+  ctx.shadowColor = 'transparent';
+  ctx.shadowBlur = 0;
 }
