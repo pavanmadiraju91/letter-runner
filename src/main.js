@@ -11,6 +11,8 @@ import { createSpawner, updateSpawner } from './systems/spawner.js';
 import { initInput } from './systems/input.js';
 import { initMatcher } from './systems/matcher.js';
 import { createLives, resetLives } from './systems/lives.js';
+import { createScore, resetScore, updateScore } from './systems/score.js';
+import { createHUD, renderHUD } from './systems/hud.js';
 
 initCanvas();
 events.emit('CANVAS_READY', { width: getWidth(), height: getHeight() });
@@ -18,6 +20,7 @@ events.emit('CANVAS_READY', { width: getWidth(), height: getHeight() });
 createStateMachine();
 createLives();
 resetLives();
+createHUD();
 
 const ground = createGround();
 const player = createPlayer();
@@ -68,6 +71,7 @@ function render() {
   renderGround(ctx, ground, w, h);
   renderObstacles(ctx, obstaclePool.getActive());
   renderPlayer(ctx, player);
+  renderHUD(ctx, w);
 
   // Game Over overlay
   if (getState() === STATES.GAME_OVER) {
