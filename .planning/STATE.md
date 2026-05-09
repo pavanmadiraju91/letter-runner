@@ -3,7 +3,7 @@
 ## Current Status
 
 **Active phase:** 10-performance-deployment (Phase 10 of 10)
-**Last action:** Completed 10-02-PLAN.md (GitHub Pages deployment workflow)
+**Last action:** Completed 10-01-PLAN.md (Cross-browser compatibility and minimum viewport)
 **Last updated:** 2026-05-10
 
 ## Project Reference
@@ -11,7 +11,7 @@
 See: .planning/PROJECT.md (updated 2026-05-09)
 
 **Core value:** The game must feel immediately fun
-**Current focus:** Phase 10 in progress. Deployment pipeline established. Asset budget verified.
+**Current focus:** Phase 10 in progress. Cross-browser hardening + deployment pipeline done.
 
 ## Phase Progress
 
@@ -26,16 +26,16 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 | 7 | Visual Style | ◐ In Progress | 2/3 |
 | 8 | Particle Effects & Juice | ◐ In Progress | 2/3 |
 | 9 | Audio | ● Complete | 2/2 |
-| 10 | Performance & Deployment | ◐ In Progress | 1/4 |
+| 10 | Performance & Deployment | ◐ In Progress | 2/4 |
 
-Progress: ███████████████████████░░░░░░░░░ 23/30 (77%)
+Progress: ████████████████████████░░░░░░░░ 24/30 (80%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 23
+- Total plans completed: 24
 - Average duration: ~50 seconds
-- Total execution time: ~19 minutes
+- Total execution time: ~20 minutes
 
 ## Accumulated Context
 
@@ -117,6 +117,9 @@ Recent decisions affecting current work:
 - [D-1002-1] Modern GitHub Pages deployment via actions/deploy-pages@v4 (not legacy branch deploy)
 - [D-1002-2] size-check script uses grep on vite build output for quick budget regression checks
 - [D-1002-3] Node 20 LTS for CI stability; npm ci for reproducible builds
+- [D-1001-1] Wrap all osc.stop() in try/catch rather than pre-checking state (simpler, no perf cost)
+- [D-1001-2] Minimum viewport 800x400 enforced both in CSS (min-width/height) and JS (Math.max clamp)
+- [D-1001-3] .catch(() => {}) on resume() rather than pre-checking audioCtx.state (handles all edge cases)
 
 ### Pending Todos
 
@@ -128,15 +131,16 @@ None.
 
 ## Context for Next Session
 
-- Phase 10 plan 02 COMPLETE - GitHub Actions CI/CD pipeline created
-- .github/workflows/deploy.yml: deploys dist/ to GitHub Pages on push to main
-- package.json: added "size-check" script for asset budget monitoring
-- Build output: 20.9KB total (index.html + 1 JS bundle, 29 modules)
-- TECH-03 (< 500KB), TECH-04 (< 2s load), TECH-10 (automated deployment) all satisfied
+- Phase 10 plans 01 + 02 COMPLETE
+- Cross-browser: Safari AudioContext hardened (try/catch on stop, catch on resume), vendor-prefixed imageSmoothingEnabled
+- Minimum viewport: 800x400px enforced in CSS (body min-width/min-height) + JS (Math.max in resize)
+- Deployment: GitHub Actions CI/CD pipeline (.github/workflows/deploy.yml)
+- Build output: 20.20kB / 7.27kB gzipped (29 modules)
+- TECH-03, TECH-04, TECH-05, TECH-06, TECH-10 all satisfied
 - Next: 10-03-PLAN.md or 10-04-PLAN.md
 
 ## Session Continuity
 
-Last session: 2026-05-09T22:30:30Z
-Stopped at: Completed 10-02-PLAN.md (GitHub Pages deployment)
+Last session: 2026-05-09T22:30:34Z
+Stopped at: Completed 10-01-PLAN.md (Cross-browser compatibility)
 Resume file: None
