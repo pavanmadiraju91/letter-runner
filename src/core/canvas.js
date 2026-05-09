@@ -24,6 +24,8 @@ function resize() {
 
   ctx.scale(dpr, dpr);
   ctx.imageSmoothingEnabled = false;
+  ctx.mozImageSmoothingEnabled = false;
+  ctx.webkitImageSmoothingEnabled = false;
 
   events.emit('CANVAS_RESIZE', { width, height });
 }

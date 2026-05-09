@@ -38,6 +38,8 @@ export function createAudioSystem() {
       musicGain.connect(masterGain);
 
       audioReady = true;
+    }).catch(() => {
+      // Safari may reject resume() silently — ignore to prevent unhandled rejection
     });
 
     window.removeEventListener('keydown', initAudio);
@@ -88,7 +90,7 @@ export function playPop() {
   gain.connect(sfxGain);
 
   osc.start(audioCtx.currentTime);
-  osc.stop(audioCtx.currentTime + AUDIO.POP.duration);
+  try { osc.stop(audioCtx.currentTime + AUDIO.POP.duration); } catch (_) { /* Safari: already stopped */ }
 }
 
 /**
@@ -111,7 +113,7 @@ export function playThud() {
   gain.connect(sfxGain);
 
   osc.start(audioCtx.currentTime);
-  osc.stop(audioCtx.currentTime + AUDIO.THUD.duration);
+  try { osc.stop(audioCtx.currentTime + AUDIO.THUD.duration); } catch (_) { /* Safari: already stopped */ }
 }
 
 /**
@@ -135,7 +137,7 @@ export function playGameOver() {
   gain.connect(sfxGain);
 
   osc.start(audioCtx.currentTime);
-  osc.stop(audioCtx.currentTime + AUDIO.GAME_OVER.duration);
+  try { osc.stop(audioCtx.currentTime + AUDIO.GAME_OVER.duration); } catch (_) { /* Safari: already stopped */ }
 }
 
 /**
@@ -162,7 +164,7 @@ export function playLevelUp() {
     gain.connect(sfxGain);
 
     osc.start(startTime);
-    osc.stop(startTime + noteDuration);
+    try { osc.stop(startTime + noteDuration); } catch (_) { /* Safari: already stopped */ }
   }
 }
 
@@ -193,7 +195,7 @@ function startMusic() {
  */
 function stopMusic() {
   if (musicOsc) {
-    musicOsc.stop(audioCtx.currentTime);
+    try { musicOsc.stop(audioCtx.currentTime); } catch (_) { /* Safari: already stopped */ }
     musicOsc.disconnect();
     musicFilter.disconnect();
     musicOsc = null;
