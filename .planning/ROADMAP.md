@@ -217,13 +217,11 @@ Plans:
 4. Canvas scales responsively with minimum viewport 800x400px
 5. Game is deployed and accessible via a public URL (GitHub Pages or Netlify)
 
-**Plans:** TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 10-01: Asset budget audit and optimization
-- [ ] 10-02: Cross-browser testing and compatibility fixes
-- [ ] 10-03: Responsive canvas scaling
-- [ ] 10-04: Static deployment pipeline (GitHub Pages)
+- [ ] 10-01-PLAN.md — Cross-browser compatibility and responsive canvas scaling (TECH-05, TECH-06)
+- [ ] 10-02-PLAN.md — GitHub Pages deployment and asset budget verification (TECH-03, TECH-04, TECH-10)
 
 ---
 
