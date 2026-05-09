@@ -15,7 +15,7 @@ Letter Runner goes from empty repo to shippable game across 10 phases. The build
 - [x] **Phase 3: Lives & Game State** - Life system, game over, state machine, restart
 - [x] **Phase 4: Scoring & HUD** - Points, multipliers, survival bonus, heads-up display
 - [x] **Phase 5: Difficulty Progression** - Level system, speed ramp, obstacle count scaling
-- [ ] **Phase 6: Screens & Flow** - Start screen, game over screen, leaderboard UI, name entry
+- [x] **Phase 6: Screens & Flow** - Start screen, game over screen, leaderboard UI, name entry
 - [ ] **Phase 7: Visual Style** - Pixel-art aesthetic, sprites, neon colour palette
 - [ ] **Phase 8: Particle Effects & Juice** - Destroy particles, flashes, level-up overlay
 - [ ] **Phase 9: Audio** - Sound effects, background music, autoplay policy handling
@@ -136,14 +136,12 @@ Plans:
 4. Personal best persists across browser sessions (localStorage)
 5. Level-up announcement appears as large centered text that fades out
 
-**Plans:** TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 06-01: Start screen (logo, prompt, personal best display)
-- [ ] 06-02: Game Over screen (score, delta, play-again)
-- [ ] 06-03: Leaderboard UI and name entry
-- [ ] 06-04: Level-up announcement overlay
-- [ ] 06-05: localStorage persistence for personal best
+- [ ] 06-01-PLAN.md — MENU state, localStorage persistence, start screen with personal best
+- [ ] 06-02-PLAN.md — Level-up announcement overlay with timed fade
+- [ ] 06-03-PLAN.md — Game Over screen with leaderboard and name entry
 
 ---
 
@@ -244,7 +242,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 3. Lives & Game State | 0/3 | Not started | - |
 | 4. Scoring & HUD | 0/2 | Not started | - |
 | 5. Difficulty Progression | 0/3 | Not started | - |
-| 6. Screens & Flow | 0/5 | Not started | - |
+| 6. Screens & Flow | 0/3 | Not started | - |
 | 7. Visual Style | 0/3 | Not started | - |
 | 8. Particle Effects & Juice | 0/4 | Not started | - |
 | 9. Audio | 0/3 | Not started | - |
