@@ -34,11 +34,11 @@ Letter Runner goes from empty repo to shippable game across 10 phases. The build
 3. Canvas renders crisply on retina displays (DPR-aware scaling)
 4. An event bus exists and can publish/subscribe messages between decoupled modules
 
-**Plans:** TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 01-01: Project scaffolding and Vite setup
-- [ ] 01-02: Game loop, event bus, and DPR-aware canvas
+- [ ] 01-01-PLAN.md — Project scaffolding, Vite config, index.html with dark canvas
+- [ ] 01-02-PLAN.md — Game loop, event bus, DPR-aware canvas, main.js wiring
 
 ---
 
