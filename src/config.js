@@ -1,6 +1,42 @@
 export const COLORS = {
   BG: '#0a0a0f',
-  DEBUG_TEXT: '#3a3a4a'
+  DEBUG_TEXT: '#3a3a4a',
+
+  PALETTE: {
+    // Neon accents
+    CYAN: '#00ffcc',
+    MAGENTA: '#ff2266',
+    YELLOW: '#ffcc00',
+    GREEN: '#00ff88',
+    BLUE: '#4488ff',
+    PURPLE: '#aa44ff',
+    ORANGE: '#ff8844',
+
+    // UI tones
+    WHITE: '#ffffff',
+    LIGHT: '#ccddee',
+    MID: '#667788',
+    DIM: '#334455',
+    DARK: '#1a1a2e',
+    DARKER: '#12121f',
+    PANEL: 'rgba(0, 0, 0, 0.85)',
+
+    // Entity-specific
+    PLAYER_PRIMARY: '#00ffcc',
+    PLAYER_SECONDARY: '#008866',
+    PLAYER_EYE: '#ffffff',
+    OBSTACLE_BODY: '#1a1a2e',
+    OBSTACLE_BORDER: '#ff2266',
+    OBSTACLE_LETTER: '#ffffff',
+    OBSTACLE_GLOW: '#ff2266',
+    GROUND_BASE: '#1a1a2e',
+    GROUND_LINE: '#2a2a4e',
+    HEART_FULL: '#ff3366',
+    HEART_EMPTY: '#2a2a3a',
+    SCORE_TEXT: '#ffffff',
+    LEVEL_TEXT: '#00ffcc',
+    BEST_TEXT: '#ffcc00',
+  }
 };
 
 export const SCORE = {
