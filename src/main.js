@@ -1,13 +1,24 @@
 import { initCanvas, getCtx, getWidth, getHeight } from './core/canvas.js';
 import { startLoop } from './core/game-loop.js';
 import { events } from './core/events.js';
-import { COLORS } from './config.js';
+import { COLORS, GAME } from './config.js';
+import { createPlayer, resetPlayer, renderPlayer } from './entities/player.js';
+import { createGround, updateGround, renderGround } from './entities/ground.js';
 
 initCanvas();
 events.emit('CANVAS_READY', { width: getWidth(), height: getHeight() });
 
+const player = createPlayer();
+const ground = createGround();
+
+resetPlayer(player, getWidth(), getHeight(), ground.height);
+
+events.on('CANVAS_RESIZE', ({ width, height }) => {
+  resetPlayer(player, width, height, ground.height);
+});
+
 function update(dt) {
-  // Future: entity updates, physics, input polling
+  updateGround(ground, dt, GAME.SCROLL_SPEED);
 }
 
 function render() {
@@ -17,6 +28,9 @@ function render() {
 
   ctx.fillStyle = COLORS.BG;
   ctx.fillRect(0, 0, w, h);
+
+  renderGround(ctx, ground, w, h);
+  renderPlayer(ctx, player);
 
   ctx.fillStyle = COLORS.DEBUG_TEXT;
   ctx.font = '12px monospace';
