@@ -13,11 +13,15 @@ export function createSpawner(pool) {
 
 /**
  * Timer-based obstacle spawning with letter uniqueness and gap enforcement.
+ * @param {object} spawner - spawner state from createSpawner()
+ * @param {number} dt - delta time
+ * @param {object} difficultyParams - { scrollSpeed, spawnInterval, maxObstacles, multiplier, tallObstacles }
+ * @param {number} groundY - ground Y position
  */
-export function updateSpawner(spawner, dt, scrollSpeed, groundY) {
+export function updateSpawner(spawner, dt, difficultyParams, groundY) {
   spawner.timer += dt;
 
-  if (spawner.timer < GAME.SPAWN_INTERVAL) {
+  if (spawner.timer < difficultyParams.spawnInterval) {
     return;
   }
 
@@ -26,7 +30,7 @@ export function updateSpawner(spawner, dt, scrollSpeed, groundY) {
   const active = spawner.pool.getActive();
 
   // Guard: respect max obstacles cap
-  if (active.length >= GAME.MAX_OBSTACLES) {
+  if (active.length >= difficultyParams.maxObstacles) {
     return;
   }
 
@@ -38,7 +42,9 @@ export function updateSpawner(spawner, dt, scrollSpeed, groundY) {
     }
   }
 
-  // Pick a unique letter not already on screen
+  // DIFF-07/DIFF-08: All visible obstacles must have unique letters.
+  // We collect all active obstacle letters, then pick randomly from remaining.
+  // With MAX_OBSTACLES_CAP=4, we always have 22+ available letters — collision impossible.
   const usedLetters = new Set();
   for (let i = 0; i < active.length; i++) {
     usedLetters.add(active[i].letter);
@@ -53,7 +59,19 @@ export function updateSpawner(spawner, dt, scrollSpeed, groundY) {
     }
   }
 
-  // If somehow all 26 are on screen (impossible with MAX_OBSTACLES=4), bail
+  // If random didn't find one (theoretically impossible with cap=4),
+  // iterate deterministically as final safety net
+  if (!letter) {
+    for (let code = 65; code <= 90; code++) {
+      const c = String.fromCharCode(code);
+      if (!usedLetters.has(c)) {
+        letter = c;
+        break;
+      }
+    }
+  }
+
+  // Absolute last resort: all 26 letters in use (impossible with MAX_OBSTACLES=4)
   if (!letter) {
     return;
   }
@@ -61,8 +79,12 @@ export function updateSpawner(spawner, dt, scrollSpeed, groundY) {
   // Acquire from pool and configure
   const obs = spawner.pool.acquire();
   obs.x = screenWidth + 10;
-  obs.y = groundY - GAME.OBSTACLE_HEIGHT;
+
+  const isTall = difficultyParams.tallObstacles && Math.random() < 0.4;
+  obs.height = isTall ? GAME.OBSTACLE_HEIGHT * 1.5 : GAME.OBSTACLE_HEIGHT;
+  obs.y = groundY - obs.height;
+
   obs.letter = letter;
-  obs.speed = scrollSpeed;
+  obs.speed = difficultyParams.scrollSpeed;
   obs.active = true;
 }
