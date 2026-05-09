@@ -2,8 +2,8 @@
 
 ## Current Status
 
-**Active phase:** 04-scoring-hud (Phase 4 of 10)
-**Last action:** Completed 04-01-PLAN.md (Score System)
+**Active phase:** 05-difficulty-progression (Phase 5 of 10)
+**Last action:** Completed 05-01-PLAN.md (Difficulty Tier Config & Level System)
 **Last updated:** 2026-05-09
 
 ## Project Reference
@@ -11,7 +11,7 @@
 See: .planning/PROJECT.md (updated 2026-05-09)
 
 **Core value:** The game must feel immediately fun
-**Current focus:** Phase 4 COMPLETE - score system and HUD renderer both delivered
+**Current focus:** Phase 5 in progress - difficulty tier config and level system delivered
 
 ## Phase Progress
 
@@ -21,21 +21,21 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 | 2 | Movement & Input | ● Complete | 3/3 |
 | 3 | Lives & Game State | ● Complete | 3/3 |
 | 4 | Scoring & HUD | ● Complete | 2/2 |
-| 5 | Difficulty Progression | ○ Pending | 0/3 |
+| 5 | Difficulty Progression | ◐ In Progress | 1/3 |
 | 6 | Screens & Flow | ○ Pending | 0/5 |
 | 7 | Visual Style | ○ Pending | 0/3 |
 | 8 | Particle Effects & Juice | ○ Pending | 0/4 |
 | 9 | Audio | ○ Pending | 0/3 |
 | 10 | Performance & Deployment | ○ Pending | 0/4 |
 
-Progress: ██████████░░░░░░░░░░░░░░░░░░░░░░ 10/32 (31%)
+Progress: ███████████░░░░░░░░░░░░░░░░░░░░░ 11/32 (34%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 10
+- Total plans completed: 11
 - Average duration: ~45 seconds
-- Total execution time: ~7.5 minutes
+- Total execution time: ~8.3 minutes
 
 ## Accumulated Context
 
@@ -75,6 +75,9 @@ Recent decisions affecting current work:
 - [D-0402-1] Hearts drawn with bezier curves (two arcs) at 14px size, spaced 22px apart
 - [D-0402-2] HUD uses ctx.save/restore to avoid polluting canvas state for other renderers
 - [D-0402-3] Level state synced via LEVEL_UP event (future-proof for Phase 5)
+- [D-0501-1] Module-level closure for difficulty state (consistent with lives/score pattern)
+- [D-0501-2] TIERS array indexed by level-1 for direct lookup; overflow uses log scaling
+- [D-0501-3] getDifficultyParams() returns shallow copy to prevent mutation of tier objects
 
 ### Pending Todos
 
@@ -86,17 +89,18 @@ None.
 
 ## Context for Next Session
 
-- Phase 4 COMPLETE: score system + HUD renderer both delivered
-- Score flow: OBSTACLE_DESTROYED -> +10*level points; updateScore(dt) -> +1/sec survival bonus
-- HUD renders: score top-left, "LV 1" top-center, heart icons top-right
-- renderHUD(ctx, w) called after entities, before Game Over overlay
-- createHUD() subscribes to LEVEL_UP and GAME_RESTART events
-- Score.js: createScore, resetScore, updateScore(dt), getScore() all wired in main.js
-- LEVEL_UP listener in score.js ready for Phase 5 difficulty progression
-- Next step: Phase 5 (Difficulty Progression) — level scaling, speed ramp, spawn rates
+- Phase 5 plan 01 COMPLETE: difficulty tier config + level system delivered
+- DIFFICULTY config in config.js: 6 tiers, log scaling constants, MAX_OBSTACLES_CAP=4
+- difficulty.js: createDifficulty(), resetDifficulty(), getDifficultyParams(), getLevel()
+- Event flow: OBSTACLE_DESTROYED -> destroyCount++ -> every 10: LEVEL_UP with full params
+- score.js and input.js already listen for LEVEL_UP and update accordingly
+- getDifficultyParams() returns { scrollSpeed, spawnInterval, maxObstacles, multiplier, tallObstacles }
+- Logarithmic scaling kicks in at level 7+ using ln(overflow+1) for smooth difficulty curve
+- Next step: Plan 05-02 (spawner integration) - wire difficulty params into spawner/obstacles
+- Then Plan 05-03 (main loop wiring) - createDifficulty() call and scrollSpeed application
 
 ## Session Continuity
 
-Last session: 2026-05-09T21:39:00Z
-Stopped at: Completed 04-01-PLAN.md
+Last session: 2026-05-09T21:47:00Z
+Stopped at: Completed 05-01-PLAN.md
 Resume file: None
