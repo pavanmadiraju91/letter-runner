@@ -156,12 +156,11 @@ Plans:
 3. Obstacles appear as chunky styled blocks with letters in a contrasting colour
 4. The overall aesthetic reads as intentional pixel art, not programmer art
 
-**Plans:** TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 07-01: Colour palette and visual design system
-- [ ] 07-02: Player sprite and obstacle block artwork
-- [ ] 07-03: Screen and HUD visual styling pass
+- [ ] 07-01-PLAN.md — Neon palette definition, player pixel sprite, obstacle neon styling
+- [ ] 07-02-PLAN.md — Apply palette to all screens, HUD, ground, and overlays
 
 ---
 
