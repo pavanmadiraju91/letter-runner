@@ -128,6 +128,13 @@ function render() {
     ctx.restore();
   }
   renderHUD(ctx, w);
+  // Music toggle hint (bottom-right, dim)
+  ctx.save();
+  ctx.font = '10px monospace';
+  ctx.fillStyle = COLORS.PALETTE.DIM;
+  ctx.textAlign = 'right';
+  ctx.fillText('[M] Music', w - 8, getHeight() - 8);
+  ctx.restore();
   renderLevelAnnounce(ctx, w, h);
   renderParticles(ctx);
 

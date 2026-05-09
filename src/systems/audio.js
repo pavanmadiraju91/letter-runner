@@ -45,6 +45,13 @@ export function createAudioSystem() {
 
   window.addEventListener('keydown', initAudio);
 
+  // M-key toggles background music
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'm' || e.key === 'M') {
+      toggleMusic();
+    }
+  });
+
   // Wire sound effects to game events
   events.on('OBSTACLE_DESTROYED', () => { playPop(); });
   events.on('LIFE_LOST', () => { playThud(); });
