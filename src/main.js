@@ -1,7 +1,7 @@
 import { initCanvas, getCtx, getWidth, getHeight } from './core/canvas.js';
 import { startLoop } from './core/game-loop.js';
 import { events } from './core/events.js';
-import { createStateMachine, getState, STATES, requestRestart } from './core/state.js';
+import { createStateMachine, getState, STATES, requestRestart, requestStart } from './core/state.js';
 import { COLORS, GAME } from './config.js';
 import { createPlayer, resetPlayer, renderPlayer } from './entities/player.js';
 import { createGround, updateGround, renderGround } from './entities/ground.js';
@@ -11,10 +11,12 @@ import { createSpawner, updateSpawner } from './systems/spawner.js';
 import { initInput } from './systems/input.js';
 import { initMatcher } from './systems/matcher.js';
 import { createLives, resetLives } from './systems/lives.js';
-import { createScore, resetScore, updateScore } from './systems/score.js';
+import { createScore, resetScore, updateScore, getScore } from './systems/score.js';
 import { createHUD, renderHUD } from './systems/hud.js';
 import { createDifficulty, resetDifficulty, getDifficultyParams } from './systems/difficulty.js';
 import { createLevelAnnounce, updateLevelAnnounce, renderLevelAnnounce } from './systems/level-announce.js';
+import { renderStartScreen } from './screens/start.js';
+import { getPersonalBest, setPersonalBest } from './systems/storage.js';
 
 initCanvas();
 events.emit('CANVAS_READY', { width: getWidth(), height: getHeight() });
@@ -42,6 +44,13 @@ events.on('CANVAS_RESIZE', ({ width, height }) => {
   resetPlayer(player, width, height, GAME.GROUND_HEIGHT);
 });
 
+// Save personal best when game ends
+events.on('STATE_CHANGE', ({ state }) => {
+  if (state === STATES.GAME_OVER) {
+    setPersonalBest(getScore());
+  }
+});
+
 // Restart game: reset lives, clear obstacles, reset spawner, flip state
 function restartGame() {
   resetLives();
@@ -52,9 +61,12 @@ function restartGame() {
   requestRestart();
 }
 
-// Any keypress during GameOver triggers restart
+// Key press handling for state transitions
 events.on('KEY_PRESS', () => {
-  if (getState() === STATES.GAME_OVER) {
+  const state = getState();
+  if (state === STATES.MENU) {
+    requestStart();
+  } else if (state === STATES.GAME_OVER) {
     restartGame();
   }
 });
@@ -76,6 +88,12 @@ function render() {
   const ctx = getCtx();
   const w = getWidth();
   const h = getHeight();
+
+  // Start screen
+  if (getState() === STATES.MENU) {
+    renderStartScreen(ctx, w, h);
+    return;
+  }
 
   ctx.fillStyle = COLORS.BG;
   ctx.fillRect(0, 0, w, h);
