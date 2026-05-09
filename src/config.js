@@ -82,6 +82,17 @@ export const PARTICLES = {
   MIN_FPS: 30,           // VFX-10: skip particle spawning below this threshold
 };
 
+export const AUDIO = {
+  MASTER_VOLUME: 0.4,
+  SFX_VOLUME: 0.5,
+  MUSIC_VOLUME: 0.15,
+  POP: { freq: 880, duration: 0.08, type: 'sine' },
+  THUD: { freq: 120, duration: 0.2, type: 'sine' },
+  GAME_OVER: { startFreq: 440, endFreq: 110, duration: 0.6, type: 'sawtooth' },
+  LEVEL_UP: { notes: [523, 659, 784, 1047], noteDuration: 0.1, type: 'square' },
+  MUSIC: { baseFreq: 110, filterFreq: 800 }
+};
+
 export const GAME = {
   TARGET_FPS: 60,
   MAX_DT: 1 / 30,
