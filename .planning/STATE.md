@@ -2,8 +2,8 @@
 
 ## Current Status
 
-**Active phase:** 01-foundation (Phase 1 of 10)
-**Last action:** Completed 01-01-PLAN.md (Project Scaffolding)
+**Active phase:** 02-movement-input (Phase 2 of 10)
+**Last action:** Completed 01-02-PLAN.md (Game Loop and Event Bus)
 **Last updated:** 2026-05-09
 
 ## Project Reference
@@ -11,13 +11,13 @@
 See: .planning/PROJECT.md (updated 2026-05-09)
 
 **Core value:** The game must feel immediately fun
-**Current focus:** Foundation phase - game loop and event bus next
+**Current focus:** Phase 1 complete - movement and input next
 
 ## Phase Progress
 
 | Phase | Name | Status | Plans |
 |-------|------|--------|-------|
-| 1 | Foundation | ◐ In Progress | 1/2 |
+| 1 | Foundation | ● Complete | 2/2 |
 | 2 | Movement & Input | ○ Pending | 0/3 |
 | 3 | Lives & Game State | ○ Pending | 0/3 |
 | 4 | Scoring & HUD | ○ Pending | 0/2 |
@@ -28,14 +28,14 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 | 9 | Audio | ○ Pending | 0/3 |
 | 10 | Performance & Deployment | ○ Pending | 0/4 |
 
-Progress: █░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 1/32 (3%)
+Progress: ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 2/32 (6%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: ~1 minute
-- Total execution time: ~1 minute
+- Total plans completed: 2
+- Average duration: ~30 seconds
+- Total execution time: ~1.5 minutes
 
 ## Accumulated Context
 
@@ -49,6 +49,9 @@ Recent decisions affecting current work:
 - Event bus architecture for decoupled systems
 - Object pooling from day one (not retrofit)
 - [D-0101-1] Vite 6.4.2 with es2022 target and relative base path
+- [D-0102-1] Event bus uses Map for listener storage (O(1) lookup)
+- [D-0102-2] Delta-time clamped to MAX_DT (1/30s) to prevent spiral of death
+- [D-0102-3] Canvas imageSmoothingEnabled=false for crisp pixel rendering
 
 ### Pending Todos
 
@@ -60,14 +63,15 @@ None.
 
 ## Context for Next Session
 
-- Project scaffolding complete (01-01)
-- Vite 6.4.2 running on port 3000, full-viewport dark canvas displayed
-- src/config.js exports COLORS and GAME constants (TARGET_FPS: 60, MAX_DT: 1/30)
-- src/main.js has DPR-aware canvas resize; ready for game loop integration
-- Next step: 01-02 (game loop and event bus)
+- Phase 1 (Foundation) complete: scaffolding + game loop + event bus + canvas
+- 60fps game loop running with delta-time passed to update/render functions
+- DPR-aware canvas renders crisply at any device pixel ratio
+- Event bus ready for pub/sub between modules (CANVAS_RESIZE, CANVAS_READY, LOOP_START events)
+- Module graph: main.js -> canvas.js, game-loop.js, events.js, config.js
+- Next step: Phase 2 (Movement & Input) - player entity and keyboard controls
 
 ## Session Continuity
 
-Last session: 2026-05-09T21:02:36Z
-Stopped at: Completed 01-01-PLAN.md
+Last session: 2026-05-09T21:04:35Z
+Stopped at: Completed 01-02-PLAN.md
 Resume file: None
