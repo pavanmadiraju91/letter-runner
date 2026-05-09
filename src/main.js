@@ -16,6 +16,7 @@ import { createHUD, renderHUD } from './systems/hud.js';
 import { createFPSMonitor, updateFPS } from './systems/fps-monitor.js';
 import { createParticleSystem, updateParticles, renderParticles } from './systems/particles.js';
 import { createVFX, updateVFX, getPlayerFlash, getScreenFlash } from './systems/vfx.js';
+import { createAudioSystem } from './systems/audio.js';
 import { createDifficulty, resetDifficulty, getDifficultyParams } from './systems/difficulty.js';
 import { createLevelAnnounce, updateLevelAnnounce, renderLevelAnnounce } from './systems/level-announce.js';
 import { renderStartScreen } from './screens/start.js';
@@ -38,6 +39,7 @@ createHUD();
 createFPSMonitor();
 createParticleSystem();
 createVFX();
+createAudioSystem();
 
 const ground = createGround();
 const player = createPlayer();
