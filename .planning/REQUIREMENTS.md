@@ -122,12 +122,12 @@
 | LOOP-03 | 2 | Complete |
 | LOOP-04 | 2 | Complete |
 | LOOP-05 | 4 | Pending |
-| LOOP-06 | 3 | Pending |
-| LOOP-07 | 3 | Pending |
-| LOOP-08 | 3 | Pending |
+| LOOP-06 | 3 | Complete |
+| LOOP-07 | 3 | Complete |
+| LOOP-08 | 3 | Complete |
 | LOOP-09 | 4 | Pending |
-| LOOP-10 | 3 | Pending |
-| LOOP-11 | 3 | Pending |
+| LOOP-10 | 3 | Complete |
+| LOOP-11 | 3 | Complete |
 | DIFF-01 | 5 | Pending |
 | DIFF-02 | 5 | Pending |
 | DIFF-03 | 5 | Pending |
@@ -149,7 +149,7 @@
 | UI-10 | 6 | Pending |
 | UI-11 | 6 | Pending |
 | UI-12 | 6 | Pending |
-| UI-13 | 3 | Pending |
+| UI-13 | 3 | Complete |
 | VFX-01 | 7 | Pending |
 | VFX-02 | 7 | Pending |
 | VFX-03 | 7 | Pending |
@@ -174,7 +174,7 @@
 | TECH-06 | 10 | Pending |
 | TECH-07 | 2 | Complete |
 | TECH-08 | 6 | Pending |
-| TECH-09 | 3 | Pending |
+| TECH-09 | 3 | Complete |
 | TECH-10 | 10 | Pending |
 | TECH-11 | 2 | Complete |
 | TECH-12 | 1 | Complete |

@@ -12,7 +12,7 @@ Letter Runner goes from empty repo to shippable game across 10 phases. The build
 
 - [x] **Phase 1: Foundation** - Project scaffolding, game loop, canvas rendering infrastructure
 - [x] **Phase 2: Movement & Input** - Player runs, obstacles scroll, keyboard destroys them
-- [ ] **Phase 3: Lives & Game State** - Life system, game over, state machine, restart
+- [x] **Phase 3: Lives & Game State** - Life system, game over, state machine, restart
 - [ ] **Phase 4: Scoring & HUD** - Points, multipliers, survival bonus, heads-up display
 - [ ] **Phase 5: Difficulty Progression** - Level system, speed ramp, obstacle count scaling
 - [ ] **Phase 6: Screens & Flow** - Start screen, game over screen, leaderboard UI, name entry
@@ -75,12 +75,12 @@ Plans:
 4. Wrong key presses have no penalty at levels 1-3 but introduce input delay at level 4+
 5. Switching browser tabs pauses the game; returning resumes it
 
-**Plans:** TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 03-01: Life system and game-over trigger
-- [ ] 03-02: State machine (Menu, Playing, GameOver) with transitions
-- [ ] 03-03: Wrong-key penalty and focus-loss pause
+- [ ] 03-01-PLAN.md — Life system: OBSTACLE_MISSED decrements lives, GAME_OVER on zero
+- [ ] 03-02-PLAN.md — State machine (Playing/GameOver) with restart logic in main.js
+- [ ] 03-03-PLAN.md — Wrong-key penalty (level 4+) and visibility-change pause
 
 ---
 
