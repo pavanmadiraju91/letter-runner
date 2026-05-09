@@ -117,73 +117,73 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| LOOP-01 | — | Pending |
-| LOOP-02 | — | Pending |
-| LOOP-03 | — | Pending |
-| LOOP-04 | — | Pending |
-| LOOP-05 | — | Pending |
-| LOOP-06 | — | Pending |
-| LOOP-07 | — | Pending |
-| LOOP-08 | — | Pending |
-| LOOP-09 | — | Pending |
-| LOOP-10 | — | Pending |
-| LOOP-11 | — | Pending |
-| DIFF-01 | — | Pending |
-| DIFF-02 | — | Pending |
-| DIFF-03 | — | Pending |
-| DIFF-04 | — | Pending |
-| DIFF-05 | — | Pending |
-| DIFF-06 | — | Pending |
-| DIFF-07 | — | Pending |
-| DIFF-08 | — | Pending |
-| DIFF-09 | — | Pending |
-| UI-01 | — | Pending |
-| UI-02 | — | Pending |
-| UI-03 | — | Pending |
-| UI-04 | — | Pending |
-| UI-05 | — | Pending |
-| UI-06 | — | Pending |
-| UI-07 | — | Pending |
-| UI-08 | — | Pending |
-| UI-09 | — | Pending |
-| UI-10 | — | Pending |
-| UI-11 | — | Pending |
-| UI-12 | — | Pending |
-| UI-13 | — | Pending |
-| VFX-01 | — | Pending |
-| VFX-02 | — | Pending |
-| VFX-03 | — | Pending |
-| VFX-04 | — | Pending |
-| VFX-05 | — | Pending |
-| VFX-06 | — | Pending |
-| VFX-07 | — | Pending |
-| VFX-08 | — | Pending |
-| VFX-09 | — | Pending |
-| VFX-10 | — | Pending |
-| AUD-01 | — | Pending |
-| AUD-02 | — | Pending |
-| AUD-03 | — | Pending |
-| AUD-04 | — | Pending |
-| AUD-05 | — | Pending |
-| AUD-06 | — | Pending |
-| TECH-01 | — | Pending |
-| TECH-02 | — | Pending |
-| TECH-03 | — | Pending |
-| TECH-04 | — | Pending |
-| TECH-05 | — | Pending |
-| TECH-06 | — | Pending |
-| TECH-07 | — | Pending |
-| TECH-08 | — | Pending |
-| TECH-09 | — | Pending |
-| TECH-10 | — | Pending |
-| TECH-11 | — | Pending |
-| TECH-12 | — | Pending |
+| LOOP-01 | 2 | Pending |
+| LOOP-02 | 2 | Pending |
+| LOOP-03 | 2 | Pending |
+| LOOP-04 | 2 | Pending |
+| LOOP-05 | 4 | Pending |
+| LOOP-06 | 3 | Pending |
+| LOOP-07 | 3 | Pending |
+| LOOP-08 | 3 | Pending |
+| LOOP-09 | 4 | Pending |
+| LOOP-10 | 3 | Pending |
+| LOOP-11 | 3 | Pending |
+| DIFF-01 | 5 | Pending |
+| DIFF-02 | 5 | Pending |
+| DIFF-03 | 5 | Pending |
+| DIFF-04 | 5 | Pending |
+| DIFF-05 | 5 | Pending |
+| DIFF-06 | 5 | Pending |
+| DIFF-07 | 5 | Pending |
+| DIFF-08 | 5 | Pending |
+| DIFF-09 | 5 | Pending |
+| UI-01 | 6 | Pending |
+| UI-02 | 6 | Pending |
+| UI-03 | 6 | Pending |
+| UI-04 | 6 | Pending |
+| UI-05 | 4 | Pending |
+| UI-06 | 4 | Pending |
+| UI-07 | 4 | Pending |
+| UI-08 | 6 | Pending |
+| UI-09 | 6 | Pending |
+| UI-10 | 6 | Pending |
+| UI-11 | 6 | Pending |
+| UI-12 | 6 | Pending |
+| UI-13 | 3 | Pending |
+| VFX-01 | 7 | Pending |
+| VFX-02 | 7 | Pending |
+| VFX-03 | 7 | Pending |
+| VFX-04 | 8 | Pending |
+| VFX-05 | 8 | Pending |
+| VFX-06 | 8 | Pending |
+| VFX-07 | 8 | Pending |
+| VFX-08 | 8 | Pending |
+| VFX-09 | 8 | Pending |
+| VFX-10 | 8 | Pending |
+| AUD-01 | 9 | Pending |
+| AUD-02 | 9 | Pending |
+| AUD-03 | 9 | Pending |
+| AUD-04 | 9 | Pending |
+| AUD-05 | 9 | Pending |
+| AUD-06 | 9 | Pending |
+| TECH-01 | 1 | Pending |
+| TECH-02 | 1 | Pending |
+| TECH-03 | 10 | Pending |
+| TECH-04 | 10 | Pending |
+| TECH-05 | 10 | Pending |
+| TECH-06 | 10 | Pending |
+| TECH-07 | 2 | Pending |
+| TECH-08 | 6 | Pending |
+| TECH-09 | 3 | Pending |
+| TECH-10 | 10 | Pending |
+| TECH-11 | 2 | Pending |
+| TECH-12 | 1 | Pending |
 
 **Coverage:**
 - v1 requirements: 51 total
-- Mapped to phases: 0
-- Unmapped: 51 ⚠️
+- Mapped to phases: 51
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-05-09*
-*Last updated: 2026-05-09 after initial definition*
+*Last updated: 2026-05-09 — phases assigned during roadmap creation*
