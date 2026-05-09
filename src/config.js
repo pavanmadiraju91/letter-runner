@@ -3,6 +3,11 @@ export const COLORS = {
   DEBUG_TEXT: '#3a3a4a'
 };
 
+export const SCORE = {
+  DESTROY_POINTS: 10,
+  SURVIVAL_RATE: 1  // +1 point per second
+};
+
 export const GAME = {
   TARGET_FPS: 60,
   MAX_DT: 1 / 30,
