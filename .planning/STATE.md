@@ -3,7 +3,7 @@
 ## Current Status
 
 **Active phase:** 07-visual-style (Phase 7 of 10)
-**Last action:** Completed 06-03-PLAN.md (game over screen, leaderboard, name entry)
+**Last action:** Completed 07-01-PLAN.md (neon palette, player sprite, obstacle styling)
 **Last updated:** 2026-05-10
 
 ## Project Reference
@@ -11,7 +11,7 @@
 See: .planning/PROJECT.md (updated 2026-05-09)
 
 **Core value:** The game must feel immediately fun
-**Current focus:** Phase 6 complete - all screens and flow done. Ready for Phase 7 (Visual Style).
+**Current focus:** Phase 7 in progress - palette and entity visuals done. Next: ground/background and screen styling.
 
 ## Phase Progress
 
@@ -23,19 +23,19 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 | 4 | Scoring & HUD | ● Complete | 2/2 |
 | 5 | Difficulty Progression | ● Complete | 3/3 |
 | 6 | Screens & Flow | ● Complete | 3/3 |
-| 7 | Visual Style | ○ Pending | 0/3 |
+| 7 | Visual Style | ◐ In Progress | 1/3 |
 | 8 | Particle Effects & Juice | ○ Pending | 0/4 |
 | 9 | Audio | ○ Pending | 0/3 |
 | 10 | Performance & Deployment | ○ Pending | 0/4 |
 
-Progress: ████████████████░░░░░░░░░░░░░░░░ 16/30 (53%)
+Progress: █████████████████░░░░░░░░░░░░░░░ 17/30 (57%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 16
-- Average duration: ~45 seconds
-- Total execution time: ~12 minutes
+- Total plans completed: 17
+- Average duration: ~47 seconds
+- Total execution time: ~13 minutes
 
 ## Accumulated Context
 
@@ -93,6 +93,9 @@ Recent decisions affecting current work:
 - [D-0603-1] Separate keydown listener for name entry (not extending core input.js)
 - [D-0603-2] Phase-based game-over screen ('display'|'name-entry'|'done') controls flow
 - [D-0603-3] isReadyToRestart() export gates KEY_PRESS to prevent restart during name entry
+- [D-0701-1] Pixel sprite stored as 16x16 2D array with colour indices (0=transparent, 1-3=palette)
+- [D-0701-2] Shadow reset to transparent after obstacle loop to prevent glow bleed
+- [D-0701-3] Math.ceil for pixel size ensures no sub-pixel gaps in sprite rendering
 
 ### Pending Todos
 
@@ -104,16 +107,15 @@ None.
 
 ## Context for Next Session
 
-- Phase 6 COMPLETE: all 3 plans done (start screen, level-up announce, game over screen)
-- Game over screen: src/screens/game-over.js with score/PB delta, top-10 leaderboard, 3-char name entry
-- Leaderboard: src/systems/leaderboard.js (mocked local data, localStorage persistence)
-- Name entry uses dedicated keydown listener scoped to name-entry phase
-- isReadyToRestart() gates restart to prevent accidental restart during name entry
-- Full game flow: MENU -> PLAYING -> GAME_OVER -> (name entry if qualifying) -> restart
-- Next: Phase 7 (Visual Style) - player sprites, obstacle art, background layers
+- Phase 7 plan 1 COMPLETE: palette, player sprite, obstacle styling
+- COLORS.PALETTE in src/config.js has 30+ named neon-on-dark tokens
+- Player: 16x16 pixel-art sprite using SPRITE array + fillRect at scale
+- Obstacles: dark body + magenta neon border + glow + white letter
+- Sprite structure supports future animation (swap/cycle SPRITE arrays)
+- Next: 07-02 (ground/background visual layers) then 07-03 (screen styling)
 
 ## Session Continuity
 
-Last session: 2026-05-09T22:00:13Z
-Stopped at: Completed 06-03-PLAN.md
+Last session: 2026-05-09T22:05:32Z
+Stopped at: Completed 07-01-PLAN.md
 Resume file: None
