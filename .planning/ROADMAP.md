@@ -176,13 +176,12 @@ Plans:
 4. Level-up triggers a full-screen overlay text that fades in and out
 5. Particle count never exceeds 30 active particles; effects are skipped if FPS drops below 30
 
-**Plans:** TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 08-01: Particle system with object pooling and performance cap
-- [ ] 08-02: Destroy effects (shatter particles + player white flash)
-- [ ] 08-03: Damage effects (red flash + heart dim)
-- [ ] 08-04: Level-up full-screen overlay effect
+- [ ] 08-01-PLAN.md — Particle system with object pooling, FPS monitor, and performance cap
+- [ ] 08-02-PLAN.md — Destroy effects (shatter particles + player white flash)
+- [ ] 08-03-PLAN.md — Damage effects (red screen flash + heart dim verification)
 
 ---
 
