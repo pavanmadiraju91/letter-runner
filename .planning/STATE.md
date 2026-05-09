@@ -3,7 +3,7 @@
 ## Current Status
 
 **Active phase:** 03-lives-game-state (Phase 3 of 10)
-**Last action:** Completed 03-01-PLAN.md (Lives System)
+**Last action:** Completed 03-02-PLAN.md (Game State Machine)
 **Last updated:** 2026-05-09
 
 ## Project Reference
@@ -11,7 +11,7 @@
 See: .planning/PROJECT.md (updated 2026-05-09)
 
 **Core value:** The game must feel immediately fun
-**Current focus:** Phase 3 in progress - lives system done; state machine next
+**Current focus:** Phase 3 in progress - lives + state machine done; wrong-key penalty next
 
 ## Phase Progress
 
@@ -19,7 +19,7 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 |-------|------|--------|-------|
 | 1 | Foundation | ● Complete | 2/2 |
 | 2 | Movement & Input | ● Complete | 3/3 |
-| 3 | Lives & Game State | ◐ In Progress | 1/3 |
+| 3 | Lives & Game State | ◐ In Progress | 2/3 |
 | 4 | Scoring & HUD | ○ Pending | 0/2 |
 | 5 | Difficulty Progression | ○ Pending | 0/3 |
 | 6 | Screens & Flow | ○ Pending | 0/5 |
@@ -28,14 +28,14 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 | 9 | Audio | ○ Pending | 0/3 |
 | 10 | Performance & Deployment | ○ Pending | 0/4 |
 
-Progress: ██████░░░░░░░░░░░░░░░░░░░░░░░░░░ 6/32 (19%)
+Progress: ███████░░░░░░░░░░░░░░░░░░░░░░░░░ 7/32 (22%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
+- Total plans completed: 7
 - Average duration: ~40 seconds
-- Total execution time: ~4 minutes
+- Total execution time: ~5 minutes
 
 ## Accumulated Context
 
@@ -63,6 +63,9 @@ Recent decisions affecting current work:
 - [D-0203-3] Pressed Set tracks held keys at module level for repeat prevention
 - [D-0301-1] Module-level closure for lives state (consistent with other systems)
 - [D-0301-2] GAME_OVER emitted with empty payload (state machine will own context)
+- [D-0302-1] Module-level closure for state (consistent with lives, input systems)
+- [D-0302-2] No MENU state yet — deferred to Phase 6 (Screens & Flow)
+- [D-0302-3] Restart is pure state reset (no reload) for instant feedback
 
 ### Pending Todos
 
@@ -74,16 +77,17 @@ None.
 
 ## Context for Next Session
 
-- Phase 3 Plan 01 COMPLETE: lives system delivered
-- Lives flow: OBSTACLE_MISSED -> decrement -> LIFE_LOST { remaining } -> (if 0) GAME_OVER {}
-- Module graph now includes: lives.js in src/systems/
-- GAME.STARTING_LIVES = 3 in config.js
-- getLives() ready for HUD (Phase 4)
-- GAME_OVER event ready for state machine (03-02)
-- Next step: 03-02 (Game State Machine) — playing/game-over states, pause/restart logic
+- Phase 3 Plan 02 COMPLETE: state machine delivered
+- State flow: GAME_OVER event -> state=game_over -> update() frozen -> render shows overlay -> KEY_PRESS -> restartGame() -> state=playing -> resumes
+- Module graph now includes: state.js in src/core/
+- STATES.PLAYING and STATES.GAME_OVER exported
+- getState() available for any system to check state
+- requestRestart() emits GAME_RESTART for clean transition
+- STATE_CHANGE event available for Phase 4 HUD
+- Next step: 03-03 (Wrong-Key Penalty) — already committed ahead
 
 ## Session Continuity
 
-Last session: 2026-05-09T21:32:00Z
-Stopped at: Completed 03-01-PLAN.md
+Last session: 2026-05-09T21:34:11Z
+Stopped at: Completed 03-02-PLAN.md
 Resume file: None
