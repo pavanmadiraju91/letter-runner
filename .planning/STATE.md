@@ -3,7 +3,7 @@
 ## Current Status
 
 **Active phase:** 08-particles-juice (Phase 8 of 10)
-**Last action:** Completed 08-01-PLAN.md (particle infrastructure with FPS monitor and performance gate)
+**Last action:** Completed 08-03-PLAN.md (damage feedback VFX: red screen flash + heart dim verification)
 **Last updated:** 2026-05-10
 
 ## Project Reference
@@ -11,7 +11,7 @@
 See: .planning/PROJECT.md (updated 2026-05-09)
 
 **Core value:** The game must feel immediately fun
-**Current focus:** Phase 8 in progress - particle infrastructure done. Next: 08-02 (wire particle effects to game events).
+**Current focus:** Phase 8 in progress - particle infrastructure done, destroy effects wired (08-02 parallel), damage feedback done (08-03). Phase 8 nearly complete.
 
 ## Phase Progress
 
@@ -24,18 +24,18 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 | 5 | Difficulty Progression | ● Complete | 3/3 |
 | 6 | Screens & Flow | ● Complete | 3/3 |
 | 7 | Visual Style | ◐ In Progress | 2/3 |
-| 8 | Particle Effects & Juice | ◐ In Progress | 1/3 |
+| 8 | Particle Effects & Juice | ◐ In Progress | 2/3 |
 | 9 | Audio | ○ Pending | 0/3 |
 | 10 | Performance & Deployment | ○ Pending | 0/4 |
 
-Progress: ███████████████████░░░░░░░░░░░░░ 19/30 (63%)
+Progress: ████████████████████░░░░░░░░░░░░ 20/30 (67%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 19
+- Total plans completed: 20
 - Average duration: ~50 seconds
-- Total execution time: ~15 minutes
+- Total execution time: ~16 minutes
 
 ## Accumulated Context
 
@@ -102,6 +102,9 @@ Recent decisions affecting current work:
 - [D-0801-1] Ring buffer size 10 for FPS averaging (responsive but smooth)
 - [D-0801-2] Particle gravity at 400 px/s^2 for natural downward arc
 - [D-0801-3] Pool pre-allocates 40 (10 buffer over 30 max) to avoid runtime alloc
+- [D-0803-1] Listen to LIFE_LOST (not OBSTACLE_MISSED) for screen flash — semantically correct damage signal
+- [D-0803-2] 30% max opacity magenta overlay — noticeable but not blinding
+- [D-0803-3] Timer reset (assign) not accumulate — prevents flicker on rapid hits
 
 ### Pending Todos
 
@@ -113,16 +116,17 @@ None.
 
 ## Context for Next Session
 
-- Phase 8 plan 1 COMPLETE: particle infrastructure in place
+- Phase 8 plans 1 and 3 COMPLETE (08-02 in parallel)
+- src/systems/vfx.js handles: destroy particles (VFX-04), player flash (VFX-05), screen flash (VFX-06)
+- VFX-07 (heart dim) verified working via existing hud.js HEART_FULL/HEART_EMPTY logic
 - src/systems/particles.js exports: createParticleSystem, canSpawnParticles, spawnParticles, updateParticles, renderParticles
 - src/systems/fps-monitor.js exports: createFPSMonitor, updateFPS, isFPSLow
 - PARTICLES config in src/config.js: MAX_ACTIVE=30, POOL_SIZE=40, MIN_FPS=30
 - Performance gate: canSpawnParticles() checks both pool capacity AND FPS threshold
-- No particles spawn yet - 08-02 will wire events (OBSTACLE_DESTROYED, WRONG_KEY) to spawnParticles
-- Particles render after level-announce, before game-over overlay
+- getScreenFlash() returns { active, alpha } for render pipeline consumption
 
 ## Session Continuity
 
-Last session: 2026-05-09T22:14:52Z
-Stopped at: Completed 08-01-PLAN.md
+Last session: 2026-05-09T22:17:41Z
+Stopped at: Completed 08-03-PLAN.md
 Resume file: None
