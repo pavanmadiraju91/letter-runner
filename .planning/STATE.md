@@ -2,8 +2,8 @@
 
 ## Current Status
 
-**Active phase:** 08-particles-juice (Phase 8 of 10)
-**Last action:** Completed 08-03-PLAN.md (damage feedback VFX: red screen flash + heart dim verification)
+**Active phase:** 09-audio (Phase 9 of 10)
+**Last action:** Completed 09-01-PLAN.md (Web Audio infrastructure with procedural synthesis)
 **Last updated:** 2026-05-10
 
 ## Project Reference
@@ -11,7 +11,7 @@
 See: .planning/PROJECT.md (updated 2026-05-09)
 
 **Core value:** The game must feel immediately fun
-**Current focus:** Phase 8 in progress - particle infrastructure done, destroy effects wired (08-02 parallel), damage feedback done (08-03). Phase 8 nearly complete.
+**Current focus:** Phase 9 in progress - audio infrastructure complete (09-01). Event wiring (09-02) next.
 
 ## Phase Progress
 
@@ -25,17 +25,17 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 | 6 | Screens & Flow | ● Complete | 3/3 |
 | 7 | Visual Style | ◐ In Progress | 2/3 |
 | 8 | Particle Effects & Juice | ◐ In Progress | 2/3 |
-| 9 | Audio | ○ Pending | 0/3 |
+| 9 | Audio | ◐ In Progress | 1/2 |
 | 10 | Performance & Deployment | ○ Pending | 0/4 |
 
-Progress: ████████████████████░░░░░░░░░░░░ 20/30 (67%)
+Progress: █████████████████████░░░░░░░░░░░ 21/30 (70%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 20
-- Average duration: ~50 seconds
-- Total execution time: ~16 minutes
+- Total plans completed: 21
+- Average duration: ~51 seconds
+- Total execution time: ~17 minutes
 
 ## Accumulated Context
 
@@ -108,6 +108,9 @@ Recent decisions affecting current work:
 - [D-0803-1] Listen to LIFE_LOST (not OBSTACLE_MISSED) for screen flash — semantically correct damage signal
 - [D-0803-2] 30% max opacity magenta overlay — noticeable but not blinding
 - [D-0803-3] Timer reset (assign) not accumulate — prevents flicker on rapid hits
+- [D-0901-1] AudioContext created on first keydown (not on load) for autoplay policy compliance
+- [D-0901-2] Music muted by default, toggle-on design
+- [D-0901-3] Gain node chain: master -> sfx/music (separate volume control per channel)
 
 ### Pending Todos
 
@@ -119,17 +122,16 @@ None.
 
 ## Context for Next Session
 
-- Phase 8 plans 1 and 3 COMPLETE (08-02 in parallel)
-- src/systems/vfx.js handles: destroy particles (VFX-04), player flash (VFX-05), screen flash (VFX-06)
-- VFX-07 (heart dim) verified working via existing hud.js HEART_FULL/HEART_EMPTY logic
-- src/systems/particles.js exports: createParticleSystem, canSpawnParticles, spawnParticles, updateParticles, renderParticles
-- src/systems/fps-monitor.js exports: createFPSMonitor, updateFPS, isFPSLow
-- PARTICLES config in src/config.js: MAX_ACTIVE=30, POOL_SIZE=40, MIN_FPS=30
-- Performance gate: canSpawnParticles() checks both pool capacity AND FPS threshold
-- getScreenFlash() returns { active, alpha } for render pipeline consumption
+- Phase 9 plan 01 COMPLETE (audio infrastructure)
+- src/systems/audio.js exports: createAudioSystem, playPop, playThud, playGameOver, playLevelUp, toggleMusic, isMusicPlaying
+- AUDIO config in src/config.js: volumes, frequencies, music params
+- AudioContext lazy-created on first keydown (autoplay-safe)
+- Music: sawtooth 110Hz through lowpass 800Hz, muted by default, toggleable
+- STATE_CHANGE listener already in audio.js (stops music on game_over, starts on playing if enabled)
+- Next: 09-02 wires sound functions to game events (OBSTACLE_DESTROYED -> playPop, etc.)
 
 ## Session Continuity
 
-Last session: 2026-05-09T22:17:41Z
-Stopped at: Completed 08-03-PLAN.md
+Last session: 2026-05-09T22:23:32Z
+Stopped at: Completed 09-01-PLAN.md
 Resume file: None
