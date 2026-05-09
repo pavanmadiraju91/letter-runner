@@ -3,7 +3,7 @@
 ## Current Status
 
 **Active phase:** 05-difficulty-progression (Phase 5 of 10)
-**Last action:** Completed 05-01-PLAN.md (Difficulty Tier Config & Level System)
+**Last action:** Completed 05-02-PLAN.md (Spawner & Main Loop Difficulty Wiring)
 **Last updated:** 2026-05-09
 
 ## Project Reference
@@ -11,7 +11,7 @@
 See: .planning/PROJECT.md (updated 2026-05-09)
 
 **Core value:** The game must feel immediately fun
-**Current focus:** Phase 5 in progress - difficulty tier config and level system delivered
+**Current focus:** Phase 5 in progress - difficulty fully wired into spawner and game loop
 
 ## Phase Progress
 
@@ -21,21 +21,21 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 | 2 | Movement & Input | ● Complete | 3/3 |
 | 3 | Lives & Game State | ● Complete | 3/3 |
 | 4 | Scoring & HUD | ● Complete | 2/2 |
-| 5 | Difficulty Progression | ◐ In Progress | 1/3 |
+| 5 | Difficulty Progression | ◐ In Progress | 2/3 |
 | 6 | Screens & Flow | ○ Pending | 0/5 |
 | 7 | Visual Style | ○ Pending | 0/3 |
 | 8 | Particle Effects & Juice | ○ Pending | 0/4 |
 | 9 | Audio | ○ Pending | 0/3 |
 | 10 | Performance & Deployment | ○ Pending | 0/4 |
 
-Progress: ███████████░░░░░░░░░░░░░░░░░░░░░ 11/32 (34%)
+Progress: ████████████░░░░░░░░░░░░░░░░░░░░ 12/32 (38%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 11
+- Total plans completed: 12
 - Average duration: ~45 seconds
-- Total execution time: ~8.3 minutes
+- Total execution time: ~9 minutes
 
 ## Accumulated Context
 
@@ -78,6 +78,9 @@ Recent decisions affecting current work:
 - [D-0501-1] Module-level closure for difficulty state (consistent with lives/score pattern)
 - [D-0501-2] TIERS array indexed by level-1 for direct lookup; overflow uses log scaling
 - [D-0501-3] getDifficultyParams() returns shallow copy to prevent mutation of tier objects
+- [D-0502-1] difficultyParams object passed to spawner (not individual scalars)
+- [D-0502-2] getDifficultyParams() called each frame in update() for instant level response
+- [D-0502-3] Tall obstacles use 40% random chance when tallObstacles=true
 
 ### Pending Todos
 
@@ -89,18 +92,17 @@ None.
 
 ## Context for Next Session
 
-- Phase 5 plan 01 COMPLETE: difficulty tier config + level system delivered
-- DIFFICULTY config in config.js: 6 tiers, log scaling constants, MAX_OBSTACLES_CAP=4
-- difficulty.js: createDifficulty(), resetDifficulty(), getDifficultyParams(), getLevel()
-- Event flow: OBSTACLE_DESTROYED -> destroyCount++ -> every 10: LEVEL_UP with full params
-- score.js and input.js already listen for LEVEL_UP and update accordingly
-- getDifficultyParams() returns { scrollSpeed, spawnInterval, maxObstacles, multiplier, tallObstacles }
-- Logarithmic scaling kicks in at level 7+ using ln(overflow+1) for smooth difficulty curve
-- Next step: Plan 05-02 (spawner integration) - wire difficulty params into spawner/obstacles
-- Then Plan 05-03 (main loop wiring) - createDifficulty() call and scrollSpeed application
+- Phase 5 plans 01 and 02 COMPLETE: difficulty system created and fully wired
+- Spawner now uses difficultyParams object: spawnInterval, maxObstacles, scrollSpeed, tallObstacles
+- main.js calls getDifficultyParams() each frame, passes to ground and spawner
+- Ground and obstacles scroll at same dynamic speed (visual consistency)
+- Restart resets difficulty to level 1 (slow, approachable)
+- Tall obstacles (1.5x height) appear 40% of the time at level 4+
+- Plan 05-03 (letter uniqueness guarantees) ran in parallel and is complete
+- Next: Phase 6 (Screens & Flow) — start screen, game over screen, transitions
 
 ## Session Continuity
 
-Last session: 2026-05-09T21:47:00Z
-Stopped at: Completed 05-01-PLAN.md
+Last session: 2026-05-09T21:49:38Z
+Stopped at: Completed 05-02-PLAN.md
 Resume file: None
