@@ -13,6 +13,7 @@ import { initMatcher } from './systems/matcher.js';
 import { createLives, resetLives } from './systems/lives.js';
 import { createScore, resetScore, updateScore } from './systems/score.js';
 import { createHUD, renderHUD } from './systems/hud.js';
+import { createDifficulty, resetDifficulty, getDifficultyParams } from './systems/difficulty.js';
 
 initCanvas();
 events.emit('CANVAS_READY', { width: getWidth(), height: getHeight() });
@@ -22,6 +23,8 @@ createLives();
 resetLives();
 createScore();
 resetScore();
+createDifficulty();
+resetDifficulty();
 createHUD();
 
 const ground = createGround();
@@ -41,6 +44,7 @@ events.on('CANVAS_RESIZE', ({ width, height }) => {
 function restartGame() {
   resetLives();
   resetScore();
+  resetDifficulty();
   obstaclePool.getActive().slice().forEach(o => obstaclePool.release(o));
   spawner.timer = 0;
   requestRestart();
@@ -56,9 +60,10 @@ events.on('KEY_PRESS', () => {
 function update(dt) {
   if (getState() !== STATES.PLAYING) return;
 
-  updateGround(ground, dt, GAME.SCROLL_SPEED);
+  const params = getDifficultyParams();
+  updateGround(ground, dt, params.scrollSpeed);
   const groundY = getHeight() - GAME.GROUND_HEIGHT;
-  updateSpawner(spawner, dt, GAME.SCROLL_SPEED, groundY);
+  updateSpawner(spawner, dt, params, groundY);
   updateObstacles(obstaclePool, dt);
   cleanupOffscreen(obstaclePool);
   updateScore(dt);
