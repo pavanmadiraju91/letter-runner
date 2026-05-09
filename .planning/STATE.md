@@ -3,7 +3,7 @@
 ## Current Status
 
 **Active phase:** 05-difficulty-progression (Phase 5 of 10)
-**Last action:** Completed 05-02-PLAN.md (Spawner & Main Loop Difficulty Wiring)
+**Last action:** Completed 05-03-PLAN.md (Letter Uniqueness & Curve Validation)
 **Last updated:** 2026-05-09
 
 ## Project Reference
@@ -11,7 +11,7 @@
 See: .planning/PROJECT.md (updated 2026-05-09)
 
 **Core value:** The game must feel immediately fun
-**Current focus:** Phase 5 in progress - difficulty fully wired into spawner and game loop
+**Current focus:** Phase 5 COMPLETE - difficulty progression fully implemented and validated
 
 ## Phase Progress
 
@@ -21,21 +21,21 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 | 2 | Movement & Input | ● Complete | 3/3 |
 | 3 | Lives & Game State | ● Complete | 3/3 |
 | 4 | Scoring & HUD | ● Complete | 2/2 |
-| 5 | Difficulty Progression | ◐ In Progress | 2/3 |
+| 5 | Difficulty Progression | ● Complete | 3/3 |
 | 6 | Screens & Flow | ○ Pending | 0/5 |
 | 7 | Visual Style | ○ Pending | 0/3 |
 | 8 | Particle Effects & Juice | ○ Pending | 0/4 |
 | 9 | Audio | ○ Pending | 0/3 |
 | 10 | Performance & Deployment | ○ Pending | 0/4 |
 
-Progress: ████████████░░░░░░░░░░░░░░░░░░░░ 12/32 (38%)
+Progress: █████████████░░░░░░░░░░░░░░░░░░░ 13/32 (41%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 12
+- Total plans completed: 13
 - Average duration: ~45 seconds
-- Total execution time: ~9 minutes
+- Total execution time: ~9.5 minutes
 
 ## Accumulated Context
 
@@ -81,6 +81,9 @@ Recent decisions affecting current work:
 - [D-0502-1] difficultyParams object passed to spawner (not individual scalars)
 - [D-0502-2] getDifficultyParams() called each frame in update() for instant level response
 - [D-0502-3] Tall obstacles use 40% random chance when tallObstacles=true
+- [D-0503-1] Task 1 letter hardening already included in 05-02 commit (parallel execution merged)
+- [D-0503-2] Dev-mode curve dump uses currentLevel mutation with save/restore for accurate simulation
+- [D-0503-3] Logarithmic constants verified correct: LOG_SPEED_FACTOR=20, LOG_SPAWN_FACTOR=0.08, LOG_MULT_FACTOR=0.5
 
 ### Pending Todos
 
@@ -92,17 +95,17 @@ None.
 
 ## Context for Next Session
 
-- Phase 5 plans 01 and 02 COMPLETE: difficulty system created and fully wired
-- Spawner now uses difficultyParams object: spawnInterval, maxObstacles, scrollSpeed, tallObstacles
-- main.js calls getDifficultyParams() each frame, passes to ground and spawner
-- Ground and obstacles scroll at same dynamic speed (visual consistency)
-- Restart resets difficulty to level 1 (slow, approachable)
-- Tall obstacles (1.5x height) appear 40% of the time at level 4+
-- Plan 05-03 (letter uniqueness guarantees) ran in parallel and is complete
+- Phase 5 COMPLETE: all 3 plans delivered (config, wiring, validation)
+- Difficulty system: config.js TIERS -> difficulty.js getDifficultyParams() -> spawner.js/main.js
+- Unique letter guarantee: random-first + deterministic-fallback (DIFF-07/08)
+- Logarithmic curve verified: L1-L6 tier jumps, L7+ log flattening (DIFF-09)
+- Dev console.table shows full 10-level curve on game start
+- Tall obstacles (1.5x height) appear 40% at level 4+ (DIFF-10)
+- maxObstacles caps at 4 at level 9+ (DIFF-06)
 - Next: Phase 6 (Screens & Flow) — start screen, game over screen, transitions
 
 ## Session Continuity
 
-Last session: 2026-05-09T21:49:38Z
-Stopped at: Completed 05-02-PLAN.md
+Last session: 2026-05-09T21:50:25Z
+Stopped at: Completed 05-03-PLAN.md (Phase 5 complete)
 Resume file: None
