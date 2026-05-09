@@ -166,8 +166,8 @@
 | AUD-04 | 9 | Pending |
 | AUD-05 | 9 | Pending |
 | AUD-06 | 9 | Pending |
-| TECH-01 | 1 | Pending |
-| TECH-02 | 1 | Pending |
+| TECH-01 | 1 | Complete |
+| TECH-02 | 1 | Complete |
 | TECH-03 | 10 | Pending |
 | TECH-04 | 10 | Pending |
 | TECH-05 | 10 | Pending |
@@ -177,7 +177,7 @@
 | TECH-09 | 3 | Pending |
 | TECH-10 | 10 | Pending |
 | TECH-11 | 2 | Pending |
-| TECH-12 | 1 | Pending |
+| TECH-12 | 1 | Complete |
 
 **Coverage:**
 - v1 requirements: 51 total

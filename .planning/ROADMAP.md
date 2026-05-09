@@ -10,7 +10,7 @@ Letter Runner goes from empty repo to shippable game across 10 phases. The build
 - Integer phases (1, 2, 3): Planned milestone work
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
-- [ ] **Phase 1: Foundation** - Project scaffolding, game loop, canvas rendering infrastructure
+- [x] **Phase 1: Foundation** - Project scaffolding, game loop, canvas rendering infrastructure
 - [ ] **Phase 2: Movement & Input** - Player runs, obstacles scroll, keyboard destroys them
 - [ ] **Phase 3: Lives & Game State** - Life system, game over, state machine, restart
 - [ ] **Phase 4: Scoring & HUD** - Points, multipliers, survival bonus, heads-up display
@@ -239,7 +239,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 
 | Phase | Plans Complete | Status | Completed |
 |-------|---------------|--------|-----------|
-| 1. Foundation | 0/2 | Not started | - |
+| 1. Foundation | 2/2 | ✓ Complete | 2026-05-09 |
 | 2. Movement & Input | 0/3 | Not started | - |
 | 3. Lives & Game State | 0/3 | Not started | - |
 | 4. Scoring & HUD | 0/2 | Not started | - |
