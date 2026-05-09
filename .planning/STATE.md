@@ -2,8 +2,8 @@
 
 ## Current Status
 
-**Active phase:** 03-lives-game-state (Phase 3 of 10)
-**Last action:** Completed 03-03-PLAN.md (Wrong-Key Penalty & Focus Pause)
+**Active phase:** 04-scoring-hud (Phase 4 of 10)
+**Last action:** Completed 04-02-PLAN.md (HUD Renderer)
 **Last updated:** 2026-05-09
 
 ## Project Reference
@@ -11,7 +11,7 @@
 See: .planning/PROJECT.md (updated 2026-05-09)
 
 **Core value:** The game must feel immediately fun
-**Current focus:** Phase 3 COMPLETE - lives, state machine, wrong-key penalty all delivered
+**Current focus:** Phase 4 in progress - HUD renderer delivered (04-02), score system pending (04-01)
 
 ## Phase Progress
 
@@ -20,7 +20,7 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 | 1 | Foundation | ● Complete | 2/2 |
 | 2 | Movement & Input | ● Complete | 3/3 |
 | 3 | Lives & Game State | ● Complete | 3/3 |
-| 4 | Scoring & HUD | ○ Pending | 0/2 |
+| 4 | Scoring & HUD | ◐ In Progress | 1/2 |
 | 5 | Difficulty Progression | ○ Pending | 0/3 |
 | 6 | Screens & Flow | ○ Pending | 0/5 |
 | 7 | Visual Style | ○ Pending | 0/3 |
@@ -28,14 +28,14 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 | 9 | Audio | ○ Pending | 0/3 |
 | 10 | Performance & Deployment | ○ Pending | 0/4 |
 
-Progress: ████████░░░░░░░░░░░░░░░░░░░░░░░░ 8/32 (25%)
+Progress: █████████░░░░░░░░░░░░░░░░░░░░░░░░ 9/32 (28%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
+- Total plans completed: 9
 - Average duration: ~45 seconds
-- Total execution time: ~6 minutes
+- Total execution time: ~7 minutes
 
 ## Accumulated Context
 
@@ -69,6 +69,9 @@ Recent decisions affecting current work:
 - [D-0303-1] Track game state via STATE_CHANGE events rather than importing state.js directly (avoids circular deps)
 - [D-0303-2] WRONG_KEY only emits when obstacles exist in danger zone (prevents false penalties)
 - [D-0303-3] resumeLoop() reuses stored updateFn/renderFn so input.js needs no main.js refs
+- [D-0402-1] Hearts drawn with bezier curves (two arcs) at 14px size, spaced 22px apart
+- [D-0402-2] HUD uses ctx.save/restore to avoid polluting canvas state for other renderers
+- [D-0402-3] Level state synced via LEVEL_UP event (future-proof for Phase 5)
 
 ### Pending Todos
 
@@ -80,17 +83,16 @@ None.
 
 ## Context for Next Session
 
-- Phase 3 COMPLETE: all 3 plans delivered
-- Wrong-key flow: KEY_PRESS -> matcher checks zone -> no match + obstacles exist -> WRONG_KEY -> input checks level -> (if 4+) locks for 300ms
-- Visibility flow: tab hidden -> stopLoop() + GAME_PAUSED -> tab visible -> (if playing) resumeLoop() + GAME_RESUMED
-- resumeLoop() exported from game-loop.js (reuses stored update/render fns)
-- resetInput() exported for restart flow
-- LEVEL_UP subscription ready for Phase 5 difficulty
-- GAME_PAUSED/GAME_RESUMED events available for Phase 4 HUD
-- Next step: Phase 4 (Scoring & HUD) — score tracking and on-screen display
+- Phase 4 IN PROGRESS: 04-02 (HUD) complete, 04-01 (Score) pending/parallel
+- HUD renders: score top-left, "LV 1" top-center, heart icons top-right
+- renderHUD(ctx, w) called after entities, before Game Over overlay
+- createHUD() subscribes to LEVEL_UP (Phase 5) and GAME_RESTART events
+- Hearts: bezier curve paths, #ff3366 filled, #2a2a3a empty
+- Score.js stub created for build — 04-01 will replace with full implementation
+- Next step: Complete 04-01 (Score System) to finish Phase 4
 
 ## Session Continuity
 
-Last session: 2026-05-09T21:35:00Z
-Stopped at: Completed 03-03-PLAN.md
+Last session: 2026-05-09T21:40:09Z
+Stopped at: Completed 04-02-PLAN.md
 Resume file: None
