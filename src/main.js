@@ -15,7 +15,7 @@ import { createScore, resetScore, updateScore, getScore } from './systems/score.
 import { createHUD, renderHUD } from './systems/hud.js';
 import { createFPSMonitor, updateFPS } from './systems/fps-monitor.js';
 import { createParticleSystem, updateParticles, renderParticles } from './systems/particles.js';
-import { createVFX, updateVFX, getPlayerFlash } from './systems/vfx.js';
+import { createVFX, updateVFX, getPlayerFlash, getScreenFlash } from './systems/vfx.js';
 import { createDifficulty, resetDifficulty, getDifficultyParams } from './systems/difficulty.js';
 import { createLevelAnnounce, updateLevelAnnounce, renderLevelAnnounce } from './systems/level-announce.js';
 import { renderStartScreen } from './screens/start.js';
@@ -128,6 +128,16 @@ function render() {
   renderHUD(ctx, w);
   renderLevelAnnounce(ctx, w, h);
   renderParticles(ctx);
+
+  // VFX-06: Red screen flash on life lost
+  const flash = getScreenFlash();
+  if (flash.active) {
+    ctx.save();
+    ctx.globalAlpha = flash.alpha * 0.3; // max 30% opacity — noticeable but not blinding
+    ctx.fillStyle = COLORS.PALETTE.MAGENTA;
+    ctx.fillRect(0, 0, w, h);
+    ctx.restore();
+  }
 
   // Game Over screen
   if (getState() === STATES.GAME_OVER) {
