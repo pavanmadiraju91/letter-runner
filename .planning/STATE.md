@@ -2,8 +2,8 @@
 
 ## Current Status
 
-**Active phase:** 05-difficulty-progression (Phase 5 of 10)
-**Last action:** Completed 05-03-PLAN.md (Letter Uniqueness & Curve Validation)
+**Active phase:** 06-screens-flow (Phase 6 of 10)
+**Last action:** Completed 06-02-PLAN.md (level-up announcement overlay)
 **Last updated:** 2026-05-09
 
 ## Project Reference
@@ -11,7 +11,7 @@
 See: .planning/PROJECT.md (updated 2026-05-09)
 
 **Core value:** The game must feel immediately fun
-**Current focus:** Phase 5 COMPLETE - difficulty progression fully implemented and validated
+**Current focus:** Phase 6 in progress - level-up announcement overlay complete
 
 ## Phase Progress
 
@@ -22,20 +22,20 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 | 3 | Lives & Game State | ● Complete | 3/3 |
 | 4 | Scoring & HUD | ● Complete | 2/2 |
 | 5 | Difficulty Progression | ● Complete | 3/3 |
-| 6 | Screens & Flow | ○ Pending | 0/5 |
+| 6 | Screens & Flow | ◐ In Progress | 1/3 |
 | 7 | Visual Style | ○ Pending | 0/3 |
 | 8 | Particle Effects & Juice | ○ Pending | 0/4 |
 | 9 | Audio | ○ Pending | 0/3 |
 | 10 | Performance & Deployment | ○ Pending | 0/4 |
 
-Progress: █████████████░░░░░░░░░░░░░░░░░░░ 13/32 (41%)
+Progress: ██████████████░░░░░░░░░░░░░░░░░░ 14/30 (47%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 13
+- Total plans completed: 14
 - Average duration: ~45 seconds
-- Total execution time: ~9.5 minutes
+- Total execution time: ~10 minutes
 
 ## Accumulated Context
 
@@ -84,6 +84,9 @@ Recent decisions affecting current work:
 - [D-0503-1] Task 1 letter hardening already included in 05-02 commit (parallel execution merged)
 - [D-0503-2] Dev-mode curve dump uses currentLevel mutation with save/restore for accurate simulation
 - [D-0503-3] Logarithmic constants verified correct: LOG_SPEED_FACTOR=20, LOG_SPAWN_FACTOR=0.08, LOG_MULT_FACTOR=0.5
+- [D-0602-1] Quadratic ease-out for alpha fade (alpha*alpha) gives snappier visual feel
+- [D-0602-2] Glow effect via canvas shadowColor/shadowBlur for visual interest without complexity
+- [D-0602-3] Render after HUD but before Game Over overlay for correct z-ordering
 
 ### Pending Todos
 
@@ -95,17 +98,15 @@ None.
 
 ## Context for Next Session
 
-- Phase 5 COMPLETE: all 3 plans delivered (config, wiring, validation)
-- Difficulty system: config.js TIERS -> difficulty.js getDifficultyParams() -> spawner.js/main.js
-- Unique letter guarantee: random-first + deterministic-fallback (DIFF-07/08)
-- Logarithmic curve verified: L1-L6 tier jumps, L7+ log flattening (DIFF-09)
-- Dev console.table shows full 10-level curve on game start
-- Tall obstacles (1.5x height) appear 40% at level 4+ (DIFF-10)
-- maxObstacles caps at 4 at level 9+ (DIFF-06)
-- Next: Phase 6 (Screens & Flow) — start screen, game over screen, transitions
+- Phase 6 IN PROGRESS: plan 02 complete (level-up announcement overlay)
+- Level announce: src/systems/level-announce.js subscribes to LEVEL_UP, renders fading "LEVEL X" overlay
+- Quadratic alpha fade (alpha^2) over 1.5s with cyan glow effect
+- Renders after HUD, before Game Over overlay (correct z-order)
+- GAME_RESTART clears any in-progress announcement
+- Next: Phase 6 plans 01 + 03 (start screen, game over screen, transitions)
 
 ## Session Continuity
 
-Last session: 2026-05-09T21:50:25Z
-Stopped at: Completed 05-03-PLAN.md (Phase 5 complete)
+Last session: 2026-05-09T21:56:54Z
+Stopped at: Completed 06-02-PLAN.md
 Resume file: None
