@@ -3,7 +3,7 @@
 ## Current Status
 
 **Active phase:** 04-scoring-hud (Phase 4 of 10)
-**Last action:** Completed 04-02-PLAN.md (HUD Renderer)
+**Last action:** Completed 04-01-PLAN.md (Score System)
 **Last updated:** 2026-05-09
 
 ## Project Reference
@@ -11,7 +11,7 @@
 See: .planning/PROJECT.md (updated 2026-05-09)
 
 **Core value:** The game must feel immediately fun
-**Current focus:** Phase 4 in progress - HUD renderer delivered (04-02), score system pending (04-01)
+**Current focus:** Phase 4 COMPLETE - score system and HUD renderer both delivered
 
 ## Phase Progress
 
@@ -20,7 +20,7 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 | 1 | Foundation | ● Complete | 2/2 |
 | 2 | Movement & Input | ● Complete | 3/3 |
 | 3 | Lives & Game State | ● Complete | 3/3 |
-| 4 | Scoring & HUD | ◐ In Progress | 1/2 |
+| 4 | Scoring & HUD | ● Complete | 2/2 |
 | 5 | Difficulty Progression | ○ Pending | 0/3 |
 | 6 | Screens & Flow | ○ Pending | 0/5 |
 | 7 | Visual Style | ○ Pending | 0/3 |
@@ -28,14 +28,14 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 | 9 | Audio | ○ Pending | 0/3 |
 | 10 | Performance & Deployment | ○ Pending | 0/4 |
 
-Progress: █████████░░░░░░░░░░░░░░░░░░░░░░░░ 9/32 (28%)
+Progress: ██████████░░░░░░░░░░░░░░░░░░░░░░ 10/32 (31%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
+- Total plans completed: 10
 - Average duration: ~45 seconds
-- Total execution time: ~7 minutes
+- Total execution time: ~7.5 minutes
 
 ## Accumulated Context
 
@@ -69,6 +69,9 @@ Recent decisions affecting current work:
 - [D-0303-1] Track game state via STATE_CHANGE events rather than importing state.js directly (avoids circular deps)
 - [D-0303-2] WRONG_KEY only emits when obstacles exist in danger zone (prevents false penalties)
 - [D-0303-3] resumeLoop() reuses stored updateFn/renderFn so input.js needs no main.js refs
+- [D-0401-1] Module-level closure for score state (consistent with lives.js)
+- [D-0401-2] Score caller-gated by PLAYING state (no state.js import in score.js)
+- [D-0401-3] getScore() returns Math.floor() for integer display value
 - [D-0402-1] Hearts drawn with bezier curves (two arcs) at 14px size, spaced 22px apart
 - [D-0402-2] HUD uses ctx.save/restore to avoid polluting canvas state for other renderers
 - [D-0402-3] Level state synced via LEVEL_UP event (future-proof for Phase 5)
@@ -83,16 +86,17 @@ None.
 
 ## Context for Next Session
 
-- Phase 4 IN PROGRESS: 04-02 (HUD) complete, 04-01 (Score) pending/parallel
+- Phase 4 COMPLETE: score system + HUD renderer both delivered
+- Score flow: OBSTACLE_DESTROYED -> +10*level points; updateScore(dt) -> +1/sec survival bonus
 - HUD renders: score top-left, "LV 1" top-center, heart icons top-right
 - renderHUD(ctx, w) called after entities, before Game Over overlay
-- createHUD() subscribes to LEVEL_UP (Phase 5) and GAME_RESTART events
-- Hearts: bezier curve paths, #ff3366 filled, #2a2a3a empty
-- Score.js stub created for build — 04-01 will replace with full implementation
-- Next step: Complete 04-01 (Score System) to finish Phase 4
+- createHUD() subscribes to LEVEL_UP and GAME_RESTART events
+- Score.js: createScore, resetScore, updateScore(dt), getScore() all wired in main.js
+- LEVEL_UP listener in score.js ready for Phase 5 difficulty progression
+- Next step: Phase 5 (Difficulty Progression) — level scaling, speed ramp, spawn rates
 
 ## Session Continuity
 
-Last session: 2026-05-09T21:40:09Z
-Stopped at: Completed 04-02-PLAN.md
+Last session: 2026-05-09T21:39:00Z
+Stopped at: Completed 04-01-PLAN.md
 Resume file: None
