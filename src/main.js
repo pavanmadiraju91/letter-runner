@@ -15,6 +15,7 @@ import { createScore, resetScore, updateScore, getScore } from './systems/score.
 import { createHUD, renderHUD } from './systems/hud.js';
 import { createFPSMonitor, updateFPS } from './systems/fps-monitor.js';
 import { createParticleSystem, updateParticles, renderParticles } from './systems/particles.js';
+import { createVFX, updateVFX, getPlayerFlash } from './systems/vfx.js';
 import { createDifficulty, resetDifficulty, getDifficultyParams } from './systems/difficulty.js';
 import { createLevelAnnounce, updateLevelAnnounce, renderLevelAnnounce } from './systems/level-announce.js';
 import { renderStartScreen } from './screens/start.js';
@@ -36,6 +37,7 @@ createGameOverScreen();
 createHUD();
 createFPSMonitor();
 createParticleSystem();
+createVFX();
 
 const ground = createGround();
 const player = createPlayer();
@@ -95,6 +97,7 @@ function update(dt) {
   updateScore(dt);
   updateLevelAnnounce(dt);
   updateParticles(dt);
+  updateVFX(dt);
 }
 
 function render() {
@@ -114,6 +117,14 @@ function render() {
   renderGround(ctx, ground, w, h);
   renderObstacles(ctx, obstaclePool.getActive());
   renderPlayer(ctx, player);
+  // VFX-05: white flash overlay on correct key press
+  if (getPlayerFlash()) {
+    ctx.save();
+    ctx.globalAlpha = 0.6;
+    ctx.fillStyle = COLORS.PALETTE.WHITE;
+    ctx.fillRect(player.x, player.y, player.width, player.height);
+    ctx.restore();
+  }
   renderHUD(ctx, w);
   renderLevelAnnounce(ctx, w, h);
   renderParticles(ctx);
