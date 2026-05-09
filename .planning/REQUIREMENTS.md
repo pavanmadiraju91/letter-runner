@@ -168,14 +168,14 @@
 | AUD-06 | 9 | Pending |
 | TECH-01 | 1 | Complete |
 | TECH-02 | 1 | Complete |
-| TECH-03 | 10 | Pending |
-| TECH-04 | 10 | Pending |
-| TECH-05 | 10 | Pending |
-| TECH-06 | 10 | Pending |
+| TECH-03 | 10 | Complete |
+| TECH-04 | 10 | Complete |
+| TECH-05 | 10 | Complete |
+| TECH-06 | 10 | Complete |
 | TECH-07 | 2 | Complete |
 | TECH-08 | 6 | Complete |
 | TECH-09 | 3 | Complete |
-| TECH-10 | 10 | Pending |
+| TECH-10 | 10 | Complete |
 | TECH-11 | 2 | Complete |
 | TECH-12 | 1 | Complete |
 

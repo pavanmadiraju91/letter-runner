@@ -19,7 +19,7 @@ Letter Runner goes from empty repo to shippable game across 10 phases. The build
 - [x] **Phase 7: Visual Style** - Pixel-art aesthetic, sprites, neon colour palette
 - [x] **Phase 8: Particle Effects & Juice** - Destroy particles, flashes, level-up overlay
 - [x] **Phase 9: Audio** - Sound effects, background music, autoplay policy handling
-- [ ] **Phase 10: Performance & Deployment** - Cross-browser, responsive scaling, optimization, deploy
+- [x] **Phase 10: Performance & Deployment** - Cross-browser, responsive scaling, optimization, deploy
 
 ## Phase Details
 
