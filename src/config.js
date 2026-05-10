@@ -173,6 +173,39 @@ export const COMBO = {
   MAX_ON_SCREEN: 1,           // COMBO-08: only 1 combo obstacle at a time
 };
 
+export const WORDS = {
+  MIN_LEVEL_SHORT_WORD: 7,    // 3-4 letter words start at level 7
+  MIN_LEVEL_MEDIUM_WORD: 10,  // 4-6 letter words at level 10
+  MIN_LEVEL_LONG_WORD: 13,    // 5-8 letter words at level 13
+  SPAWN_CHANCE_WORD: 0.40,    // 40% of eligible spawns become words
+  MULTIPLIER_SHORT_WORD: 3.0,
+  MULTIPLIER_MEDIUM_WORD: 5.0,
+  MULTIPLIER_LONG_WORD: 8.0,
+  MAX_ON_SCREEN: 1,           // only 1 word obstacle at a time
+};
+
+/**
+ * Returns word config tuned for device.
+ * Mobile: words appear later, shorter max length, lower spawn chance.
+ * Research shows mobile users type 30-50 WPM vs desktop 100+ WPM.
+ */
+export function getWordConfig() {
+  const w = window.innerWidth;
+  if (w < 600) {
+    return {
+      MIN_LEVEL_SHORT_WORD: 9,    // delayed — mobile needs more ramp time
+      MIN_LEVEL_MEDIUM_WORD: 13,
+      MIN_LEVEL_LONG_WORD: 16,    // very late — long words are brutal on touch
+      SPAWN_CHANCE_WORD: 0.30,    // lower chance (touch typing is slower)
+      MULTIPLIER_SHORT_WORD: 3.0,
+      MULTIPLIER_MEDIUM_WORD: 5.0,
+      MULTIPLIER_LONG_WORD: 8.0,
+      MAX_ON_SCREEN: 1,
+    };
+  }
+  return WORDS;
+}
+
 export const OBSTACLE_VFX = {
   GLOW_PULSE_SPEED: 0.01,    // radians per ms for danger pulse
   GLOW_MIN_ALPHA: 0.4,       // minimum glow brightness

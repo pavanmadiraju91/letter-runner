@@ -53,9 +53,17 @@ export function initMatcher(obstaclePool) {
             x: comboInZone.x,
             y: comboInZone.y,
             isCombo: true,
+            isWord: !!comboInZone.isWord,
             comboSize: comboInZone.letters.length
           });
           obstaclePool.release(comboInZone);
+        } else if (comboInZone.isWord) {
+          const letterIndex = comboInZone.progress - 1;
+          const cellWidth = 44;
+          events.emit('WORD_LETTER_TYPED', {
+            x: comboInZone.x + letterIndex * cellWidth + cellWidth / 2,
+            y: comboInZone.y + comboInZone.height / 2
+          });
         }
         // Key consumed (either partial advance or full destroy)
         return;

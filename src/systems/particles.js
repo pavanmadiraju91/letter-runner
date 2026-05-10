@@ -85,7 +85,7 @@ export function updateParticles(dt) {
 }
 
 /**
- * Render all active particles as colored squares with alpha fade.
+ * Render all active particles as glowing circles with alpha fade.
  * @param {CanvasRenderingContext2D} ctx
  */
 export function renderParticles(ctx) {
@@ -100,7 +100,12 @@ export function renderParticles(ctx) {
     const alpha = p.life / p.maxLife;
     ctx.globalAlpha = alpha;
     ctx.fillStyle = p.color;
-    ctx.fillRect(p.x, p.y, p.size, p.size);
+    ctx.shadowColor = p.color;
+    ctx.shadowBlur = p.size * 2;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fill();
   }
+  ctx.shadowBlur = 0;
   ctx.restore();
 }

@@ -28,6 +28,7 @@ export function createObstacleFactory() {
       letters: [],
       progress: 0,
       isCombo: false,
+      isWord: false,
       // Visual variation
       fontScale: 1.0,
       // Wrong key flash
@@ -137,23 +138,26 @@ function renderComboObstacle(ctx, obs) {
     const centerX = cellX + cellWidth / 2;
     const centerY = y + h / 2;
 
+    // For word obstacles: skip already-typed letters (they "leave")
+    if (obs.isWord && i < obs.progress) {
+      continue;
+    }
+
     // Determine letter color based on progress
+    // Words use cyan/blue palette; random combos use magenta/yellow
     let color;
     let glowColor;
     if (i < obs.progress) {
-      // Completed — green
       color = P.GREEN;
       glowColor = P.GREEN;
     } else if (i === obs.progress) {
-      // Next target — pulsing yellow
       const pulse = 0.7 + 0.3 * Math.sin(Date.now() * 0.008);
-      color = P.YELLOW;
-      glowColor = P.YELLOW;
+      color = obs.isWord ? P.CYAN : P.YELLOW;
+      glowColor = obs.isWord ? P.CYAN : P.YELLOW;
       ctx.globalAlpha = pulse;
     } else {
-      // Pending — magenta
-      color = P.MAGENTA;
-      glowColor = P.MAGENTA;
+      color = obs.isWord ? P.BLUE : P.MAGENTA;
+      glowColor = obs.isWord ? P.BLUE : P.MAGENTA;
     }
 
     // Danger zone: stronger glow on the letter (no circle)

@@ -32,18 +32,35 @@ const SHATTER_CONFIG = {
 
 /**
  * Spawn multi-colored shatter particles at obstacle position.
- * Spawns 3 particles per color (9 total requested, capped by pool).
+ * Words get a bigger burst (more particles, higher speed).
  */
-function spawnDestroyParticles(x, y) {
+function spawnDestroyParticles(x, y, isWord, comboSize) {
   if (!canSpawnParticles()) return;
 
   const P = getPalette();
-  const colors = [P.MAGENTA, P.CYAN, P.YELLOW];
-  for (let i = 0; i < colors.length; i++) {
-    spawnParticles(x, y, 3, {
-      ...SHATTER_CONFIG,
-      color: colors[i],
-    });
+
+  if (isWord) {
+    const colors = [P.CYAN, P.BLUE, P.GREEN, P.WHITE];
+    const particlesPerColor = Math.min(4, Math.ceil(comboSize / 2));
+    for (let i = 0; i < colors.length; i++) {
+      spawnParticles(x, y, particlesPerColor, {
+        minSpeed: 120,
+        maxSpeed: 320,
+        minSize: 2,
+        maxSize: 6,
+        minLife: 0.4,
+        maxLife: 1.0,
+        color: colors[i],
+      });
+    }
+  } else {
+    const colors = [P.MAGENTA, P.CYAN, P.YELLOW];
+    for (let i = 0; i < colors.length; i++) {
+      spawnParticles(x, y, 3, {
+        ...SHATTER_CONFIG,
+        color: colors[i],
+      });
+    }
   }
 }
 
@@ -51,12 +68,26 @@ function spawnDestroyParticles(x, y) {
  * Initialize VFX system — subscribe to game events.
  */
 export function createVFX() {
-  events.on('OBSTACLE_DESTROYED', ({ x, y, isCombo, comboSize }) => {
-    spawnDestroyParticles(x, y);
+  events.on('OBSTACLE_DESTROYED', ({ x, y, isCombo, isWord, comboSize }) => {
+    spawnDestroyParticles(x, y, !!isWord, comboSize || 1);
     playerFlashTimer = FLASH_DURATION;
-    // VFX-07: Screen shake — bigger for combos
     shakeTimer = SHAKE_DURATION;
-    shakeIntensity = (isCombo && comboSize > 1) ? SHAKE_INTENSITY_COMBO : SHAKE_INTENSITY_SINGLE;
+    shakeIntensity = isWord ? SHAKE_INTENSITY_COMBO + 2 :
+      (isCombo && comboSize > 1) ? SHAKE_INTENSITY_COMBO : SHAKE_INTENSITY_SINGLE;
+  });
+
+  events.on('WORD_LETTER_TYPED', ({ x, y }) => {
+    if (!canSpawnParticles()) return;
+    const P = getPalette();
+    spawnParticles(x, y, 4, {
+      minSpeed: 60,
+      maxSpeed: 160,
+      minSize: 1,
+      maxSize: 3,
+      minLife: 0.2,
+      maxLife: 0.5,
+      color: P.CYAN,
+    });
   });
 
   // VFX-06: Red screen flash on life lost

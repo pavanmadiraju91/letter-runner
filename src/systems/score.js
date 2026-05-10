@@ -1,5 +1,5 @@
 import { events } from '../core/events.js';
-import { SCORE, COMBO } from '../config.js';
+import { SCORE, COMBO, WORDS } from '../config.js';
 
 let score = 0;
 let currentLevel = 1;
@@ -17,7 +17,17 @@ export function createScore() {
   events.on('OBSTACLE_DESTROYED', (payload) => {
     let comboMultiplier = 1;
     if (payload && payload.isCombo && payload.comboSize) {
-      if (payload.comboSize === 3) {
+      if (payload.isWord) {
+        if (payload.comboSize >= 6) {
+          comboMultiplier = WORDS.MULTIPLIER_LONG_WORD;
+        } else if (payload.comboSize >= 4) {
+          comboMultiplier = WORDS.MULTIPLIER_MEDIUM_WORD;
+        } else {
+          comboMultiplier = WORDS.MULTIPLIER_SHORT_WORD;
+        }
+      } else if (payload.comboSize >= 4) {
+        comboMultiplier = COMBO.MULTIPLIER_4LETTER;
+      } else if (payload.comboSize === 3) {
         comboMultiplier = COMBO.MULTIPLIER_3LETTER;
       } else if (payload.comboSize === 2) {
         comboMultiplier = COMBO.MULTIPLIER_2LETTER;

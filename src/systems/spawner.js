@@ -1,7 +1,8 @@
-import { GAME, COMBO } from '../config.js';
+import { GAME, COMBO, WORDS } from '../config.js';
 import { getWidth } from '../core/canvas.js';
 import { isWarmupComplete, getMinGap, getCurrentSpeed, getLevel } from './difficulty.js';
 import { isTouchDevice } from './input.js';
+import { canSpawnWords, getRandomWord, getWordSpawnChance } from './words.js';
 
 const LETTERS_UPPER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const LETTERS_LOWER = 'abcdefghijklmnopqrstuvwxyz';
@@ -119,7 +120,29 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
   // Determine if this spawn should be a combo obstacle
   const level = getLevel();
   const activeComboCount = active.filter(o => o.isCombo).length;
+  const activeWordCount = active.filter(o => o.isWord).length;
   let comboSize = 0; // 0 = single, 2 = 2-letter, 3 = 3-letter, 4 = 4-letter
+
+  // Word spawn check (L7+): takes priority over random combos
+  if (canSpawnWords(level) && activeWordCount < WORDS.MAX_ON_SCREEN && Math.random() < getWordSpawnChance()) {
+    const word = getRandomWord(level);
+    const wordLetters = word.split('');
+
+    const obs = spawner.pool.acquire();
+    obs.x = screenWidth + 10;
+    obs.height = GAME.OBSTACLE_HEIGHT;
+    obs.y = groundY - obs.height - Math.random() * 30;
+    obs.letter = '';
+    obs.letters = wordLetters;
+    obs.progress = 0;
+    obs.isCombo = true;
+    obs.isWord = true;
+    obs.width = COMBO.WIDTH_PER_LETTER * wordLetters.length;
+    obs.speed = getCurrentSpeed();
+    obs.fontScale = wordLetters.length > 5 ? 0.85 : 1.0;
+    obs.active = true;
+    return;
+  }
 
   if (activeComboCount < COMBO.MAX_ON_SCREEN) {
     if (level >= COMBO.MIN_LEVEL_4LETTER && Math.random() < COMBO.SPAWN_CHANCE_4LETTER) {
@@ -188,6 +211,7 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
       obs.letters = comboLetters;
       obs.progress = 0;
       obs.isCombo = true;
+      obs.isWord = false;
       obs.width = COMBO.WIDTH_PER_LETTER * comboSize;
       obs.speed = getCurrentSpeed();
       obs.fontScale = getRandomFontScale();
@@ -235,6 +259,7 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
   obs.letters = [];
   obs.progress = 0;
   obs.isCombo = false;
+  obs.isWord = false;
   obs.width = GAME.OBSTACLE_WIDTH;
   obs.speed = getCurrentSpeed();
   obs.fontScale = getRandomFontScale();
