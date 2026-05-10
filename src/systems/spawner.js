@@ -2,6 +2,9 @@ import { GAME, COMBO } from '../config.js';
 import { getWidth } from '../core/canvas.js';
 import { isWarmupComplete, getMinGap, getCurrentSpeed, getLevel } from './difficulty.js';
 
+const CHARACTER_POOL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+const POOL_SIZE = CHARACTER_POOL.length; // 36 characters
+
 /**
  * Create a spawner state object tied to an obstacle pool.
  */
@@ -73,20 +76,20 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
     }
   }
 
-  // Check if enough letters are available for the combo size
-  const availableCount = 26 - usedLetters.size;
+  // Check if enough characters are available for the combo size
+  const availableCount = POOL_SIZE - usedLetters.size;
   if (comboSize > 0 && availableCount < comboSize) {
     comboSize = availableCount >= 1 ? 0 : 0; // Fall back to single or skip
   }
 
   // Pick letters
   if (comboSize > 0) {
-    // Combo spawn: pick N unique letters
+    // Combo spawn: pick N unique characters
     const comboLetters = [];
     for (let n = 0; n < comboSize; n++) {
       let picked = '';
-      for (let attempt = 0; attempt < 26; attempt++) {
-        const candidate = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+      for (let attempt = 0; attempt < POOL_SIZE; attempt++) {
+        const candidate = CHARACTER_POOL[Math.floor(Math.random() * POOL_SIZE)];
         if (!usedLetters.has(candidate)) {
           picked = candidate;
           usedLetters.add(candidate); // Prevent duplicates within the combo
@@ -95,8 +98,8 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
       }
       // Deterministic fallback
       if (!picked) {
-        for (let code = 65; code <= 90; code++) {
-          const c = String.fromCharCode(code);
+        for (let i = 0; i < POOL_SIZE; i++) {
+          const c = CHARACTER_POOL[i];
           if (!usedLetters.has(c)) {
             picked = c;
             usedLetters.add(c);
@@ -105,7 +108,7 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
         }
       }
       if (!picked) {
-        // Not enough letters available, abort combo — fall back to single
+        // Not enough characters available, abort combo — fall back to single
         comboSize = 0;
         break;
       }
@@ -134,8 +137,8 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
 
   // Single-letter spawn (default path)
   let letter = '';
-  for (let attempt = 0; attempt < 26; attempt++) {
-    const candidate = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+  for (let attempt = 0; attempt < POOL_SIZE; attempt++) {
+    const candidate = CHARACTER_POOL[Math.floor(Math.random() * POOL_SIZE)];
     if (!usedLetters.has(candidate)) {
       letter = candidate;
       break;
@@ -144,8 +147,8 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
 
   // Deterministic fallback
   if (!letter) {
-    for (let code = 65; code <= 90; code++) {
-      const c = String.fromCharCode(code);
+    for (let i = 0; i < POOL_SIZE; i++) {
+      const c = CHARACTER_POOL[i];
       if (!usedLetters.has(c)) {
         letter = c;
         break;
@@ -153,7 +156,7 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
     }
   }
 
-  // Absolute last resort: all 26 letters in use (impossible with MAX_OBSTACLES=4)
+  // Absolute last resort: all 36 characters in use (impossible with MAX_OBSTACLES=4)
   if (!letter) {
     return;
   }

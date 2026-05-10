@@ -23,7 +23,7 @@ export function initInput() {
     if (inputLocked) return;
 
     const key = e.key.toUpperCase();
-    if (key.length === 1 && key >= 'A' && key <= 'Z') {
+    if (key.length === 1 && ((key >= 'A' && key <= 'Z') || (key >= '0' && key <= '9'))) {
       pressed.add(key);
       events.emit('KEY_PRESS', { key });
     }
