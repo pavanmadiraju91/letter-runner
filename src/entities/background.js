@@ -1,5 +1,5 @@
 import { getPalette } from '../core/theme.js';
-import { GAME, SPEED } from '../config.js';
+import { GAME, SPEED, getGroundHeight } from '../config.js';
 import { getCurrentSpeed } from '../systems/difficulty.js';
 
 const STAR_COUNT = 60;
@@ -93,7 +93,7 @@ export function updateBackground(bg, dt, scrollSpeed) {
 
 export function renderBackground(ctx, bg, canvasWidth, canvasHeight) {
   const palette = getPalette();
-  const groundY = canvasHeight - GAME.GROUND_HEIGHT;
+  const groundY = canvasHeight - getGroundHeight(canvasHeight);
 
   init(canvasWidth, canvasHeight);
 
@@ -162,7 +162,7 @@ export function renderBackground(ctx, bg, canvasWidth, canvasHeight) {
   // Subtle zone below the line
   ctx.fillStyle = palette.GROUND_BASE || palette.BG;
   ctx.globalAlpha = 0.3;
-  ctx.fillRect(0, groundY + 1, canvasWidth, GAME.GROUND_HEIGHT);
+  ctx.fillRect(0, groundY + 1, canvasWidth, getGroundHeight(canvasHeight));
   ctx.globalAlpha = 1;
 
   // Speed lines at high velocity (>70% of max speed)

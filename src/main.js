@@ -3,7 +3,7 @@ import { startLoop } from './core/game-loop.js';
 import { events } from './core/events.js';
 import { initTheme, getPalette, getBG } from './core/theme.js';
 import { createStateMachine, getState, STATES, requestRestart, requestStart } from './core/state.js';
-import { GAME } from './config.js';
+import { GAME, getGroundHeight } from './config.js';
 import { createPlayer, resetPlayer, updatePlayer, renderPlayer } from './entities/player.js';
 import { createBackground, updateBackground, renderBackground } from './entities/background.js';
 import { createGround, updateGround, renderGround } from './entities/ground.js';
@@ -56,7 +56,7 @@ const player = createPlayer();
 const obstaclePool = createPool(createObstacleFactory(), 20);
 const spawner = createSpawner(obstaclePool);
 
-resetPlayer(player, getWidth(), getHeight(), GAME.GROUND_HEIGHT);
+resetPlayer(player, getWidth(), getHeight(), getGroundHeight(getHeight()));
 initInput();
 initMatcher(obstaclePool);
 initObstacleEffects(obstaclePool);
@@ -77,7 +77,7 @@ if (isTouchDevice) {
 }
 
 events.on('CANVAS_RESIZE', ({ width, height }) => {
-  resetPlayer(player, width, height, GAME.GROUND_HEIGHT);
+  resetPlayer(player, width, height, getGroundHeight(height));
 });
 
 // Save personal best when game ends
@@ -131,7 +131,7 @@ function update(dt) {
   updateBackground(background, dt, params.scrollSpeed);
   updatePlayer(player, dt);
   updateGround(ground, dt, params.scrollSpeed);
-  const groundY = getHeight() - GAME.GROUND_HEIGHT;
+  const groundY = getHeight() - getGroundHeight(getHeight());
   updateSpawner(spawner, dt, params, groundY);
   updateObstacles(obstaclePool, dt);
   cleanupOffscreen(obstaclePool);

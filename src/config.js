@@ -172,10 +172,21 @@ export const GAME = {
   OBSTACLE_HEIGHT: 56,
   PLAYER_WIDTH: 80,
   PLAYER_HEIGHT: 80,
-  GROUND_HEIGHT: 140,
+  GROUND_HEIGHT: 140, // base value; use getGroundHeight(h) for responsive
   PLAYER_X_PERCENT: 0.12,
   DANGER_ZONE_START: 0.3,
   STARTING_LIVES: 3,
   WRONG_KEY_DELAY: 0.3,
   WRONG_KEY_PENALTY_LEVEL: 4
 };
+
+/**
+ * Responsive ground height: scales down on short screens (mobile landscape, small phones).
+ * On a standard desktop (height >= 700), returns 140px.
+ * On mobile (e.g., 667px height), returns ~100px.
+ * @param {number} canvasHeight - current canvas height in logical pixels
+ * @returns {number} ground height in px
+ */
+export function getGroundHeight(canvasHeight) {
+  return Math.min(140, Math.max(60, canvasHeight * 0.15));
+}

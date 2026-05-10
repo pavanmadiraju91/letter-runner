@@ -1,4 +1,4 @@
-import { GAME } from '../config.js';
+import { GAME, getGroundHeight } from '../config.js';
 
 export function createGround() {
   return {
@@ -14,5 +14,6 @@ export function updateGround(ground, dt, scrollSpeed) {
 }
 
 export function renderGround(ctx, ground, canvasWidth, canvasHeight) {
+  ground.height = getGroundHeight(canvasHeight);
   ground.y = canvasHeight - ground.height;
 }
