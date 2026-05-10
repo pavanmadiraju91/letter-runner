@@ -4,7 +4,6 @@ import { events } from './core/events.js';
 import { initTheme, getPalette, getBG } from './core/theme.js';
 import { createStateMachine, getState, STATES, requestRestart, requestStart } from './core/state.js';
 import { GAME } from './config.js';
-import { getPalette } from './core/theme.js';
 import { createPlayer, resetPlayer, updatePlayer, renderPlayer } from './entities/player.js';
 import { createBackground, updateBackground, renderBackground } from './entities/background.js';
 import { createGround, updateGround, renderGround } from './entities/ground.js';
