@@ -124,13 +124,11 @@ Plans:
 4. Glow effects use screen-blend technique instead of shadowBlur (no performance regression)
 5. Letters on obstacles are 26-28px bold with dark outline, readable at maximum speed
 
-**Plans:** TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 15-01: Player sprite animation (2-4 frame run cycle + vertical bob)
-- [ ] 15-02: Parallax background system (stars + grid layers)
-- [ ] 15-03: Glow performance rework and danger-zone letter pulse
-- [ ] 15-04: Letter font size increase and dark outline for readability
+- [ ] 15-01-PLAN.md — Animated cat sprite with vertical bob + parallax background
+- [ ] 15-02-PLAN.md — Screen-blend glow, danger-zone pulse, and letter readability
 
 ---
 
