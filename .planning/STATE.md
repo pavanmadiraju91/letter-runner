@@ -3,8 +3,8 @@
 ## Current Status
 
 **Active milestone:** v1.1 Polish & Depth
-**Active phase:** Phase 13 (Multi-Letter Combos) — complete
-**Last action:** Completed 13-03-PLAN.md (combo rendering & scoring)
+**Active phase:** Phase 14 (Audio) — complete
+**Last action:** Completed 14-01-PLAN.md (MP3 background music)
 **Last updated:** 2026-05-10
 
 ## Project Reference
@@ -21,11 +21,11 @@ See: .planning/PROJECT.md (updated 2026-05-10)
 | 11. Cleanup | Complete (1/1 plans) |
 | 12. Speed & Difficulty | Complete (2/2 plans) |
 | 13. Multi-Letter Combos | Complete (3/3 plans) |
-| 14. Audio | Not started |
+| 14. Audio | Complete (1/1 plans) |
 | 15. Visual Polish | Not started |
 | 16. Theme | Not started |
 
-Progress: [██████░░░░░░░░░] 40% (6/15 plans)
+Progress: [███████░░░░░░░░] 47% (7/15 plans)
 
 ## Performance Metrics
 
@@ -35,9 +35,9 @@ Progress: [██████░░░░░░░░░] 40% (6/15 plans)
 - Total execution time: ~20 minutes
 
 **v1.1 Velocity:**
-- Plans completed: 6
-- Average duration: ~68 seconds
-- Total execution time: <7 min
+- Plans completed: 7
+- Average duration: ~65 seconds
+- Total execution time: <8 min
 
 ## Accumulated Context
 
@@ -46,7 +46,7 @@ Progress: [██████░░░░░░░░░] 40% (6/15 plans)
 - Vanilla JS + Canvas (no frameworks)
 - Event bus architecture (pub/sub)
 - Object pooling for obstacles and particles
-- Procedural audio via Web Audio API (to be partially replaced by MP3 in Phase 14)
+- Background music: MP3 via fetch/decodeAudioData/BufferSourceNode, loop=true, 15% vol (Phase 14)
 - GitHub Pages deployment via Actions
 - Chrome dino speed model: linear acceleration with hard cap at 2x (Phase 12)
 - Speed decoupled from tiers: time-based speed, destroy-based features (Phase 12)
@@ -80,8 +80,9 @@ None.
 - Phase 11 complete: leaderboard removed, game-over simplified
 - Phase 12 complete: continuous speed (140->280), warmup gate, dynamic gap, spawn pacing
 - Phase 13 complete: combo config, factory, input matching, rendering, scoring
-- Next step: Phase 14 (Audio)
+- Phase 14 complete: MP3 background music replaces procedural oscillator
+- Next step: Phase 15 (Visual Polish)
 
-Last session: 2026-05-10T08:33:01Z
-Stopped at: Completed 13-03-PLAN.md
+Last session: 2026-05-10T08:35:20Z
+Stopped at: Completed 14-01-PLAN.md
 Resume file: None
