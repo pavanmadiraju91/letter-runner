@@ -76,9 +76,10 @@ export function createAudioSystem() {
 
   window.addEventListener('keydown', initAudio);
 
-  // M-key toggles background music
+  // Tab key toggles background music
   window.addEventListener('keydown', (e) => {
-    if (e.key === 'm' || e.key === 'M') {
+    if (e.key === 'Tab') {
+      e.preventDefault(); // Prevent focus switching
       toggleMusic();
     }
   });

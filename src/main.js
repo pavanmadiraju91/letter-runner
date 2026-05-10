@@ -154,7 +154,7 @@ function render() {
   ctx.font = '10px monospace';
   ctx.fillStyle = getPalette().DIM;
   ctx.textAlign = 'right';
-  ctx.fillText('[M] Music', w - 8, getHeight() - 8);
+  ctx.fillText('[Tab] Music', w - 8, getHeight() - 8);
   ctx.restore();
   renderLevelAnnounce(ctx, w, h);
   renderParticles(ctx);
