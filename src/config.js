@@ -102,6 +102,22 @@ export const COMBO = {
   MAX_ON_SCREEN: 1,           // COMBO-08: only 1 combo obstacle at a time
 };
 
+export const OBSTACLE_VFX = {
+  GLOW_PULSE_SPEED: 0.01,    // radians per ms for danger pulse
+  GLOW_MIN_ALPHA: 0.4,       // minimum glow brightness
+  GLOW_RANGE: 0.4,           // alpha oscillation range
+  GLOW_PADDING: 3,           // px padding around obstacle for glow rect
+  LETTER_FONT_SIZE: 26,      // px
+  LETTER_OUTLINE_WIDTH: 3,   // px dark outline
+};
+
+export const PLAYER = {
+  FRAME_COUNT: 8,
+  FRAME_DURATION: 0.1,  // seconds per frame (10 FPS animation)
+  BOB_AMPLITUDE: 1,     // 1px vertical bob
+  BOB_SPEED: 12,        // radians/sec for bob cycle
+};
+
 export const GAME = {
   TARGET_FPS: 60,
   MAX_DT: 1 / 30,
