@@ -3,8 +3,8 @@
 ## Current Status
 
 **Active milestone:** v1.1 Polish & Depth
-**Active phase:** Phase 14 (Audio) — complete
-**Last action:** Completed 14-01-PLAN.md (MP3 background music)
+**Active phase:** Phase 15 (Visual Polish) — in progress
+**Last action:** Completed 15-01-PLAN.md (Sprite Animation & Parallax)
 **Last updated:** 2026-05-10
 
 ## Project Reference
@@ -22,10 +22,10 @@ See: .planning/PROJECT.md (updated 2026-05-10)
 | 12. Speed & Difficulty | Complete (2/2 plans) |
 | 13. Multi-Letter Combos | Complete (3/3 plans) |
 | 14. Audio | Complete (1/1 plans) |
-| 15. Visual Polish | Not started |
+| 15. Visual Polish | In progress (1/2 plans) |
 | 16. Theme | Not started |
 
-Progress: [███████░░░░░░░░] 47% (7/15 plans)
+Progress: [████████░░░░░░░] 53% (8/15 plans)
 
 ## Performance Metrics
 
@@ -35,9 +35,9 @@ Progress: [███████░░░░░░░░] 47% (7/15 plans)
 - Total execution time: ~20 minutes
 
 **v1.1 Velocity:**
-- Plans completed: 7
-- Average duration: ~65 seconds
-- Total execution time: <8 min
+- Plans completed: 8
+- Average duration: ~60 seconds
+- Total execution time: <9 min
 
 ## Accumulated Context
 
@@ -61,6 +61,8 @@ Progress: [███████░░░░░░░░] 47% (7/15 plans)
 - Wrong-key semantics: only resets combo if no single-letter match exists (Phase 13)
 - Combo render dispatch: separate renderSingleObstacle + renderComboObstacle paths (Phase 13)
 - Glow: replace shadowBlur with screen-blend pre-rendered sprites (Phase 15)
+- Sprite loading: Image().complete guard, no preload gate needed (Phase 15)
+- Background parallax: scale to canvas height, tile horizontally at 10% speed (Phase 15)
 - Leaderboard removed entirely — personal best via storage.js is sufficient (Phase 11)
 
 ### Pending Todos
@@ -81,8 +83,9 @@ None.
 - Phase 12 complete: continuous speed (140->280), warmup gate, dynamic gap, spawn pacing
 - Phase 13 complete: combo config, factory, input matching, rendering, scoring
 - Phase 14 complete: MP3 background music replaces procedural oscillator
-- Next step: Phase 15 (Visual Polish)
+- Phase 15 in progress: 15-01 done (sprite animation + parallax), 15-02 next (glow effects)
+- Next step: 15-02-PLAN.md (glow/screen-blend sprites)
 
-Last session: 2026-05-10T08:35:20Z
-Stopped at: Completed 14-01-PLAN.md
+Last session: 2026-05-10T08:41:07Z
+Stopped at: Completed 15-01-PLAN.md
 Resume file: None
