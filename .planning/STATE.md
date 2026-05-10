@@ -3,8 +3,8 @@
 ## Current Status
 
 **Active milestone:** v1.1 Polish & Depth
-**Active phase:** Phase 16 (Theme) — in progress
-**Last action:** Completed 16-01-PLAN.md (Theme Detection & Dual Palettes)
+**Active phase:** Phase 16 (Theme) — complete
+**Last action:** Completed 16-02-PLAN.md (Consumer Migration to getPalette)
 **Last updated:** 2026-05-10
 
 ## Project Reference
@@ -23,9 +23,9 @@ See: .planning/PROJECT.md (updated 2026-05-10)
 | 13. Multi-Letter Combos | Complete (3/3 plans) |
 | 14. Audio | Complete (1/1 plans) |
 | 15. Visual Polish | Complete (2/2 plans) |
-| 16. Theme | In progress (1/? plans) |
+| 16. Theme | Complete (2/2 plans) |
 
-Progress: [██████████░░░░░] 67% (10/15 plans)
+Progress: [███████████████] 100% (11/11 plans)
 
 ## Performance Metrics
 
@@ -35,9 +35,9 @@ Progress: [██████████░░░░░] 67% (10/15 plans)
 - Total execution time: ~20 minutes
 
 **v1.1 Velocity:**
-- Plans completed: 10
+- Plans completed: 11
 - Average duration: ~60 seconds
-- Total execution time: ~10 min
+- Total execution time: ~11 min
 
 ## Accumulated Context
 
@@ -69,6 +69,8 @@ Progress: [██████████░░░░░] 67% (10/15 plans)
 - Theme: COLORS.PALETTE kept as backward-compat reference to PALETTE_DARK (Phase 16)
 - Theme: matchMedia listener for reactive system-preference detection (Phase 16)
 - Theme: getPalette() accessor returns active palette, getBG() returns active background color (Phase 16)
+- Theme: getPalette() called once per render function, stored in local var for efficiency (Phase 16)
+- Theme: VFX reads palette at particle spawn time for reactive color switching (Phase 16)
 
 ### Pending Todos
 
@@ -77,23 +79,20 @@ None.
 ### Blockers/Concerns
 
 - MP3 track (1.7MB) will push total assets above 500KB — acceptable for v1.1
-- Light mode glow effects require different rendering approach (Phase 16 — next plan)
-- Screen-blend glow color (#ff2266) has light-mode variant (#cc2255) in PALETTE_LIGHT
-- Existing COLORS.PALETTE consumers still use dark palette — need migration to getPalette()
 
 ## Context for Next Session
 
 - v1.0 complete: 10 phases, 51 requirements, all verified
-- v1.1 roadmap: 6 phases (11-16), 36 requirements, 15 plans
+- v1.1 complete: 6 phases (11-16), all plans executed
 - Phase 11 complete: leaderboard removed, game-over simplified
 - Phase 12 complete: continuous speed (140->280), warmup gate, dynamic gap, spawn pacing
 - Phase 13 complete: combo config, factory, input matching, rendering, scoring
 - Phase 14 complete: MP3 background music replaces procedural oscillator
 - Phase 15 complete: sprite animation, parallax bg, screen-blend glow, danger pulse, letter outlines
-- Phase 16 in progress: theme detection and dual palettes done, consumer migration next
-- src/core/theme.js: initTheme(), getTheme(), getPalette(), getBG()
-- src/config.js: PALETTE_DARK, PALETTE_LIGHT as named exports; COLORS.PALETTE = PALETTE_DARK
+- Phase 16 complete: theme detection, dual palettes, full consumer migration to getPalette()
+- All rendering files now use getPalette() — zero COLORS.PALETTE references in src/
+- Entire visual layer reacts to system prefers-color-scheme changes without restart
 
-Last session: 2026-05-10T08:48:40Z
-Stopped at: Completed 16-01-PLAN.md
+Last session: 2026-05-10T08:52:36Z
+Stopped at: Completed 16-02-PLAN.md
 Resume file: None
