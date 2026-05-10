@@ -1,19 +1,60 @@
 import { GAME, COMBO } from '../config.js';
 import { getWidth } from '../core/canvas.js';
 import { isWarmupComplete, getMinGap, getCurrentSpeed, getLevel } from './difficulty.js';
+import { isTouchDevice } from './input.js';
 
-const CHARACTER_POOL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+const LETTERS_UPPER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const LETTERS_LOWER = 'abcdefghijklmnopqrstuvwxyz';
+const DIGITS = '0123456789';
+const CHARACTER_POOL = LETTERS_UPPER + DIGITS;
 const POOL_SIZE = CHARACTER_POOL.length; // 36 characters
+
+/**
+ * Get the character pool based on device type and current level.
+ * Mobile eases in complexity:
+ *   Levels 1-4: uppercase only (26 chars)
+ *   Levels 5-7: uppercase + lowercase (52 chars)
+ *   Levels 8+:  uppercase + lowercase + digits (62 chars)
+ * Desktop: full pool (A-Z + 0-9) from the start.
+ */
+function getCharacterPool() {
+  if (!isTouchDevice) {
+    return CHARACTER_POOL; // desktop: uppercase + digits (case randomized later)
+  }
+  const level = getLevel();
+  if (level >= 8) {
+    return LETTERS_UPPER + LETTERS_LOWER + DIGITS;
+  }
+  if (level >= 5) {
+    return LETTERS_UPPER + LETTERS_LOWER;
+  }
+  return LETTERS_UPPER;
+}
 
 /**
  * Randomize case for a character: letters get 50/50 upper/lower,
  * digits stay as-is.
+ * On mobile at early levels (< 5), always returns uppercase.
  */
 function randomizeCase(ch) {
+  if (isTouchDevice && getLevel() < 5) {
+    return ch.toUpperCase();
+  }
   if (ch >= 'A' && ch <= 'Z') {
     return Math.random() < 0.5 ? ch.toLowerCase() : ch;
   }
   return ch; // digits unchanged
+}
+
+/**
+ * Get font scale range based on device.
+ * Mobile uses a narrower range (0.8-1.4) to avoid tiny/huge text on small screens.
+ */
+function getRandomFontScale() {
+  if (isTouchDevice) {
+    return 0.8 + Math.random() * 0.6; // 0.8 to 1.4
+  }
+  return 0.6 + Math.random() * 1.6; // 0.6 to 2.2 (desktop)
 }
 
 /**
@@ -89,8 +130,12 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
     }
   }
 
+  // Get current character pool (device/level-aware)
+  const pool_chars = getCharacterPool();
+  const poolLen = pool_chars.length;
+
   // Check if enough characters are available for the combo size
-  const availableCount = POOL_SIZE - usedLetters.size;
+  const availableCount = poolLen - usedLetters.size;
   if (comboSize > 0 && availableCount < comboSize) {
     comboSize = availableCount >= 1 ? 0 : 0; // Fall back to single or skip
   }
@@ -101,8 +146,8 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
     const comboLetters = [];
     for (let n = 0; n < comboSize; n++) {
       let picked = '';
-      for (let attempt = 0; attempt < POOL_SIZE; attempt++) {
-        const candidate = CHARACTER_POOL[Math.floor(Math.random() * POOL_SIZE)];
+      for (let attempt = 0; attempt < poolLen; attempt++) {
+        const candidate = pool_chars[Math.floor(Math.random() * poolLen)];
         if (!usedLetters.has(candidate)) {
           picked = candidate;
           usedLetters.add(candidate); // Prevent duplicates within the combo
@@ -111,8 +156,8 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
       }
       // Deterministic fallback
       if (!picked) {
-        for (let i = 0; i < POOL_SIZE; i++) {
-          const c = CHARACTER_POOL[i];
+        for (let i = 0; i < poolLen; i++) {
+          const c = pool_chars[i];
           if (!usedLetters.has(c)) {
             picked = c;
             usedLetters.add(c);
@@ -144,7 +189,7 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
       obs.isCombo = true;
       obs.width = COMBO.WIDTH_PER_LETTER * comboSize;
       obs.speed = getCurrentSpeed();
-      obs.fontScale = 0.6 + Math.random() * 1.6;
+      obs.fontScale = getRandomFontScale();
       obs.active = true;
       return;
     }
@@ -152,8 +197,8 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
 
   // Single-letter spawn (default path)
   let letter = '';
-  for (let attempt = 0; attempt < POOL_SIZE; attempt++) {
-    const candidate = CHARACTER_POOL[Math.floor(Math.random() * POOL_SIZE)];
+  for (let attempt = 0; attempt < poolLen; attempt++) {
+    const candidate = pool_chars[Math.floor(Math.random() * poolLen)];
     if (!usedLetters.has(candidate)) {
       letter = candidate;
       break;
@@ -162,8 +207,8 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
 
   // Deterministic fallback
   if (!letter) {
-    for (let i = 0; i < POOL_SIZE; i++) {
-      const c = CHARACTER_POOL[i];
+    for (let i = 0; i < poolLen; i++) {
+      const c = pool_chars[i];
       if (!usedLetters.has(c)) {
         letter = c;
         break;
@@ -191,6 +236,6 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
   obs.isCombo = false;
   obs.width = GAME.OBSTACLE_WIDTH;
   obs.speed = getCurrentSpeed();
-  obs.fontScale = 0.6 + Math.random() * 1.6;
+  obs.fontScale = getRandomFontScale();
   obs.active = true;
 }

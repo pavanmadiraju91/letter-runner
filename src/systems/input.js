@@ -39,11 +39,15 @@ export function initInput() {
     if (e.repeat) return;
     if (inputLocked) return;
 
-    const key = e.key;
+    let key = e.key;
     // Accept single printable characters: letters (case-sensitive) and digits
     if (key.length === 1) {
       const upper = key.toUpperCase();
       if ((upper >= 'A' && upper <= 'Z') || (key >= '0' && key <= '9')) {
+        // Mobile early levels: force uppercase (no case sensitivity)
+        if (isTouchDevice && currentLevel < 5) {
+          key = key.toUpperCase();
+        }
         pressed.add(key);
         events.emit('KEY_PRESS', { key });
       }
@@ -61,9 +65,13 @@ export function initInput() {
       if (inputLocked) return;
       const value = mobileInputEl.value;
       if (value.length > 0) {
-        const key = value[value.length - 1];
+        let key = value[value.length - 1];
         const upper = key.toUpperCase();
         if ((upper >= 'A' && upper <= 'Z') || (key >= '0' && key <= '9')) {
+          // Mobile early levels: force uppercase (no case sensitivity)
+          if (isTouchDevice && currentLevel < 5) {
+            key = key.toUpperCase();
+          }
           events.emit('KEY_PRESS', { key });
         }
         mobileInputEl.value = '';
