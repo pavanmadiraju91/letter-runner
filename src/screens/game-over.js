@@ -209,9 +209,8 @@ export function renderGameOverScreen(ctx, width, height) {
     ctx.textBaseline = 'middle';
 
     ctx.font = "11px 'Courier New', monospace";
-    ctx.fillStyle = P.DIM;
+    ctx.fillStyle = P.LIGHT;
     ctx.fillText(isMusicPlaying() ? '[Tab] Music Off' : '[Tab] Music On', width / 2, height * 0.88);
-    ctx.fillText('github.com/pavanmadiraju91/letter-runner', width / 2, height * 0.94);
 
     ctx.restore();
   }

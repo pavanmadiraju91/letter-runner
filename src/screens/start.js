@@ -196,13 +196,8 @@ export function renderStartScreen(ctx, width, height) {
 
     // Music hint
     ctx.font = "12px 'Courier New', monospace";
-    ctx.fillStyle = P.MID;
+    ctx.fillStyle = P.LIGHT;
     ctx.fillText(isMusicPlaying() ? '[Tab] Music Off' : '[Tab] Music On', width / 2, height * 0.89);
-
-    // Repo
-    ctx.font = "10px 'Courier New', monospace";
-    ctx.fillStyle = P.DIM;
-    ctx.fillText('github.com/pavanmadiraju91/letter-runner', width / 2, height * 0.95);
 
     ctx.restore();
   }
