@@ -2,8 +2,8 @@ import { getPalette } from '../core/theme.js';
 import { GAME, SPEED } from '../config.js';
 import { getCurrentSpeed } from '../systems/difficulty.js';
 
-const STAR_COUNT = 40;
-const COLORED_STAR_COUNT = 15;
+const STAR_COUNT = 60;
+const COLORED_STAR_COUNT = 30;
 const stars = [];
 const coloredStars = [];
 
@@ -30,13 +30,14 @@ function init(canvasWidth, canvasHeight) {
     });
   }
 
-  // Colored stars (faint blue, purple, red)
+  // Colored stars (vivid blue, purple, red)
   const starColors = [
-    'rgba(100, 150, 255, 0.6)',  // faint blue
-    'rgba(180, 100, 255, 0.5)',  // faint purple
-    'rgba(255, 100, 120, 0.5)',  // faint red
-    'rgba(80, 200, 255, 0.5)',   // faint cyan-blue
-    'rgba(200, 80, 255, 0.4)',   // faint violet
+    'rgba(120, 170, 255, 0.8)',  // blue
+    'rgba(200, 120, 255, 0.7)',  // purple
+    'rgba(255, 120, 140, 0.7)',  // red
+    'rgba(100, 220, 255, 0.7)',  // cyan-blue
+    'rgba(220, 100, 255, 0.7)',  // violet
+    'rgba(255, 200, 100, 0.6)',  // warm gold
   ];
   for (let i = 0; i < COLORED_STAR_COUNT; i++) {
     coloredStars.push({
@@ -49,11 +50,12 @@ function init(canvasWidth, canvasHeight) {
     });
   }
 
-  // Nebula blobs — very faint, large colored circles
+  // Nebula blobs — visible, richly saturated gradient circles
   nebulae.push(
-    { x: canvasWidth * 0.2, y: canvasHeight * 0.3, radius: 120, color: 'rgba(100, 40, 180, 1)', alpha: 0.03, speed: 0.002 },
-    { x: canvasWidth * 0.7, y: canvasHeight * 0.5, radius: 150, color: 'rgba(20, 40, 140, 1)', alpha: 0.04, speed: 0.001 },
-    { x: canvasWidth * 0.5, y: canvasHeight * 0.15, radius: 100, color: 'rgba(80, 20, 160, 1)', alpha: 0.025, speed: 0.003 }
+    { x: canvasWidth * 0.2, y: canvasHeight * 0.3, radius: 140, color: 'rgba(140, 50, 220, 1)', alpha: 0.08, speed: 0.002 },
+    { x: canvasWidth * 0.7, y: canvasHeight * 0.5, radius: 170, color: 'rgba(30, 60, 180, 1)', alpha: 0.09, speed: 0.001 },
+    { x: canvasWidth * 0.5, y: canvasHeight * 0.15, radius: 120, color: 'rgba(120, 30, 200, 1)', alpha: 0.07, speed: 0.003 },
+    { x: canvasWidth * 0.9, y: canvasHeight * 0.4, radius: 100, color: 'rgba(60, 30, 160, 1)', alpha: 0.06, speed: 0.0015 }
   );
 
   // Pre-allocate speed lines
@@ -95,11 +97,15 @@ export function renderBackground(ctx, bg, canvasWidth, canvasHeight) {
 
   init(canvasWidth, canvasHeight);
 
-  // Deep dark background
-  ctx.fillStyle = palette.BG || '#0a0a0f';
+  // Deep dark background with subtle vertical gradient
+  const bgGrad = ctx.createLinearGradient(0, 0, 0, canvasHeight);
+  bgGrad.addColorStop(0, '#080810');
+  bgGrad.addColorStop(0.6, '#0a0a14');
+  bgGrad.addColorStop(1, '#0e0e1c');
+  ctx.fillStyle = bgGrad;
   ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-  // Nebula blobs — very faint large gradient circles with slow parallax
+  // Nebula blobs — visible large gradient circles with slow parallax
   for (let i = 0; i < nebulae.length; i++) {
     const neb = nebulae[i];
     const nx = ((neb.x - bg.offset * neb.speed) % (canvasWidth + neb.radius * 2) + canvasWidth + neb.radius * 2) % (canvasWidth + neb.radius * 2) - neb.radius;
@@ -116,8 +122,8 @@ export function renderBackground(ctx, bg, canvasWidth, canvasHeight) {
   }
 
   // Regular white stars (very slow parallax)
-  ctx.fillStyle = palette.DIM || '#333';
-  ctx.globalAlpha = 0.35;
+  ctx.fillStyle = '#ffffff';
+  ctx.globalAlpha = 0.6;
   for (let i = 0; i < stars.length; i++) {
     const s = stars[i];
     const x = ((s.x - bg.offset * s.speed) % (canvasWidth * 3) + canvasWidth * 3) % (canvasWidth * 3);
