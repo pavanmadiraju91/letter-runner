@@ -1,5 +1,6 @@
 import { events } from '../core/events.js';
 import { AUDIO } from '../config.js';
+import { getScore } from './score.js';
 
 let audioCtx = null;
 let masterGain = null;
@@ -17,6 +18,9 @@ const BASE_PITCH = 440;
 const SEMITONE = 1.0595; // 12th root of 2
 const MAX_SEMITONES = 12; // one octave cap
 let currentStreakPitch = BASE_PITCH;
+
+// Milestone ding tracking
+let lastMilestone = 0;
 
 /**
  * Load the background music MP3 into an AudioBuffer.
@@ -94,6 +98,20 @@ export function createAudioSystem() {
     }
   });
 
+  // 100-point milestone ding
+  events.on('OBSTACLE_DESTROYED', () => {
+    // Import getScore inline to check milestone crossing
+    // We check after score is updated (this listener runs after score.js listener)
+    setTimeout(() => {
+      checkMilestone();
+    }, 0);
+  });
+
+  events.on('GAME_RESTART', () => {
+    lastMilestone = 0;
+    currentStreakPitch = BASE_PITCH;
+  });
+
   // Consolidated STATE_CHANGE listener: game-over sound + music control
   events.on('STATE_CHANGE', ({ state }) => {
     if (state === 'game_over') {
@@ -127,6 +145,42 @@ export function playPop(pitch) {
 
   osc.start(audioCtx.currentTime);
   try { osc.stop(audioCtx.currentTime + AUDIO.POP.duration); } catch (_) { /* Safari: already stopped */ }
+}
+
+/**
+ * Check if score crossed a 100-point milestone and play ding.
+ */
+function checkMilestone() {
+  const currentScore = getScore();
+  const currentMilestone = Math.floor(currentScore / 100);
+  if (currentMilestone > lastMilestone) {
+    lastMilestone = currentMilestone;
+    playDing();
+    events.emit('SCORE_MILESTONE', { score: currentScore, milestone: currentMilestone * 100 });
+  }
+}
+
+/**
+ * Play a high-pitched ding sound for score milestones.
+ * Distinct from playPop — higher pitch, slightly longer, triangle wave.
+ */
+export function playDing() {
+  if (!audioReady) return;
+
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = 'triangle';
+  osc.frequency.value = 1320; // E6 — distinctly higher than pop
+
+  gain.gain.setValueAtTime(0.8, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+
+  osc.connect(gain);
+  gain.connect(sfxGain);
+
+  osc.start(audioCtx.currentTime);
+  try { osc.stop(audioCtx.currentTime + 0.15); } catch (_) { /* Safari: already stopped */ }
 }
 
 /**
