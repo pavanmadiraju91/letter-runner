@@ -43,14 +43,15 @@ export function updateObstacles(pool, dt) {
 }
 
 /**
- * Release obstacles that have scrolled off the left edge.
- * Iterates in reverse since release modifies the active array.
+ * Release obstacles that have passed the player's X position.
+ * This is where the "miss" happens — the obstacle got past you.
  */
 export function cleanupOffscreen(pool) {
   const active = pool.getActive();
+  const playerX = getWidth() * GAME.PLAYER_X_PERCENT;
   for (let i = active.length - 1; i >= 0; i--) {
     const obs = active[i];
-    if (obs.x + obs.width < 0) {
+    if (obs.x + obs.width < playerX) {
       obs.active = false;
       events.emit('OBSTACLE_MISSED', {
         letter: obs.letter,

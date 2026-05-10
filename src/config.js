@@ -152,10 +152,10 @@ export const OBSTACLE_VFX = {
 };
 
 export const PLAYER = {
-  FRAME_COUNT: 8,
-  FRAME_DURATION: 0.1,  // seconds per frame (10 FPS animation)
-  BOB_AMPLITUDE: 1,     // 1px vertical bob
-  BOB_SPEED: 12,        // radians/sec for bob cycle
+  FRAME_COUNT: 10,
+  FRAME_DURATION: 0.08,  // seconds per frame (12.5 FPS animation)
+  BOB_AMPLITUDE: 2,      // 2px vertical bob
+  BOB_SPEED: 12,         // radians/sec for bob cycle
 };
 
 export const GAME = {
@@ -165,11 +165,11 @@ export const GAME = {
   SPAWN_INTERVAL: 2.0,
   MIN_OBSTACLE_GAP: 120,
   MAX_OBSTACLES: 4,
-  OBSTACLE_WIDTH: 48,
+  OBSTACLE_WIDTH: 52,
   OBSTACLE_HEIGHT: 56,
-  PLAYER_WIDTH: 32,
-  PLAYER_HEIGHT: 32,
-  GROUND_HEIGHT: 40,
+  PLAYER_WIDTH: 96,
+  PLAYER_HEIGHT: 96,
+  GROUND_HEIGHT: 80,
   PLAYER_X_PERCENT: 0.12,
   DANGER_ZONE_START: 0.3,
   STARTING_LIVES: 3,
