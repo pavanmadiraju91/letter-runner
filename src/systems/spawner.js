@@ -10,10 +10,7 @@ const DIGITS = '0123456789';
 /**
  * Get the character pool based on device type and current level.
  *
- * Desktop progression:
- *   Levels 1-3: uppercase only (simple start)
- *   Levels 4-7: uppercase + lowercase (case-sensitive)
- *   Levels 8+:  uppercase + lowercase + digits (extremely hard)
+ * Desktop: full pool from the start (uppercase + lowercase + digits, case randomized)
  *
  * Mobile progression (slower ramp, digits are super late):
  *   Levels 1-4: uppercase only
@@ -30,23 +27,19 @@ function getCharacterPool() {
     return LETTERS_UPPER;
   }
 
-  // Desktop
-  if (level >= 8) return LETTERS_UPPER + LETTERS_LOWER + DIGITS;
-  if (level >= 4) return LETTERS_UPPER + LETTERS_LOWER;
-  return LETTERS_UPPER;
+  // Desktop: everything available from start
+  return LETTERS_UPPER + DIGITS;
 }
 
 /**
  * Randomize case for a character.
- * Only applies when the pool includes lowercase (level 4+ desktop, 5+ mobile).
- * At early levels, always returns the character as-is (uppercase from pool).
+ * Desktop: always randomizes (case-sensitive from the start).
+ * Mobile: no case variation until level 5.
  */
 function randomizeCase(ch) {
   const level = getLevel();
   // Mobile: no case variation until level 5
   if (isTouchDevice && level < 5) return ch;
-  // Desktop: no case variation until level 4
-  if (!isTouchDevice && level < 4) return ch;
   // If character is uppercase letter, 50/50 flip to lowercase
   if (ch >= 'A' && ch <= 'Z') {
     return Math.random() < 0.5 ? ch.toLowerCase() : ch;
