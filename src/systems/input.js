@@ -44,9 +44,9 @@ export function initInput() {
     if (key.length === 1) {
       const upper = key.toUpperCase();
       if ((upper >= 'A' && upper <= 'Z') || (key >= '0' && key <= '9')) {
-        // Mobile early levels: force uppercase (no case sensitivity yet)
+        // Mobile early levels: force lowercase (phone keyboard default state)
         if (isTouchDevice && currentLevel < 5) {
-          key = key.toUpperCase();
+          key = key.toLowerCase();
         }
         pressed.add(key);
         events.emit('KEY_PRESS', { key });
@@ -68,9 +68,9 @@ export function initInput() {
         let key = value[value.length - 1];
         const upper = key.toUpperCase();
         if ((upper >= 'A' && upper <= 'Z') || (key >= '0' && key <= '9')) {
-          // Mobile early levels: force uppercase (no case sensitivity)
+          // Mobile early levels: force lowercase (phone keyboard default)
           if (isTouchDevice && currentLevel < 5) {
-            key = key.toUpperCase();
+            key = key.toLowerCase();
           }
           events.emit('KEY_PRESS', { key });
         }

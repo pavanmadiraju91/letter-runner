@@ -85,18 +85,24 @@ export const SCORE = {
 };
 
 export const DIFFICULTY = {
-  DESTROYS_PER_LEVEL: 10,       // DIFF-01: new level every 10 destroys
-  MAX_OBSTACLES_CAP: 4,         // DIFF-06: absolute max on screen
+  DESTROYS_PER_LEVEL: 5,          // Level up every 5 destroys (fast progression, many levels)
+  MAX_OBSTACLES_CAP: 4,
 
-  // Tier definitions: complexity gates only (speed is time-based via SPEED config)
-  // Each tier: { maxObstacles, multiplier, tallObstacles }
+  // Tiers: smoother ramp with more levels (each ~half the jump of before)
+  // Level 1-12 have explicit tiers, beyond that scales logarithmically
   TIERS: [
-    { maxObstacles: 2, multiplier: 1, tallObstacles: false },
-    { maxObstacles: 2, multiplier: 1.5, tallObstacles: false },
-    { maxObstacles: 2, multiplier: 1.5, tallObstacles: false },
-    { maxObstacles: 2, multiplier: 2, tallObstacles: true },
-    { maxObstacles: 2, multiplier: 2, tallObstacles: true },
-    { maxObstacles: 3, multiplier: 3, tallObstacles: true },
+    { maxObstacles: 1, multiplier: 1.0, tallObstacles: false },   // L1: gentle intro
+    { maxObstacles: 1, multiplier: 1.2, tallObstacles: false },   // L2: slightly faster rewards
+    { maxObstacles: 2, multiplier: 1.3, tallObstacles: false },   // L3: second obstacle appears
+    { maxObstacles: 2, multiplier: 1.5, tallObstacles: false },   // L4: case-sensitive on desktop
+    { maxObstacles: 2, multiplier: 1.7, tallObstacles: false },   // L5: mobile case-sensitive
+    { maxObstacles: 2, multiplier: 2.0, tallObstacles: true },    // L6: tall obstacles
+    { maxObstacles: 2, multiplier: 2.2, tallObstacles: true },    // L7: combos start
+    { maxObstacles: 3, multiplier: 2.5, tallObstacles: true },    // L8: 3 obstacles, digits on desktop
+    { maxObstacles: 3, multiplier: 3.0, tallObstacles: true },    // L9: intense
+    { maxObstacles: 3, multiplier: 3.5, tallObstacles: true },    // L10: 4-letter combos
+    { maxObstacles: 4, multiplier: 4.0, tallObstacles: true },    // L11: max obstacles
+    { maxObstacles: 4, multiplier: 5.0, tallObstacles: true },    // L12: digits on mobile, peak
   ],
 
   // Logarithmic scaling for levels beyond tier table (DIFF-09)

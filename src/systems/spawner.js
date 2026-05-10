@@ -10,21 +10,21 @@ const DIGITS = '0123456789';
 /**
  * Get the character pool based on device type and current level.
  *
- * Desktop: full pool from the start (uppercase + lowercase + digits, case randomized)
+ * Desktop: full pool from the start (uppercase + digits, case randomized)
  *
- * Mobile progression (slower ramp, digits are super late):
- *   Levels 1-4: uppercase only
- *   Levels 5-8: uppercase + lowercase
- *   Levels 9-11: uppercase + lowercase (more combos, no digits)
- *   Levels 12+: uppercase + lowercase + digits (extreme)
+ * Mobile progression (starts with lowercase since that's phone keyboard default):
+ *   Levels 1-4: lowercase only (easiest — default keyboard state)
+ *   Levels 5-8: lowercase + uppercase (case-sensitive)
+ *   Levels 9-11: lowercase + uppercase (more combos, no digits)
+ *   Levels 12+: lowercase + uppercase + digits (extreme)
  */
 function getCharacterPool() {
   const level = getLevel();
 
   if (isTouchDevice) {
-    if (level >= 12) return LETTERS_UPPER + LETTERS_LOWER + DIGITS;
-    if (level >= 5) return LETTERS_UPPER + LETTERS_LOWER;
-    return LETTERS_UPPER;
+    if (level >= 12) return LETTERS_LOWER + LETTERS_UPPER + DIGITS;
+    if (level >= 5) return LETTERS_LOWER + LETTERS_UPPER;
+    return LETTERS_LOWER;
   }
 
   // Desktop: everything available from start
@@ -34,17 +34,17 @@ function getCharacterPool() {
 /**
  * Randomize case for a character.
  * Desktop: always randomizes (case-sensitive from the start).
- * Mobile: no case variation until level 5.
+ * Mobile: no case variation until level 5 (stays lowercase).
  */
 function randomizeCase(ch) {
   const level = getLevel();
-  // Mobile: no case variation until level 5
+  // Mobile: no case variation until level 5 (pool is already lowercase)
   if (isTouchDevice && level < 5) return ch;
   // If character is uppercase letter, 50/50 flip to lowercase
   if (ch >= 'A' && ch <= 'Z') {
     return Math.random() < 0.5 ? ch.toLowerCase() : ch;
   }
-  return ch; // digits unchanged
+  return ch; // digits and already-lowercase unchanged
 }
 
 /**
