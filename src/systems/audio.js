@@ -12,6 +12,12 @@ let musicEnabled = false;
 let musicBuffer = null;
 let musicSource = null;
 
+// Streak pitch tracking
+const BASE_PITCH = 440;
+const SEMITONE = 1.0595; // 12th root of 2
+const MAX_SEMITONES = 12; // one octave cap
+let currentStreakPitch = BASE_PITCH;
+
 /**
  * Load the background music MP3 into an AudioBuffer.
  */
@@ -74,9 +80,19 @@ export function createAudioSystem() {
   });
 
   // Wire sound effects to game events
-  events.on('OBSTACLE_DESTROYED', () => { playPop(); });
+  events.on('OBSTACLE_DESTROYED', () => { playPop(currentStreakPitch); });
   events.on('LIFE_LOST', () => { playThud(); });
   events.on('LEVEL_UP', () => { playLevelUp(); });
+
+  // Track streak for rising pitch
+  events.on('COMBO_UPDATE', ({ streak }) => {
+    if (streak === 0) {
+      currentStreakPitch = BASE_PITCH;
+    } else {
+      const semitones = Math.min(streak - 1, MAX_SEMITONES);
+      currentStreakPitch = BASE_PITCH * Math.pow(SEMITONE, semitones);
+    }
+  });
 
   // Consolidated STATE_CHANGE listener: game-over sound + music control
   events.on('STATE_CHANGE', ({ state }) => {
@@ -92,15 +108,16 @@ export function createAudioSystem() {
 /**
  * Play a short pop sound (AUD-01).
  * Used for correct letter matches / obstacle destroyed.
+ * @param {number} [pitch] - Frequency in Hz (defaults to AUDIO.POP.freq)
  */
-export function playPop() {
+export function playPop(pitch) {
   if (!audioReady) return;
 
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
 
   osc.type = AUDIO.POP.type;
-  osc.frequency.value = AUDIO.POP.freq;
+  osc.frequency.value = pitch || AUDIO.POP.freq;
 
   gain.gain.setValueAtTime(1, audioCtx.currentTime);
   gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + AUDIO.POP.duration);
