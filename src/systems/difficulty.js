@@ -92,7 +92,7 @@ export function resetDifficulty() {
 
 /**
  * Get current difficulty parameters based on level.
- * Speed is now continuous (time-based); other params remain tier-based.
+ * Speed and spawn interval are continuous (time-based); other params remain tier-based.
  * @returns {{ scrollSpeed: number, spawnInterval: number, maxObstacles: number, multiplier: number, tallObstacles: boolean }}
  */
 export function getDifficultyParams() {
@@ -107,11 +107,6 @@ export function getDifficultyParams() {
     const logFactor = Math.log(overflow + 1);
 
     tierParams = {
-      scrollSpeed: baseTier.scrollSpeed,
-      spawnInterval: Math.max(
-        DIFFICULTY.MIN_SPAWN_INTERVAL,
-        baseTier.spawnInterval - DIFFICULTY.LOG_SPAWN_FACTOR * logFactor
-      ),
       maxObstacles: Math.min(
         DIFFICULTY.MAX_OBSTACLES_CAP,
         baseTier.maxObstacles + (overflow >= 3 ? 1 : 0)
@@ -121,8 +116,17 @@ export function getDifficultyParams() {
     };
   }
 
-  // Override speed with continuous time-based speed
-  tierParams.scrollSpeed = getCurrentSpeed();
+  // Speed is continuous (time-based)
+  const speed = getCurrentSpeed();
+  tierParams.scrollSpeed = speed;
+
+  // Spawn interval derived from speed: inversely proportional
+  // At BASE_SPEED (140): 2.5s. At MAX_SPEED (280): 1.25s. Floor at 0.8s.
+  tierParams.spawnInterval = Math.max(
+    SPEED.MIN_SPAWN_INTERVAL,
+    SPEED.BASE_SPAWN_INTERVAL * (SPEED.BASE_SPEED / speed)
+  );
+
   return tierParams;
 }
 

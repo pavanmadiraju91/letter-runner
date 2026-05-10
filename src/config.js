@@ -48,32 +48,20 @@ export const DIFFICULTY = {
   DESTROYS_PER_LEVEL: 10,       // DIFF-01: new level every 10 destroys
   MAX_OBSTACLES_CAP: 4,         // DIFF-06: absolute max on screen
 
-  // Tier definitions (DIFF-02 through DIFF-05)
-  // Each tier: { scrollSpeed, spawnInterval, maxObstacles, multiplier, tallObstacles }
+  // Tier definitions: complexity gates only (speed is time-based via SPEED config)
+  // Each tier: { maxObstacles, multiplier, tallObstacles }
   TIERS: [
-    // Level 1 (index 0): slow, approachable
-    { scrollSpeed: 140, spawnInterval: 2.5, maxObstacles: 1, multiplier: 1, tallObstacles: false },
-    // Level 2 (index 1): medium
-    { scrollSpeed: 180, spawnInterval: 2.0, maxObstacles: 2, multiplier: 1.5, tallObstacles: false },
-    // Level 3 (index 2): medium+
-    { scrollSpeed: 210, spawnInterval: 1.7, maxObstacles: 2, multiplier: 1.5, tallObstacles: false },
-    // Level 4 (index 3): fast, tall obstacles introduced
-    { scrollSpeed: 250, spawnInterval: 1.4, maxObstacles: 2, multiplier: 2, tallObstacles: true },
-    // Level 5 (index 4): fast+
-    { scrollSpeed: 280, spawnInterval: 1.2, maxObstacles: 2, multiplier: 2, tallObstacles: true },
-    // Level 6+ (index 5): very fast — used as base for logarithmic scaling beyond
-    { scrollSpeed: 310, spawnInterval: 1.0, maxObstacles: 3, multiplier: 3, tallObstacles: true },
+    { maxObstacles: 1, multiplier: 1, tallObstacles: false },
+    { maxObstacles: 2, multiplier: 1.5, tallObstacles: false },
+    { maxObstacles: 2, multiplier: 1.5, tallObstacles: false },
+    { maxObstacles: 2, multiplier: 2, tallObstacles: true },
+    { maxObstacles: 2, multiplier: 2, tallObstacles: true },
+    { maxObstacles: 3, multiplier: 3, tallObstacles: true },
   ],
 
   // Logarithmic scaling for levels beyond tier table (DIFF-09)
-  // Beyond TIERS.length, values scale logarithmically:
-  //   scrollSpeed += LOG_SPEED_FACTOR * ln(level - TIERS.length + 1)
-  //   spawnInterval -= LOG_SPAWN_FACTOR * ln(level - TIERS.length + 1)  (min 0.6)
-  //   multiplier += LOG_MULT_FACTOR * ln(level - TIERS.length + 1)
-  LOG_SPEED_FACTOR: 20,
-  LOG_SPAWN_FACTOR: 0.08,
+  // Beyond TIERS.length, multiplier scales logarithmically
   LOG_MULT_FACTOR: 0.5,
-  MIN_SPAWN_INTERVAL: 0.6,
 };
 
 export const PARTICLES = {
@@ -99,6 +87,8 @@ export const SPEED = {
   ACCELERATION: 2.0,        // px/s gained per second of play
   WARMUP_TIME: 2.0,         // seconds before first obstacle may spawn
   MIN_REACTION_MS: 200,     // ms guaranteed reaction time for gap calculation
+  BASE_SPAWN_INTERVAL: 2.5, // seconds between spawns at BASE_SPEED
+  MIN_SPAWN_INTERVAL: 0.8,  // floor — never spawn faster than this
 };
 
 export const GAME = {
