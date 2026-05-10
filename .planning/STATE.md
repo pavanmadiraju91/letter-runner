@@ -3,8 +3,8 @@
 ## Current Status
 
 **Active milestone:** v1.1 Polish & Depth
-**Active phase:** Phase 12 (Speed & Difficulty) — complete
-**Last action:** Completed 12-02-PLAN.md (spawn pacing & engagement tuning)
+**Active phase:** Phase 13 (Multi-Letter Combos) — in progress
+**Last action:** Completed 13-01-PLAN.md (combo config & obstacle factory)
 **Last updated:** 2026-05-10
 
 ## Project Reference
@@ -20,12 +20,12 @@ See: .planning/PROJECT.md (updated 2026-05-10)
 |-------|--------|
 | 11. Cleanup | Complete (1/1 plans) |
 | 12. Speed & Difficulty | Complete (2/2 plans) |
-| 13. Multi-Letter Combos | Not started |
+| 13. Multi-Letter Combos | In progress (1/3 plans) |
 | 14. Audio | Not started |
 | 15. Visual Polish | Not started |
 | 16. Theme | Not started |
 
-Progress: [███░░░░░░░░░░░░] 20% (3/15 plans)
+Progress: [████░░░░░░░░░░░] 27% (4/15 plans)
 
 ## Performance Metrics
 
@@ -35,9 +35,9 @@ Progress: [███░░░░░░░░░░░░] 20% (3/15 plans)
 - Total execution time: ~20 minutes
 
 **v1.1 Velocity:**
-- Plans completed: 3
-- Average duration: <2 min
-- Total execution time: <5 min
+- Plans completed: 4
+- Average duration: ~80 seconds
+- Total execution time: <6 min
 
 ## Accumulated Context
 
@@ -55,6 +55,8 @@ Progress: [███░░░░░░░░░░░░] 20% (3/15 plans)
 - Spawn interval inversely proportional to speed: 2.5*(140/speed), floor 0.8s (Phase 12)
 - TIERS simplified to complexity gates only (maxObstacles, multiplier, tallObstacles) (Phase 12)
 - Multi-letter combos: sequential state machine, no input queue (Phase 13)
+- Combo field coexistence: legacy `letter` for singles, `letters[]` for combos (Phase 13)
+- Combo fallback: if not enough unique letters, gracefully degrade to single-letter (Phase 13)
 - Glow: replace shadowBlur with screen-blend pre-rendered sprites (Phase 15)
 - Leaderboard removed entirely — personal best via storage.js is sufficient (Phase 11)
 
@@ -74,4 +76,9 @@ None.
 - v1.1 roadmap: 6 phases (11-16), 36 requirements, 15 plans
 - Phase 11 complete: leaderboard removed, game-over simplified
 - Phase 12 complete: continuous speed (140->280), warmup gate, dynamic gap, spawn pacing
-- Next step: Phase 13 (multi-letter combos) — sequential state machine for combo words
+- Phase 13-01 complete: COMBO config, obstacle factory combo fields, level-gated spawner
+- Next step: Phase 13-02 (combo input handling / state machine)
+
+Last session: 2026-05-10T08:30:50Z
+Stopped at: Completed 13-01-PLAN.md
+Resume file: None
