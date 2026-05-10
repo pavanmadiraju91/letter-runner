@@ -13,8 +13,10 @@ export function initCanvas() {
 
 function resize() {
   const dpr = window.devicePixelRatio || 1;
-  width = window.innerWidth;
-  height = window.innerHeight;
+  // Use visualViewport if available (shrinks when mobile keyboard is open)
+  const vv = window.visualViewport;
+  width = vv ? vv.width : window.innerWidth;
+  height = vv ? vv.height : window.innerHeight;
 
   canvas.width = width * dpr;
   canvas.height = height * dpr;

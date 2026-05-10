@@ -2,37 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="dark light">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="color-scheme" content="dark">
   <title>Letter Runner</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #0a0a0f; }
-    @media (prefers-color-scheme: light) {
-      html, body { background: #f4f4fa; }
-    }
     canvas {
       display: block;
       image-rendering: pixelated;
       image-rendering: -moz-crisp-edges;
       -webkit-image-rendering: crisp-edges;
     }
+    #github-link {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      color: #667788; font-family: 'Courier New', monospace; font-size: 11px;
+      text-decoration: none; z-index: 10; transition: color 0.2s, opacity 0.3s;
+    }
+    #github-link:hover { color: #00ffcc; }
+    #github-link.hidden { opacity: 0; pointer-events: none; }
+    #mobile-input {
+      position: fixed; top: -100px; left: 0; width: 1px; height: 1px; opacity: 0;
+      z-index: -1; font-size: 16px;
+    }
   </style>
 </head>
 <body>
   <canvas id="game"></canvas>
-  <input id="mobile-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off"
-         style="position:fixed; top:0; left:0; width:1px; height:1px; opacity:0; z-index:-1;"
-         inputmode="text">
-  <a id="github-link" href="https://github.com/pavanmadiraju91/letter-runner" target="_blank"
-     style="position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
-     color:#667788; font-family:'Courier New',monospace; font-size:11px; text-decoration:none; z-index:10;
-     transition: color 0.2s;">
-     github.com/pavanmadiraju91/letter-runner
+  <input id="mobile-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" inputmode="text">
+  <a id="github-link" href="https://github.com/pavanmadiraju91/letter-runner" target="_blank">
+    github.com/pavanmadiraju91/letter-runner
   </a>
-  <style>
-    #github-link:hover { color: #00ffcc; }
-  </style>
   <script type="module" src="/src/main.js"></script>
 </body>
 </html>

@@ -111,6 +111,28 @@ events.on('KEY_PRESS', () => {
   }
 });
 
+// Show/hide GitHub link based on game state (only visible on menu + game over)
+const githubLink = document.getElementById('github-link');
+events.on('STATE_CHANGE', ({ state }) => {
+  if (state === STATES.PLAYING) {
+    githubLink.classList.add('hidden');
+  } else {
+    githubLink.classList.remove('hidden');
+  }
+});
+
+// Mobile: handle virtual keyboard covering the game by using visualViewport
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', () => {
+    const vv = window.visualViewport;
+    const canvas = document.getElementById('game');
+    canvas.style.height = vv.height + 'px';
+    canvas.style.width = vv.width + 'px';
+    // Trigger canvas resize logic
+    window.dispatchEvent(new Event('resize'));
+  });
+}
+
 function update(dt) {
   updateFPS(dt);
 
