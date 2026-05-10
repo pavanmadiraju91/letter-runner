@@ -3,8 +3,8 @@
 ## Current Status
 
 **Active milestone:** v1.1 Polish & Depth
-**Active phase:** Phase 15 (Visual Polish) — complete
-**Last action:** Completed 15-02-PLAN.md (Obstacle Glow & Readability)
+**Active phase:** Phase 16 (Theme) — in progress
+**Last action:** Completed 16-01-PLAN.md (Theme Detection & Dual Palettes)
 **Last updated:** 2026-05-10
 
 ## Project Reference
@@ -23,9 +23,9 @@ See: .planning/PROJECT.md (updated 2026-05-10)
 | 13. Multi-Letter Combos | Complete (3/3 plans) |
 | 14. Audio | Complete (1/1 plans) |
 | 15. Visual Polish | Complete (2/2 plans) |
-| 16. Theme | Not started |
+| 16. Theme | In progress (1/? plans) |
 
-Progress: [█████████░░░░░░] 60% (9/15 plans)
+Progress: [██████████░░░░░] 67% (10/15 plans)
 
 ## Performance Metrics
 
@@ -35,9 +35,9 @@ Progress: [█████████░░░░░░] 60% (9/15 plans)
 - Total execution time: ~20 minutes
 
 **v1.1 Velocity:**
-- Plans completed: 9
+- Plans completed: 10
 - Average duration: ~60 seconds
-- Total execution time: <10 min
+- Total execution time: ~10 min
 
 ## Accumulated Context
 
@@ -66,6 +66,9 @@ Progress: [█████████░░░░░░] 60% (9/15 plans)
 - Obstacle letters: 26px bold monospace with 3px black strokeText outline (Phase 15)
 - Danger-zone pulse: sin-wave alpha at 0.01 rad/ms, range [0.4, 0.8] (Phase 15)
 - Leaderboard removed entirely — personal best via storage.js is sufficient (Phase 11)
+- Theme: COLORS.PALETTE kept as backward-compat reference to PALETTE_DARK (Phase 16)
+- Theme: matchMedia listener for reactive system-preference detection (Phase 16)
+- Theme: getPalette() accessor returns active palette, getBG() returns active background color (Phase 16)
 
 ### Pending Todos
 
@@ -74,9 +77,9 @@ None.
 ### Blockers/Concerns
 
 - MP3 track (1.7MB) will push total assets above 500KB — acceptable for v1.1
-- System dark/light detection needs testing across browsers (Phase 16)
-- Light mode glow effects require different rendering approach (Phase 16)
-- Screen-blend glow color (#ff2266) may need light-mode variant (Phase 16)
+- Light mode glow effects require different rendering approach (Phase 16 — next plan)
+- Screen-blend glow color (#ff2266) has light-mode variant (#cc2255) in PALETTE_LIGHT
+- Existing COLORS.PALETTE consumers still use dark palette — need migration to getPalette()
 
 ## Context for Next Session
 
@@ -87,8 +90,10 @@ None.
 - Phase 13 complete: combo config, factory, input matching, rendering, scoring
 - Phase 14 complete: MP3 background music replaces procedural oscillator
 - Phase 15 complete: sprite animation, parallax bg, screen-blend glow, danger pulse, letter outlines
-- Next step: Phase 16 (Theme)
+- Phase 16 in progress: theme detection and dual palettes done, consumer migration next
+- src/core/theme.js: initTheme(), getTheme(), getPalette(), getBG()
+- src/config.js: PALETTE_DARK, PALETTE_LIGHT as named exports; COLORS.PALETTE = PALETTE_DARK
 
-Last session: 2026-05-10T08:42:45Z
-Stopped at: Completed 15-02-PLAN.md
+Last session: 2026-05-10T08:48:40Z
+Stopped at: Completed 16-01-PLAN.md
 Resume file: None
