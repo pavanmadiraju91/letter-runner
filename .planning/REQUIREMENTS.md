@@ -1,189 +1,133 @@
-# Requirements: Letter Runner
+# Requirements: Letter Runner v1.1
 
-**Defined:** 2026-05-09
+**Defined:** 2026-05-10
 **Core Value:** The game must feel immediately fun — start instantly, see letters clearly, press keys satisfyingly, and feel difficulty rising in a way that challenges without frustrating.
+**Milestone:** v1.1 Polish & Depth
 
-## v1 Requirements
+## v1.1 Requirements
 
-### Core Loop
+### Removal
 
-- [ ] **LOOP-01**: Player character runs automatically left-to-right on a side-scrolling ground plane
-- [ ] **LOOP-02**: Obstacles scroll toward player from right edge at speed determined by current level
-- [ ] **LOOP-03**: Each obstacle displays a single uppercase letter (A–Z) clearly visible before reaching danger zone
-- [ ] **LOOP-04**: Player presses matching key while obstacle is in danger zone (right half of screen) to destroy it
-- [ ] **LOOP-05**: Destroyed obstacle awards +10 × current level multiplier points
-- [ ] **LOOP-06**: Obstacle crossing player's X position without being destroyed costs one life
-- [ ] **LOOP-07**: Player starts with 3 lives; losing all 3 triggers Game Over
-- [ ] **LOOP-08**: No way to gain extra lives mid-run
-- [ ] **LOOP-09**: Survival bonus of +1 point per second of active play
-- [ ] **LOOP-10**: Wrong key press has no effect (no penalty, no feedback) at levels 1–3
-- [ ] **LOOP-11**: Wrong key press introduces a small input delay penalty at level 4+
+- [ ] **REM-01**: Remove leaderboard UI from game-over screen
+- [ ] **REM-02**: Remove name entry (3-char initials) from game-over flow
+- [ ] **REM-03**: Remove leaderboard.js module and all references
+- [ ] **REM-04**: Game-over screen shows only: final score, personal best, delta, "Play again" prompt
 
-### Difficulty Progression
+### Multi-Letter Combos
 
-- [ ] **DIFF-01**: New level reached every 10 obstacles destroyed (not spawned)
-- [ ] **DIFF-02**: Level 1: slow scroll, 1 obstacle at a time, ×1 multiplier
-- [ ] **DIFF-03**: Levels 2–3: medium scroll, 1–2 obstacles, ×1.5 multiplier
-- [ ] **DIFF-04**: Levels 4–5: fast scroll, 2 obstacles, ×2 multiplier, tall obstacles introduced
-- [ ] **DIFF-05**: Level 6+: very fast scroll, 2–3 obstacles, ×3+ multiplier, obstacles at 2 heights
-- [ ] **DIFF-06**: Up to 4 simultaneous on-screen obstacles maximum
-- [ ] **DIFF-07**: All visible obstacles have unique letters (no repeats among on-screen obstacles)
-- [ ] **DIFF-08**: Letter selection is random with no repeats among currently visible obstacles
-- [ ] **DIFF-09**: Difficulty curve follows logarithmic progression (not linear) per research recommendation
+- [ ] **COMBO-01**: At level 4+, some obstacles display 2-letter sequences (e.g., "XY")
+- [ ] **COMBO-02**: At level 7+, some obstacles display 3-letter sequences (e.g., "ABC")
+- [ ] **COMBO-03**: Combo obstacles are wider blocks with individual letter cells
+- [ ] **COMBO-04**: Letters in combo must be typed left-to-right in sequence
+- [ ] **COMBO-05**: Completed letters highlight green, next target pulses yellow, pending shows red
+- [ ] **COMBO-06**: Wrong key mid-sequence resets progress to 0 and triggers wrong-key penalty
+- [ ] **COMBO-07**: Combo scoring: 2.5x multiplier for 2-letter, 4x for 3-letter
+- [ ] **COMBO-08**: Max 1 combo obstacle on screen at a time
+- [ ] **COMBO-09**: All letters across all obstacles (single + combo) remain globally unique
 
-### Screens & UI
+### Speed & Difficulty
 
-- [ ] **UI-01**: Start screen with game logo and tagline
-- [ ] **UI-02**: Start screen shows "Press any key to start" prompt
-- [ ] **UI-03**: Start screen displays current personal best (from localStorage)
-- [ ] **UI-04**: Start screen displays top global score placeholder
-- [ ] **UI-05**: In-game HUD: score (top-left)
-- [ ] **UI-06**: In-game HUD: current level (top-center)
-- [ ] **UI-07**: In-game HUD: lives as heart icons (top-right)
-- [ ] **UI-08**: Level-up announcement: large centered text fades out in ~1.5s
-- [ ] **UI-09**: Game Over screen: final score, personal best, and delta from personal best
-- [ ] **UI-10**: Game Over screen: leaderboard showing top 10 with initials and score (mocked data)
-- [ ] **UI-11**: Game Over screen: name entry (3-character initials) if score is in top 10
-- [ ] **UI-12**: Game Over screen: "Play again" CTA
-- [ ] **UI-13**: Death-to-play restart under 1 second (one key press to restart)
-
-### Visual Style & Effects
-
-- [ ] **VFX-01**: Pixel-art aesthetic with neon-on-dark colour palette
-- [ ] **VFX-02**: Player character as 16×16 pixel sprite
-- [ ] **VFX-03**: Obstacles as chunky rectangular blocks with letter in contrasting colour
-- [ ] **VFX-04**: Correct key: obstacle shatters into particle fragments
-- [ ] **VFX-05**: Correct key: brief white flash on the player character
-- [ ] **VFX-06**: Life lost: screen red-flash for ~200ms
-- [ ] **VFX-07**: Life lost: life heart icon dims
-- [ ] **VFX-08**: Level up: full-screen overlay text fades in/out
-- [ ] **VFX-09**: Particle system capped at 30 active particles
-- [ ] **VFX-10**: Skip particle effects if frame rate drops below 30fps
+- [ ] **SPD-01**: Speed progression follows Chrome dino pattern: linear acceleration with hard cap at 2x starting speed
+- [ ] **SPD-02**: Starting obstacle speed calibrated for 300ms+ reaction time (comfortable for average typists)
+- [ ] **SPD-03**: Max speed requires ~150ms reaction time (challenging for good typists, not impossible)
+- [ ] **SPD-04**: Speed increase is 0.001 per pixel traveled (Chrome dino coefficient)
+- [ ] **SPD-05**: Minimum gap between obstacles guarantees fairness (physically possible to react)
+- [ ] **SPD-06**: First obstacle doesn't appear until 2 seconds into a run (Chrome dino warm-up)
+- [ ] **SPD-07**: Target peak engagement window: 30-60 seconds per run before most deaths
 
 ### Audio
 
-- [ ] **AUD-01**: Correct key press: short satisfying "pop" sound
-- [ ] **AUD-02**: Obstacle passes player: lower "thud" sound
-- [ ] **AUD-03**: Game over: descending tone
-- [ ] **AUD-04**: Optional lo-fi background loop, muted by default
-- [ ] **AUD-05**: Audio respects browser autoplay policy (resume AudioContext on first user interaction)
-- [ ] **AUD-06**: Level-up: optional upbeat jingle
+- [ ] **MUS-01**: Background music plays "Tension Pixels.mp3" from public/ folder
+- [ ] **MUS-02**: Music volume is low (15-20% of max) so it's not annoying
+- [ ] **MUS-03**: Music is muted by default, toggle with M key (same as before)
+- [ ] **MUS-04**: Music loops seamlessly
+- [ ] **MUS-05**: Remove procedural oscillator background music (replaced by MP3)
 
-### Technical
+### Visual Polish
 
-- [ ] **TECH-01**: Built with HTML5 Canvas + vanilla JavaScript (no frameworks)
-- [ ] **TECH-02**: Game loop runs at 60fps using requestAnimationFrame with delta-time
-- [ ] **TECH-03**: All assets (sprites, fonts, audio) under 500KB total uncompressed
-- [ ] **TECH-04**: Playable within 2 seconds of page load on 10Mbps connection
-- [ ] **TECH-05**: Works in Chrome, Firefox, Safari, Edge (latest 2 versions)
-- [ ] **TECH-06**: Minimum viewport 800×400px with responsive canvas scaling
-- [ ] **TECH-07**: Keyboard input via keydown events, normalise to uppercase
-- [ ] **TECH-08**: Personal best stored in localStorage
-- [ ] **TECH-09**: Game pauses when browser tab/window loses focus
-- [ ] **TECH-10**: Deployable as static files to GitHub Pages or Netlify
-- [ ] **TECH-11**: Object pooling for obstacles and particles (no GC during gameplay)
-- [ ] **TECH-12**: DPR-aware canvas rendering (crisp on retina displays)
+- [ ] **VIS-01**: Player sprite has 2-4 frame run animation cycle
+- [ ] **VIS-02**: Parallax background (distant stars at 10% speed, grid lines at 30%)
+- [ ] **VIS-03**: Obstacle letters pulse/glow when entering danger zone
+- [ ] **VIS-04**: Replace shadowBlur glow with screen-blend technique (performance)
+- [ ] **VIS-05**: Increase letter font to 26-28px bold with dark outline for readability at speed
+- [ ] **VIS-06**: 1px vertical bob on player sprite during run cycle
 
-## v2 Requirements
+### Theme
 
-### Social & Sharing
+- [ ] **THM-01**: Detect system color scheme preference (prefers-color-scheme)
+- [ ] **THM-02**: Dark mode: keep existing neon-on-dark palette
+- [ ] **THM-03**: Light mode: alternate palette — dark text on light background, muted neon accents
+- [ ] **THM-04**: Theme switches reactively if system preference changes mid-session
+- [ ] **THM-05**: All screens (start, game-over, HUD) adapt to current theme
+
+## Future Requirements
+
+### Deferred to v2.0
 
 - **SOCL-01**: Share button copies score text snippet to clipboard
-- **SOCL-02**: Real leaderboard backend (Firebase or KV store)
-- **SOCL-03**: Global leaderboard — top 100 entries retained
-- **SOCL-04**: Daily challenge mode (same letter seed for all players)
-
-### Polish
-
+- **SOCL-02**: Real leaderboard backend
+- **SOCL-03**: Daily challenge mode (same letter seed for all players)
 - **POL-01**: Multiple character skins
-- **POL-02**: Screen shake on damage (subtle)
-- **POL-03**: Combo system with escalating visual feedback
-- **POL-04**: Post-run typing stats (WPM, accuracy)
+- **POL-02**: Screen shake on damage
+- **POL-03**: Post-run typing stats (WPM, accuracy)
+- **WORD-01**: Real word obstacles (not just random combos)
 
 ## Out of Scope
 
 | Feature | Reason |
 |---------|--------|
-| Mobile / touch support | Desktop keyboard game — touch adds complexity with no v1 gain |
-| Multiplayer / co-op | Single-player is the core experience |
-| Power-ups / abilities | Keep the loop pure: type to destroy |
-| Multi-letter / word obstacles | Single keys only for v1, words add complexity to input handling |
-| Offline / PWA mode | Unnecessary for a web game with no account |
-| Account system / login | localStorage is sufficient for v1 |
-| Tutorial / onboarding flow | Game teaches itself in <10 seconds (research confirms) |
-| Monetization | Not relevant for v1 |
+| Real leaderboard backend | Removed for simplicity — local PB is sufficient |
+| Mobile / touch | Desktop keyboard game |
+| Word obstacles (real words) | Only short random combos for v1.1 |
+| Combo length > 3 | Diminishing returns, too hard to read at speed |
+| Music selection / multiple tracks | One track is enough for v1.1 |
 
 ## Traceability
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| LOOP-01 | 2 | Complete |
-| LOOP-02 | 2 | Complete |
-| LOOP-03 | 2 | Complete |
-| LOOP-04 | 2 | Complete |
-| LOOP-05 | 4 | Complete |
-| LOOP-06 | 3 | Complete |
-| LOOP-07 | 3 | Complete |
-| LOOP-08 | 3 | Complete |
-| LOOP-09 | 4 | Complete |
-| LOOP-10 | 3 | Complete |
-| LOOP-11 | 3 | Complete |
-| DIFF-01 | 5 | Complete |
-| DIFF-02 | 5 | Complete |
-| DIFF-03 | 5 | Complete |
-| DIFF-04 | 5 | Complete |
-| DIFF-05 | 5 | Complete |
-| DIFF-06 | 5 | Complete |
-| DIFF-07 | 5 | Complete |
-| DIFF-08 | 5 | Complete |
-| DIFF-09 | 5 | Complete |
-| UI-01 | 6 | Complete |
-| UI-02 | 6 | Complete |
-| UI-03 | 6 | Complete |
-| UI-04 | 6 | Complete |
-| UI-05 | 4 | Complete |
-| UI-06 | 4 | Complete |
-| UI-07 | 4 | Complete |
-| UI-08 | 6 | Complete |
-| UI-09 | 6 | Complete |
-| UI-10 | 6 | Complete |
-| UI-11 | 6 | Complete |
-| UI-12 | 6 | Complete |
-| UI-13 | 3 | Complete |
-| VFX-01 | 7 | Complete |
-| VFX-02 | 7 | Complete |
-| VFX-03 | 7 | Complete |
-| VFX-04 | 8 | Complete |
-| VFX-05 | 8 | Complete |
-| VFX-06 | 8 | Complete |
-| VFX-07 | 8 | Complete |
-| VFX-08 | 8 | Complete |
-| VFX-09 | 8 | Complete |
-| VFX-10 | 8 | Complete |
-| AUD-01 | 9 | Pending |
-| AUD-02 | 9 | Pending |
-| AUD-03 | 9 | Pending |
-| AUD-04 | 9 | Pending |
-| AUD-05 | 9 | Pending |
-| AUD-06 | 9 | Pending |
-| TECH-01 | 1 | Complete |
-| TECH-02 | 1 | Complete |
-| TECH-03 | 10 | Complete |
-| TECH-04 | 10 | Complete |
-| TECH-05 | 10 | Complete |
-| TECH-06 | 10 | Complete |
-| TECH-07 | 2 | Complete |
-| TECH-08 | 6 | Complete |
-| TECH-09 | 3 | Complete |
-| TECH-10 | 10 | Complete |
-| TECH-11 | 2 | Complete |
-| TECH-12 | 1 | Complete |
+| REM-01 | — | Pending |
+| REM-02 | — | Pending |
+| REM-03 | — | Pending |
+| REM-04 | — | Pending |
+| COMBO-01 | — | Pending |
+| COMBO-02 | — | Pending |
+| COMBO-03 | — | Pending |
+| COMBO-04 | — | Pending |
+| COMBO-05 | — | Pending |
+| COMBO-06 | — | Pending |
+| COMBO-07 | — | Pending |
+| COMBO-08 | — | Pending |
+| COMBO-09 | — | Pending |
+| SPD-01 | — | Pending |
+| SPD-02 | — | Pending |
+| SPD-03 | — | Pending |
+| SPD-04 | — | Pending |
+| SPD-05 | — | Pending |
+| SPD-06 | — | Pending |
+| SPD-07 | — | Pending |
+| MUS-01 | — | Pending |
+| MUS-02 | — | Pending |
+| MUS-03 | — | Pending |
+| MUS-04 | — | Pending |
+| MUS-05 | — | Pending |
+| VIS-01 | — | Pending |
+| VIS-02 | — | Pending |
+| VIS-03 | — | Pending |
+| VIS-04 | — | Pending |
+| VIS-05 | — | Pending |
+| VIS-06 | — | Pending |
+| THM-01 | — | Pending |
+| THM-02 | — | Pending |
+| THM-03 | — | Pending |
+| THM-04 | — | Pending |
+| THM-05 | — | Pending |
 
 **Coverage:**
-- v1 requirements: 51 total
-- Mapped to phases: 51
-- Unmapped: 0
+- v1.1 requirements: 36 total
+- Mapped to phases: 0
+- Unmapped: 36 ⚠️
 
 ---
-*Requirements defined: 2026-05-09*
-*Last updated: 2026-05-09 — phases assigned during roadmap creation*
+*Requirements defined: 2026-05-10*
+*Last updated: 2026-05-10 after milestone v1.1 initialization*
