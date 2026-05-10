@@ -144,7 +144,7 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
       obs.isCombo = true;
       obs.width = COMBO.WIDTH_PER_LETTER * comboSize;
       obs.speed = getCurrentSpeed();
-      obs.fontScale = 0.8 + Math.random() * 0.6;
+      obs.fontScale = 0.7 + Math.random() * 1.1;
       obs.active = true;
       return;
     }
