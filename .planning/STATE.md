@@ -3,8 +3,8 @@
 ## Current Status
 
 **Active milestone:** v1.1 Polish & Depth
-**Active phase:** Phase 11 (Cleanup) — ready to plan
-**Last action:** v1.1 roadmap created (6 phases, 36 requirements)
+**Active phase:** Phase 11 (Cleanup) — complete
+**Last action:** Completed 11-01-PLAN.md (remove leaderboard, simplify game-over)
 **Last updated:** 2026-05-10
 
 ## Project Reference
@@ -18,14 +18,14 @@ See: .planning/PROJECT.md (updated 2026-05-10)
 
 | Phase | Status |
 |-------|--------|
-| 11. Cleanup | Not started |
+| 11. Cleanup | Complete (1/1 plans) |
 | 12. Speed & Difficulty | Not started |
 | 13. Multi-Letter Combos | Not started |
 | 14. Audio | Not started |
 | 15. Visual Polish | Not started |
 | 16. Theme | Not started |
 
-Progress: [░░░░░░░░░░] 0% (0/15 plans)
+Progress: [█░░░░░░░░░░░░░░] 7% (1/15 plans)
 
 ## Performance Metrics
 
@@ -34,7 +34,10 @@ Progress: [░░░░░░░░░░] 0% (0/15 plans)
 - Average duration: ~50 seconds
 - Total execution time: ~20 minutes
 
-**v1.1:** No plans executed yet.
+**v1.1 Velocity:**
+- Plans completed: 1
+- Average duration: <1 min
+- Total execution time: <1 min
 
 ## Accumulated Context
 
@@ -48,6 +51,7 @@ Progress: [░░░░░░░░░░] 0% (0/15 plans)
 - Chrome dino speed model: linear acceleration with hard cap at 2x (Phase 12)
 - Multi-letter combos: sequential state machine, no input queue (Phase 13)
 - Glow: replace shadowBlur with screen-blend pre-rendered sprites (Phase 15)
+- Leaderboard removed entirely — personal best via storage.js is sufficient (Phase 11)
 
 ### Pending Todos
 
@@ -63,5 +67,5 @@ None.
 
 - v1.0 complete: 10 phases, 51 requirements, all verified
 - v1.1 roadmap: 6 phases (11-16), 36 requirements, 15 plans
-- Research completed: Chrome dino mechanics, typing speed data, multi-letter design, visual polish
-- Next step: Plan Phase 11 (Cleanup — remove leaderboard)
+- Phase 11 complete: leaderboard removed, game-over simplified
+- Next step: Phase 12 (Speed & Difficulty) — implement Chrome dino speed model
