@@ -37,6 +37,15 @@ export function renderGameOverScreen(ctx, width, height) {
   const now = Date.now();
   ctx.save();
 
+  // --- Responsive font sizes ---
+  const titleSize = Math.min(48, width * 0.11);
+  const scoreSize = Math.min(48, width * 0.1);
+  const scoreLabelSize = Math.min(12, width * 0.03);
+  const bestSize = Math.min(20, width * 0.05);
+  const bestLabelSize = Math.min(16, width * 0.04);
+  const retrySize = Math.min(16, width * 0.04);
+  const infoSize = Math.min(11, width * 0.028);
+
   // --- Overlay: fade in from transparent ---
   const overlayAlpha = Math.min(0.88, elapsedTime * 3);
   ctx.fillStyle = '#000000';
@@ -63,7 +72,6 @@ export function renderGameOverScreen(ctx, width, height) {
   const titleReveal = Math.min(1, elapsedTime * 4);
   const titleY = height * 0.22;
   const titleText = 'GAME OVER';
-  const titleSize = Math.min(56, width * 0.05);
 
   // Chromatic aberration effect (first 0.8s)
   const aberration = Math.max(0, (0.8 - elapsedTime) * 4);
@@ -123,7 +131,6 @@ export function renderGameOverScreen(ctx, width, height) {
     ctx.textBaseline = 'middle';
 
     // Score number (big, white, glowing)
-    const scoreSize = Math.min(48, width * 0.04);
     ctx.font = `bold ${scoreSize}px 'Arial Black', sans-serif`;
     ctx.fillStyle = P.WHITE;
     ctx.shadowColor = P.WHITE;
@@ -134,7 +141,7 @@ export function renderGameOverScreen(ctx, width, height) {
     // Label above score
     ctx.save();
     ctx.globalAlpha = scoreAlpha * 0.6;
-    ctx.font = "12px 'Courier New', monospace";
+    ctx.font = `${scoreLabelSize}px 'Courier New', monospace`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = P.MID;
@@ -145,7 +152,7 @@ export function renderGameOverScreen(ctx, width, height) {
   // --- Personal best / NEW BEST! ---
   const bestDelay = 0.7;
   const bestAlpha = Math.min(1, Math.max(0, (elapsedTime - bestDelay) * 3));
-  const bestY = scoreY + 60;
+  const bestY = scoreY + Math.min(60, height * 0.08);
 
   if (bestAlpha > 0) {
     ctx.save();
@@ -156,13 +163,13 @@ export function renderGameOverScreen(ctx, width, height) {
     if (isNewBest) {
       const pulse = 0.6 + 0.4 * Math.sin(elapsedTime * 8);
       ctx.globalAlpha = bestAlpha * pulse;
-      ctx.font = "bold 20px 'Courier New', monospace";
+      ctx.font = `bold ${bestSize}px 'Courier New', monospace`;
       ctx.fillStyle = P.BEST_TEXT;
       ctx.shadowColor = P.BEST_TEXT;
       ctx.shadowBlur = 12;
       ctx.fillText('★ NEW HIGH SCORE ★', width / 2, bestY);
     } else {
-      ctx.font = "16px 'Courier New', monospace";
+      ctx.font = `${bestLabelSize}px 'Courier New', monospace`;
       ctx.fillStyle = P.BEST_TEXT;
       ctx.fillText(`BEST: ${personalBest}`, width / 2, bestY);
     }
@@ -177,7 +184,7 @@ export function renderGameOverScreen(ctx, width, height) {
     const frameCount = 10;
     const frameW = catSprite.width / frameCount;
     const frameH = catSprite.height;
-    const drawSize = 56;
+    const drawSize = Math.min(56, width * 0.14);
     ctx.save();
     ctx.globalAlpha = catAlpha;
     ctx.translate(width / 2, catY);
@@ -193,7 +200,7 @@ export function renderGameOverScreen(ctx, width, height) {
     const breathe = 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(now * 0.004));
     ctx.save();
     ctx.globalAlpha = retryBase * breathe;
-    ctx.font = "bold 16px 'Courier New', monospace";
+    ctx.font = `bold ${retrySize}px 'Courier New', monospace`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = P.WHITE;
@@ -209,7 +216,7 @@ export function renderGameOverScreen(ctx, width, height) {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
-    ctx.font = "11px 'Courier New', monospace";
+    ctx.font = `${infoSize}px 'Courier New', monospace`;
     ctx.fillStyle = P.LIGHT;
     ctx.fillText(isMusicPlaying() ? '[Tab] Music Off' : '[Tab] Music On', width / 2, height * 0.88);
 
