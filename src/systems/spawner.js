@@ -1,5 +1,6 @@
 import { GAME } from '../config.js';
 import { getWidth } from '../core/canvas.js';
+import { isWarmupComplete, getMinGap, getCurrentSpeed } from './difficulty.js';
 
 /**
  * Create a spawner state object tied to an obstacle pool.
@@ -19,6 +20,9 @@ export function createSpawner(pool) {
  * @param {number} groundY - ground Y position
  */
 export function updateSpawner(spawner, dt, difficultyParams, groundY) {
+  // Enforce warm-up: no obstacles until WARMUP_TIME has elapsed
+  if (!isWarmupComplete()) return;
+
   spawner.timer += dt;
 
   if (spawner.timer < difficultyParams.spawnInterval) {
@@ -34,10 +38,10 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
     return;
   }
 
-  // Guard: ensure minimum gap from right edge
+  // Guard: ensure minimum gap from right edge (dynamic based on current speed)
   const screenWidth = getWidth();
   for (let i = 0; i < active.length; i++) {
-    if (screenWidth - active[i].x < GAME.MIN_OBSTACLE_GAP) {
+    if (screenWidth - active[i].x < getMinGap(getCurrentSpeed())) {
       return;
     }
   }
@@ -85,6 +89,6 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
   obs.y = groundY - obs.height;
 
   obs.letter = letter;
-  obs.speed = difficultyParams.scrollSpeed;
+  obs.speed = getCurrentSpeed();
   obs.active = true;
 }

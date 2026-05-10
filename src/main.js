@@ -17,7 +17,7 @@ import { createFPSMonitor, updateFPS } from './systems/fps-monitor.js';
 import { createParticleSystem, updateParticles, renderParticles } from './systems/particles.js';
 import { createVFX, updateVFX, getPlayerFlash, getScreenFlash } from './systems/vfx.js';
 import { createAudioSystem } from './systems/audio.js';
-import { createDifficulty, resetDifficulty, getDifficultyParams } from './systems/difficulty.js';
+import { createDifficulty, resetDifficulty, getDifficultyParams, tickSpeed } from './systems/difficulty.js';
 import { createLevelAnnounce, updateLevelAnnounce, renderLevelAnnounce } from './systems/level-announce.js';
 import { renderStartScreen } from './screens/start.js';
 import { createGameOverScreen, updateGameOverScreen, renderGameOverScreen } from './screens/game-over.js';
@@ -90,6 +90,7 @@ function update(dt) {
   }
   if (getState() !== STATES.PLAYING) return;
 
+  tickSpeed(dt);
   const params = getDifficultyParams();
   updateGround(ground, dt, params.scrollSpeed);
   const groundY = getHeight() - GAME.GROUND_HEIGHT;
