@@ -61,7 +61,14 @@ export function renderStartScreen(ctx, width, height) {
   }
   ctx.globalAlpha = 1;
 
-  // --- Horizontal accent line (left-biased, not centered) ---
+  // --- Responsive font sizes ---
+  const titleFont = Math.min(56, width * 0.12);
+  const subtitleFont = Math.min(16, width * 0.04);
+  const promptFont = Math.min(18, width * 0.045);
+  const infoFont = Math.min(14, width * 0.035);
+  const musicFont = Math.min(12, width * 0.03);
+
+  // --- Horizontal accent line ---
   const lineY = height * 0.44;
   const lineReveal = Math.min(1, elapsed * 0.8);
   ctx.save();
@@ -74,46 +81,36 @@ export function renderStartScreen(ctx, width, height) {
   ctx.stroke();
   ctx.restore();
 
-  // --- Title: Character-by-character reveal with staggered glow ---
+  // --- Title: Centered with staggered glow reveal ---
   const title = 'LETTER RUNNER';
   const titleY = height * 0.28;
   const charDelay = 0.06; // seconds between each char appearing
-  const titleFont = Math.min(64, width * 0.055);
+  const revealedChars = Math.min(title.length, Math.floor(elapsed / charDelay));
 
   ctx.save();
   ctx.font = `bold ${titleFont}px 'Arial Black', sans-serif`;
+  ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
 
-  // Measure total width for left-aligned positioning
-  const totalWidth = ctx.measureText(title).width;
-  const startX = (width - totalWidth) / 2;
+  // Calculate overall glow: brightest at latest revealed character
+  const latestCharElapsed = elapsed - (revealedChars - 1) * charDelay;
+  const glowIntensity = revealedChars > 0 ? Math.max(0, 1 - latestCharElapsed * 2) : 0;
 
-  let xCursor = startX;
-  for (let i = 0; i < title.length; i++) {
-    const charElapsed = elapsed - i * charDelay;
-    if (charElapsed < 0) break;
+  // Alpha: fade in based on how many characters have been revealed
+  const titleAlpha = Math.min(1, elapsed * 3);
 
-    const charAlpha = Math.min(1, charElapsed * 3);
-    const glowIntensity = Math.max(0, 1 - charElapsed * 2); // brief flash then settles
+  ctx.globalAlpha = titleAlpha;
 
-    ctx.save();
-    ctx.globalAlpha = charAlpha;
+  // Glow layer
+  ctx.shadowColor = P.CYAN;
+  ctx.shadowBlur = 8 + glowIntensity * 30;
+  ctx.fillStyle = P.WHITE;
+  ctx.fillText(title.substring(0, revealedChars), width / 2, titleY);
 
-    // Glow layer (intense on reveal, then subtle)
-    ctx.shadowColor = P.CYAN;
-    ctx.shadowBlur = 8 + glowIntensity * 30;
-    ctx.fillStyle = P.WHITE;
-    ctx.textAlign = 'left';
-    ctx.fillText(title[i], xCursor, titleY);
-
-    // Second pass for extra glow on reveal
-    if (glowIntensity > 0.1) {
-      ctx.shadowBlur = glowIntensity * 50;
-      ctx.fillText(title[i], xCursor, titleY);
-    }
-    ctx.restore();
-
-    xCursor += ctx.measureText(title[i]).width;
+  // Extra glow on reveal
+  if (glowIntensity > 0.1) {
+    ctx.shadowBlur = glowIntensity * 50;
+    ctx.fillText(title.substring(0, revealedChars), width / 2, titleY);
   }
   ctx.restore();
 
@@ -123,11 +120,10 @@ export function renderStartScreen(ctx, width, height) {
   if (subtitleAlpha > 0) {
     ctx.save();
     ctx.globalAlpha = subtitleAlpha;
-    ctx.font = "16px 'Courier New', monospace";
+    ctx.font = `${subtitleFont}px 'Courier New', monospace`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = P.MID;
-    ctx.letterSpacing = '3px';
     ctx.fillText('T Y P E   T O   S U R V I V E', width / 2, titleY + titleFont * 0.7);
     ctx.restore();
   }
@@ -142,7 +138,7 @@ export function renderStartScreen(ctx, width, height) {
     const frameH = catSprite.height;
     const frameIdx = Math.floor((now * 0.005) % frameCount);
     const srcX = frameIdx * frameW;
-    const drawSize = 72;
+    const drawSize = Math.min(72, width * 0.18);
     const dx = width / 2 - drawSize / 2;
     const dy = catY - drawSize / 2;
 
@@ -164,14 +160,14 @@ export function renderStartScreen(ctx, width, height) {
     ctx.restore();
   }
 
-  // --- "Press any key" prompt (appears last, with breathing pulse) ---
+  // --- "Press any key" / "TAP TO START" prompt (appears last, with breathing pulse) ---
   const promptDelay = catDelay + 0.6;
   const promptBase = Math.min(1, Math.max(0, (elapsed - promptDelay) * 2));
   if (promptBase > 0) {
     const breathe = 0.4 + 0.6 * (0.5 + 0.5 * Math.sin(now * 0.004));
     ctx.save();
     ctx.globalAlpha = promptBase * breathe;
-    ctx.font = "bold 18px 'Courier New', monospace";
+    ctx.font = `bold ${promptFont}px 'Courier New', monospace`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = P.WHITE;
@@ -179,9 +175,23 @@ export function renderStartScreen(ctx, width, height) {
     ctx.shadowBlur = 6;
     ctx.fillText(isTouchDevice ? '[ TAP TO START ]' : '[ PRESS ANY KEY ]', width / 2, height * 0.70);
     ctx.restore();
+
+    // On touch devices, draw a visible tap area indicator
+    if (isTouchDevice) {
+      const tapY = height * 0.70;
+      const tapW = Math.min(200, width * 0.5);
+      const tapH = 44;
+      ctx.save();
+      ctx.globalAlpha = promptBase * 0.15;
+      ctx.strokeStyle = P.CYAN;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([6, 4]);
+      ctx.strokeRect(width / 2 - tapW / 2, tapY - tapH / 2, tapW, tapH);
+      ctx.restore();
+    }
   }
 
-  // --- Bottom info bar (personal best + music + repo) ---
+  // --- Bottom info bar (personal best + music) ---
   const infoAlpha = Math.min(1, Math.max(0, (elapsed - promptDelay - 0.3) * 2));
   if (infoAlpha > 0) {
     ctx.save();
@@ -191,12 +201,12 @@ export function renderStartScreen(ctx, width, height) {
 
     // Personal best
     const best = getPersonalBest();
-    ctx.font = "bold 14px 'Courier New', monospace";
+    ctx.font = `bold ${infoFont}px 'Courier New', monospace`;
     ctx.fillStyle = P.BEST_TEXT;
     ctx.fillText(best > 0 ? `HIGH SCORE: ${best}` : '', width / 2, height * 0.82);
 
     // Music hint
-    ctx.font = "12px 'Courier New', monospace";
+    ctx.font = `${musicFont}px 'Courier New', monospace`;
     ctx.fillStyle = P.LIGHT;
     ctx.fillText(isMusicPlaying() ? '[Tab] Music Off' : '[Tab] Music On', width / 2, height * 0.89);
 

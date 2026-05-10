@@ -13,8 +13,8 @@ export function initCanvas() {
 
 function resize() {
   const dpr = window.devicePixelRatio || 1;
-  width = Math.max(window.innerWidth, 800);
-  height = Math.max(window.innerHeight, 400);
+  width = window.innerWidth;
+  height = window.innerHeight;
 
   canvas.width = width * dpr;
   canvas.height = height * dpr;
