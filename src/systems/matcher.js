@@ -80,7 +80,7 @@ export function initMatcher(obstaclePool) {
 
       // No single matched either — wrong key resets combo progress
       comboInZone.progress = 0;
-      events.emit('WRONG_KEY', { key, comboReset: true });
+      events.emit('WRONG_KEY', { key, comboReset: true, targetObs: comboInZone });
       return;
     }
 
@@ -103,7 +103,9 @@ export function initMatcher(obstaclePool) {
 
     // No match found — emit WRONG_KEY only if there were targets in the zone
     if (hasObstaclesInZone) {
-      events.emit('WRONG_KEY', { key, comboReset: false });
+      // Target the closest obstacle (rightmost in danger zone = first in singlesInZone)
+      const targetObs = singlesInZone.length > 0 ? singlesInZone[0] : null;
+      events.emit('WRONG_KEY', { key, comboReset: false, targetObs });
     }
   });
 }

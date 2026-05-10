@@ -29,18 +29,36 @@ export function createObstacleFactory() {
       progress: 0,
       isCombo: false,
       // Visual variation
-      fontScale: 1.0
+      fontScale: 1.0,
+      // Wrong key flash
+      wrongFlashTimer: 0
     };
   };
 }
 
 /**
+ * Initialize obstacle visual effects — subscribes to WRONG_KEY event
+ * to trigger subtle red flash on the target obstacle.
+ */
+export function initObstacleEffects() {
+  events.on('WRONG_KEY', ({ targetObs }) => {
+    if (targetObs) {
+      targetObs.wrongFlashTimer = 0.2;
+    }
+  });
+}
+
+/**
  * Move all active obstacles left by their speed * dt.
+ * Also decrement wrongFlashTimer for the wrong-key visual feedback.
  */
 export function updateObstacles(pool, dt) {
   const active = pool.getActive();
   for (let i = 0; i < active.length; i++) {
     active[i].x -= active[i].speed * dt;
+    if (active[i].wrongFlashTimer > 0) {
+      active[i].wrongFlashTimer -= dt;
+    }
   }
 }
 
@@ -68,16 +86,23 @@ export function cleanupOffscreen(pool) {
 /**
  * Render a combo obstacle as floating glowing letters connected like a constellation.
  * No box/border — just letters with glow and connecting lines.
+ * When wrongFlashTimer > 0, applies subtle red tint and micro-jitter.
  */
 function renderComboObstacle(ctx, obs) {
   const P = getPalette();
-  const x = Math.round(obs.x);
+  let x = Math.round(obs.x);
   const y = Math.round(obs.y);
   const h = obs.height;
   const cellWidth = COMBO.WIDTH_PER_LETTER;
   const inDanger = isInDangerZone(obs);
   const fontScale = obs.fontScale || 1.0;
   const fontSize = Math.round(OBSTACLE_VFX.LETTER_FONT_SIZE * fontScale);
+
+  // Wrong key: subtle jitter
+  const wrongFlash = obs.wrongFlashTimer > 0;
+  if (wrongFlash) {
+    x += Math.sin(Date.now() * 0.05) * 2;
+  }
 
   // Draw connecting dots/line between letters (constellation effect)
   ctx.save();
@@ -131,7 +156,7 @@ function renderComboObstacle(ctx, obs) {
       ctx.save();
       ctx.globalCompositeOperation = 'lighter';
       ctx.globalAlpha = pulse * 0.6;
-      ctx.fillStyle = glowColor;
+      ctx.fillStyle = wrongFlash ? '#ff3333' : glowColor;
       ctx.beginPath();
       ctx.arc(centerX, centerY, fontSize * 0.7, 0, Math.PI * 2);
       ctx.fill();
@@ -143,8 +168,8 @@ function renderComboObstacle(ctx, obs) {
     ctx.font = `bold ${fontSize}px 'Arial Black', 'Arial', sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.shadowColor = glowColor;
-    ctx.shadowBlur = 10;
+    ctx.shadowColor = wrongFlash ? '#ff3333' : glowColor;
+    ctx.shadowBlur = wrongFlash ? 12 : 10;
     ctx.fillStyle = color;
     ctx.fillText(obs.letters[i], centerX, centerY);
     // Double-draw for stronger glow
@@ -170,16 +195,23 @@ function renderComboObstacle(ctx, obs) {
 /**
  * Render a single-letter obstacle as a floating glowing letter in space.
  * No box/border — just the letter with glow effect.
+ * When wrongFlashTimer > 0, applies subtle red tint and micro-jitter.
  */
 function renderSingleObstacle(ctx, obs) {
   const P = getPalette();
-  const x = Math.round(obs.x);
+  let x = Math.round(obs.x);
   const y = Math.round(obs.y);
   const w = obs.width;
   const h = obs.height;
   const inDanger = isInDangerZone(obs);
   const fontScale = obs.fontScale || 1.0;
   const fontSize = Math.round(OBSTACLE_VFX.LETTER_FONT_SIZE * fontScale);
+
+  // Wrong key: subtle jitter
+  const wrongFlash = obs.wrongFlashTimer > 0;
+  if (wrongFlash) {
+    x += Math.sin(Date.now() * 0.05) * 2;
+  }
 
   const centerX = x + w / 2;
   const centerY = y + h / 2;
@@ -191,7 +223,7 @@ function renderSingleObstacle(ctx, obs) {
     ctx.save();
     ctx.globalCompositeOperation = 'lighter';
     ctx.globalAlpha = pulse * 0.5;
-    ctx.fillStyle = P.OBSTACLE_GLOW;
+    ctx.fillStyle = wrongFlash ? '#ff3333' : P.OBSTACLE_GLOW;
     ctx.beginPath();
     ctx.arc(centerX, centerY, fontSize * 0.8, 0, Math.PI * 2);
     ctx.fill();
@@ -203,12 +235,12 @@ function renderSingleObstacle(ctx, obs) {
   ctx.font = `bold ${fontSize}px 'Arial Black', 'Arial', sans-serif`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.shadowColor = P.OBSTACLE_GLOW || P.MAGENTA;
-  ctx.shadowBlur = 12;
+  ctx.shadowColor = wrongFlash ? '#ff3333' : (P.OBSTACLE_GLOW || P.MAGENTA);
+  ctx.shadowBlur = wrongFlash ? 14 : 12;
   ctx.fillStyle = P.OBSTACLE_LETTER;
   ctx.fillText(obs.letter, centerX, centerY);
   // Double-draw for stronger glow
-  ctx.shadowBlur = 6;
+  ctx.shadowBlur = wrongFlash ? 8 : 6;
   ctx.fillText(obs.letter, centerX, centerY);
   ctx.restore();
 }

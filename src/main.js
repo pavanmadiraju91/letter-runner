@@ -7,7 +7,7 @@ import { GAME } from './config.js';
 import { createPlayer, resetPlayer, updatePlayer, renderPlayer } from './entities/player.js';
 import { createBackground, updateBackground, renderBackground } from './entities/background.js';
 import { createGround, updateGround, renderGround } from './entities/ground.js';
-import { createObstacleFactory, updateObstacles, cleanupOffscreen, renderObstacles } from './entities/obstacle.js';
+import { createObstacleFactory, updateObstacles, cleanupOffscreen, renderObstacles, initObstacleEffects } from './entities/obstacle.js';
 import { createPool } from './systems/pool.js';
 import { createSpawner, updateSpawner } from './systems/spawner.js';
 import { initInput } from './systems/input.js';
@@ -59,6 +59,7 @@ const spawner = createSpawner(obstaclePool);
 resetPlayer(player, getWidth(), getHeight(), GAME.GROUND_HEIGHT);
 initInput();
 initMatcher(obstaclePool);
+initObstacleEffects();
 
 events.on('CANVAS_RESIZE', ({ width, height }) => {
   resetPlayer(player, width, height, GAME.GROUND_HEIGHT);
