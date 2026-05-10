@@ -1,4 +1,5 @@
 import { events } from '../core/events.js';
+import { getWidth } from '../core/canvas.js';
 import { DIFFICULTY, SPEED, GAME } from '../config.js';
 
 let destroyCount = 0;
@@ -25,18 +26,24 @@ export function createDifficulty() {
     resetDifficulty();
   });
 
-  // Development-mode difficulty curve dump for tuning verification
+  // Development-mode speed curve dump for engagement tuning
   if (import.meta.env.DEV) {
+    console.log('%c[Speed Curve]', 'color: #00ffcc; font-weight: bold');
     console.table(
-      Array.from({ length: 8 }, (_, i) => {
-        const seconds = i * 10;
-        const speed = Math.min(SPEED.BASE_SPEED + SPEED.ACCELERATION * seconds, SPEED.MAX_SPEED);
-        const gap = getMinGap(speed);
+      [0, 5, 10, 15, 20, 30, 40, 50, 60, 70, 80, 90].map(t => {
+        const speed = Math.min(SPEED.BASE_SPEED + SPEED.ACCELERATION * t, SPEED.MAX_SPEED);
+        const spawnInt = Math.max(
+          SPEED.MIN_SPAWN_INTERVAL,
+          SPEED.BASE_SPAWN_INTERVAL * (SPEED.BASE_SPEED / speed)
+        );
+        const dangerZoneMs = Math.round((getWidth() * 0.3) / speed * 1000);
         return {
-          seconds,
-          speed: Math.round(speed),
-          minGap: Math.round(gap),
-          level: Math.floor(i * 10 / 7) + 1  // rough estimate: ~7s per level at 10 destroys
+          time_s: t,
+          speed_px_s: Math.round(speed),
+          spawn_interval_s: spawnInt.toFixed(2),
+          danger_zone_ms: dangerZoneMs,
+          difficulty: speed >= SPEED.MAX_SPEED ? 'CAPPED' :
+                     t < 20 ? 'easy' : t < 40 ? 'medium' : 'hard'
         };
       })
     );
