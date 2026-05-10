@@ -10,7 +10,7 @@ let elapsedTime = 0;
  * Initialize the difficulty system.
  * Subscribes to events:
  * - OBSTACLE_DESTROYED: tracks destroys, emits LEVEL_UP every DESTROYS_PER_LEVEL
- * - LIFE_LOST: penalizes speed (drops elapsed time by 30%)
+ * - LIFE_LOST: penalizes speed (drops elapsed time by 30%) and drops one level (min 1)
  * - GAME_RESTART: resets difficulty to level 1
  */
 export function createDifficulty() {
@@ -25,6 +25,12 @@ export function createDifficulty() {
 
   events.on('LIFE_LOST', () => {
     penalizeSpeed();
+    // Drop one level (minimum level 1)
+    if (currentLevel > 1) {
+      currentLevel--;
+      destroyCount = Math.max(0, destroyCount - DIFFICULTY.DESTROYS_PER_LEVEL);
+      events.emit('LEVEL_DOWN', { level: currentLevel });
+    }
   });
 
   events.on('GAME_RESTART', () => {
