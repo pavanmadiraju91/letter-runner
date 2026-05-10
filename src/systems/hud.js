@@ -63,7 +63,7 @@ export function renderHUD(ctx, canvasWidth) {
   // Score — top-left (with milestone flash)
   ctx.textAlign = 'left';
   ctx.textBaseline = 'top';
-  ctx.font = 'bold 20px monospace';
+  ctx.font = 'bold 20px \'Courier New\', monospace';
   const milestoneAge = (performance.now() - scoreMilestoneFlash) / 1000;
   if (scoreMilestoneFlash > 0 && milestoneAge < 0.3) {
     // Brief white flash that fades to normal score color over 300ms
@@ -110,12 +110,12 @@ export function renderHUD(ctx, canvasWidth) {
 
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
-    ctx.font = `bold ${fontSize}px monospace`;
+    ctx.font = `bold ${fontSize}px 'Courier New', monospace`;
     ctx.fillStyle = palette.YELLOW;
     ctx.fillText(`x${comboMult}`, canvasWidth / 2, 36);
 
     // Streak count below multiplier
-    ctx.font = '12px monospace';
+    ctx.font = '12px \'Courier New\', monospace';
     ctx.fillStyle = palette.DIM;
     ctx.fillText(`${streak} streak`, canvasWidth / 2, 36 + fontSize + 2);
   }

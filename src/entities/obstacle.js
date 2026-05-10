@@ -140,7 +140,7 @@ function renderComboObstacle(ctx, obs) {
 
     // Letter glow (subtle shadowBlur)
     ctx.save();
-    ctx.font = `bold ${fontSize}px monospace`;
+    ctx.font = `bold ${fontSize}px 'Arial Black', 'Arial', sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.shadowColor = glowColor;
@@ -200,7 +200,7 @@ function renderSingleObstacle(ctx, obs) {
 
   // Letter with glow — the primary and only visual
   ctx.save();
-  ctx.font = `bold ${fontSize}px monospace`;
+  ctx.font = `bold ${fontSize}px 'Arial Black', 'Arial', sans-serif`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.shadowColor = P.OBSTACLE_GLOW || P.MAGENTA;

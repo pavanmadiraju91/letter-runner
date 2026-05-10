@@ -51,17 +51,17 @@ export function renderGameOverScreen(ctx, width, height) {
   ctx.fillStyle = palette.MAGENTA;
   ctx.shadowColor = palette.MAGENTA;
   ctx.shadowBlur = 15;
-  ctx.font = 'bold 36px monospace';
+  ctx.font = 'bold 36px \'Courier New\', monospace';
   ctx.fillText('GAME OVER', width / 2, height * 0.15);
   ctx.shadowBlur = 0;
 
   // Final score
   ctx.fillStyle = palette.WHITE;
-  ctx.font = 'bold 28px monospace';
+  ctx.font = 'bold 28px \'Courier New\', monospace';
   ctx.fillText('SCORE: ' + finalScore, width / 2, height * 0.35);
 
   // Personal best and delta
-  ctx.font = '18px monospace';
+  ctx.font = '18px \'Courier New\', monospace';
   ctx.fillStyle = palette.BEST_TEXT;
   ctx.fillText('BEST: ' + personalBest, width / 2, height * 0.45);
 
@@ -78,7 +78,7 @@ export function renderGameOverScreen(ctx, width, height) {
   const show = Math.floor(flashTimer * 2) % 2 === 0;
   if (show) {
     ctx.fillStyle = palette.WHITE;
-    ctx.font = '18px monospace';
+    ctx.font = '18px \'Courier New\', monospace';
     ctx.fillText('Press any key to play again', width / 2, height * 0.75);
   }
 

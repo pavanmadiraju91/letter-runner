@@ -57,7 +57,7 @@ export function renderLevelAnnounce(ctx, width, height) {
   ctx.fillStyle = palette.WHITE;
   ctx.shadowColor = palette.CYAN;
   ctx.shadowBlur = 30;
-  ctx.font = 'bold 64px monospace';
+  ctx.font = 'bold 64px \'Courier New\', monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText('LEVEL ' + level, width / 2, height / 2);

@@ -151,7 +151,7 @@ function render() {
   renderHUD(ctx, w);
   // Music toggle hint (bottom-right, dim)
   ctx.save();
-  ctx.font = '10px monospace';
+  ctx.font = '10px \'Courier New\', monospace';
   ctx.fillStyle = getPalette().DIM;
   ctx.textAlign = 'right';
   ctx.fillText('[Tab] Music', w - 8, getHeight() - 8);
