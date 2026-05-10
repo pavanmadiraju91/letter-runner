@@ -14,6 +14,7 @@ import { initInput } from './systems/input.js';
 import { initMatcher } from './systems/matcher.js';
 import { createLives, resetLives } from './systems/lives.js';
 import { createScore, resetScore, updateScore, getScore } from './systems/score.js';
+import { createCombo, resetCombo } from './systems/combo.js';
 import { createHUD, renderHUD } from './systems/hud.js';
 import { createFPSMonitor, updateFPS } from './systems/fps-monitor.js';
 import { createParticleSystem, updateParticles, renderParticles } from './systems/particles.js';
@@ -34,6 +35,7 @@ createLives();
 resetLives();
 createScore();
 resetScore();
+createCombo();
 createDifficulty();
 resetDifficulty();
 createLevelAnnounce();
@@ -69,6 +71,7 @@ events.on('STATE_CHANGE', ({ state }) => {
 function restartGame() {
   resetLives();
   resetScore();
+  resetCombo();
   resetDifficulty();
   obstaclePool.getActive().slice().forEach(o => obstaclePool.release(o));
   spawner.timer = 0;

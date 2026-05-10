@@ -1,14 +1,16 @@
 import { events } from '../core/events.js';
 import { getScore } from '../systems/score.js';
 import { getLives } from '../systems/lives.js';
+import { getStreak, getComboMultiplier } from '../systems/combo.js';
 import { GAME } from '../config.js';
 import { getPalette } from '../core/theme.js';
 
 let currentLevel = 1;
+let comboPulseTimer = 0;
 
 /**
  * Initialize HUD system.
- * Subscribes to LEVEL_UP and GAME_RESTART events.
+ * Subscribes to LEVEL_UP, GAME_RESTART, and COMBO_UPDATE events.
  */
 export function createHUD() {
   events.on('LEVEL_UP', (payload) => {
@@ -16,6 +18,12 @@ export function createHUD() {
   });
   events.on('GAME_RESTART', () => {
     currentLevel = 1;
+    comboPulseTimer = 0;
+  });
+  events.on('COMBO_UPDATE', ({ streak }) => {
+    if (streak >= 3) {
+      comboPulseTimer = performance.now();
+    }
   });
 }
 
@@ -71,6 +79,28 @@ export function renderHUD(ctx, canvasWidth) {
     const hx = startX - (i * spacing);
     const color = i < remaining ? palette.HEART_FULL : palette.HEART_EMPTY;
     drawHeart(ctx, hx, heartY, heartSize, color);
+  }
+
+  // Combo streak display (only when streak >= 3)
+  const streak = getStreak();
+  if (streak >= 3) {
+    const comboMult = getComboMultiplier();
+    const elapsed = (performance.now() - comboPulseTimer) / 1000;
+    // Pulsing size: oscillates between 1.0 and 1.3
+    const pulse = 1.0 + 0.3 * Math.abs(Math.sin(elapsed * 6));
+    const baseFontSize = 24;
+    const fontSize = Math.round(baseFontSize * pulse);
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.font = `bold ${fontSize}px monospace`;
+    ctx.fillStyle = palette.YELLOW;
+    ctx.fillText(`x${comboMult}`, canvasWidth / 2, 36);
+
+    // Streak count below multiplier
+    ctx.font = '12px monospace';
+    ctx.fillStyle = palette.DIM;
+    ctx.fillText(`${streak} streak`, canvasWidth / 2, 36 + fontSize + 2);
   }
 
   ctx.restore();

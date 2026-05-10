@@ -3,11 +3,13 @@ import { SCORE, COMBO } from '../config.js';
 
 let score = 0;
 let currentLevel = 1;
+let streakMultiplier = 1;
 
 /**
  * Initialize the score system.
  * Subscribes to events:
- * - OBSTACLE_DESTROYED: awards destroy points scaled by level
+ * - OBSTACLE_DESTROYED: awards destroy points scaled by level and streak
+ * - COMBO_UPDATE: tracks current streak multiplier
  * - GAME_RESTART: resets score
  * - LEVEL_UP: updates current level multiplier (Phase 5)
  */
@@ -21,7 +23,11 @@ export function createScore() {
         comboMultiplier = COMBO.MULTIPLIER_2LETTER;
       }
     }
-    score += SCORE.DESTROY_POINTS * currentLevel * comboMultiplier;
+    score += SCORE.DESTROY_POINTS * currentLevel * comboMultiplier * streakMultiplier;
+  });
+
+  events.on('COMBO_UPDATE', ({ multiplier }) => {
+    streakMultiplier = multiplier;
   });
 
   events.on('GAME_RESTART', () => {
@@ -42,6 +48,7 @@ export function createScore() {
 export function resetScore() {
   score = 0;
   currentLevel = 1;
+  streakMultiplier = 1;
 }
 
 /**
