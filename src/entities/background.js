@@ -1,5 +1,6 @@
 import { getPalette } from '../core/theme.js';
-import { GAME } from '../config.js';
+import { GAME, SPEED } from '../config.js';
+import { getCurrentSpeed } from '../systems/difficulty.js';
 
 const STAR_COUNT = 40;
 const stars = [];
@@ -8,6 +9,10 @@ let initialized = false;
 // City skyline uses a long non-repeating sequence via seeded noise
 const CITY_LENGTH = 200;
 const cityHeights = [];
+
+// Speed lines for high velocity effect
+const MAX_SPEED_LINES = 12;
+const speedLines = [];
 
 function seededRandom(seed) {
   let s = seed;
@@ -36,6 +41,16 @@ function init(canvasWidth, canvasHeight) {
     const tall = rng() < 0.15 ? base + 20 + rng() * 30 : base;
     cityHeights.push(Math.round(tall));
   }
+
+  // Pre-allocate speed lines
+  for (let i = 0; i < MAX_SPEED_LINES; i++) {
+    speedLines.push({
+      x: Math.random() * canvasWidth,
+      y: Math.random() * canvasHeight * 0.6 + canvasHeight * 0.1, // avoid top HUD and bottom ground
+      length: 30 + Math.random() * 60,
+      speed: 400 + Math.random() * 300,
+    });
+  }
 }
 
 export function createBackground() {
@@ -44,6 +59,20 @@ export function createBackground() {
 
 export function updateBackground(bg, dt, scrollSpeed) {
   bg.offset += scrollSpeed * 0.1 * dt;
+
+  // Update speed lines position
+  const speed = getCurrentSpeed();
+  const speedRatio = (speed - SPEED.BASE_SPEED) / (SPEED.MAX_SPEED - SPEED.BASE_SPEED);
+  if (speedRatio > 0.7) {
+    for (let i = 0; i < speedLines.length; i++) {
+      speedLines[i].x -= speedLines[i].speed * dt;
+      if (speedLines[i].x + speedLines[i].length < 0) {
+        // Reset to right edge
+        speedLines[i].x = 800 + Math.random() * 200; // offscreen right
+        speedLines[i].y = Math.random() * 400 + 40;
+      }
+    }
+  }
 }
 
 export function renderBackground(ctx, bg, canvasWidth, canvasHeight) {
@@ -101,4 +130,26 @@ export function renderBackground(ctx, bg, canvasWidth, canvasHeight) {
   ctx.globalAlpha = 0.3;
   ctx.fillRect(0, groundY + 1, canvasWidth, GAME.GROUND_HEIGHT);
   ctx.globalAlpha = 1;
+
+  // Speed lines at high velocity (>70% of max speed)
+  const speed = getCurrentSpeed();
+  const speedRatio = (speed - SPEED.BASE_SPEED) / (SPEED.MAX_SPEED - SPEED.BASE_SPEED);
+  if (speedRatio > 0.7) {
+    // Number of visible lines scales from 0 to MAX_SPEED_LINES as speed approaches max
+    const intensity = (speedRatio - 0.7) / 0.3; // 0.0 to 1.0
+    const visibleCount = Math.floor(intensity * MAX_SPEED_LINES);
+    ctx.strokeStyle = palette.CYAN || '#00ffcc';
+    ctx.lineWidth = 1;
+    ctx.globalAlpha = intensity * 0.25; // subtle, max 25% opacity
+    for (let i = 0; i < visibleCount; i++) {
+      const line = speedLines[i];
+      if (line.x < canvasWidth && line.x + line.length > 0) {
+        ctx.beginPath();
+        ctx.moveTo(line.x, line.y);
+        ctx.lineTo(line.x + line.length, line.y);
+        ctx.stroke();
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
 }
