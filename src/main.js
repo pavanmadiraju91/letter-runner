@@ -127,14 +127,6 @@ function render() {
   renderGround(ctx, ground, w, h);
   renderObstacles(ctx, obstaclePool.getActive());
   renderPlayer(ctx, player);
-  // VFX-05: white flash overlay on correct key press
-  if (getPlayerFlash()) {
-    ctx.save();
-    ctx.globalAlpha = 0.6;
-    ctx.fillStyle = getPalette().WHITE;
-    ctx.fillRect(player.x, player.y, player.width, player.height);
-    ctx.restore();
-  }
   renderHUD(ctx, w);
   // Music toggle hint (bottom-right, dim)
   ctx.save();
