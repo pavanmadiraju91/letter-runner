@@ -34,7 +34,7 @@ Letter Runner goes from empty repo to shippable game across 10 phases. The build
 - [x] **Phase 13: Multi-Letter Combos** - 2-3 letter sequence obstacles at higher levels
 - [x] **Phase 14: Audio** - MP3 background track replacing procedural oscillator music
 - [x] **Phase 15: Visual Polish** - Player animation, parallax background, glow performance, letter readability
-- [ ] **Phase 16: Theme** - System-aware dark/light mode with reactive switching
+- [x] **Phase 16: Theme** - System-aware dark/light mode with reactive switching
 
 ## Phase Details
 
@@ -143,11 +143,11 @@ Plans:
 4. Changing system preference mid-session switches the theme reactively without restart
 5. All screens (start, gameplay HUD, game-over) correctly adapt to the current theme
 
-**Plans:** TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 16-01: Theme detection, palette abstraction, and reactive switching
-- [ ] 16-02: Light mode palette design and full-screen adaptation
+- [ ] 16-01-PLAN.md — Theme infrastructure: detection, dual palettes, reactive switching, background
+- [ ] 16-02-PLAN.md — Wire all rendering code to dynamic getPalette() accessor
 
 ---
 
