@@ -131,6 +131,28 @@ export const SPEED = {
   MIN_SPAWN_INTERVAL: 0.8,  // floor — never spawn faster than this
 };
 
+/**
+ * Returns speed config tuned for current screen width.
+ * Mobile screens are narrow so obstacles reach the player too fast at desktop speeds.
+ * @returns {typeof SPEED}
+ */
+export function getSpeedConfig() {
+  const w = window.innerWidth;
+  if (w < 600) {
+    // Mobile: much slower because screen is narrow
+    return {
+      BASE_SPEED: 100,
+      MAX_SPEED: 220,
+      ACCELERATION: 1.5,
+      WARMUP_TIME: 2.0,
+      MIN_REACTION_MS: 300,
+      BASE_SPAWN_INTERVAL: 3.0,
+      MIN_SPAWN_INTERVAL: 1.2,
+    };
+  }
+  return SPEED;
+}
+
 export const COMBO = {
   MIN_LEVEL_2LETTER: 4,       // COMBO-01: 2-letter combos appear at level 4+
   MIN_LEVEL_3LETTER: 7,       // COMBO-02: 3-letter combos appear at level 7+

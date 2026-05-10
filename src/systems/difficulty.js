@@ -1,10 +1,11 @@
 import { events } from '../core/events.js';
 import { getWidth } from '../core/canvas.js';
-import { DIFFICULTY, SPEED, GAME } from '../config.js';
+import { DIFFICULTY, GAME, getSpeedConfig } from '../config.js';
 
 let destroyCount = 0;
 let currentLevel = 1;
 let elapsedTime = 0;
+let speedCfg = getSpeedConfig();
 
 /**
  * Initialize the difficulty system.
@@ -42,10 +43,10 @@ export function createDifficulty() {
     console.log('%c[Speed Curve]', 'color: #00ffcc; font-weight: bold');
     console.table(
       [0, 5, 10, 15, 20, 30, 40, 50, 60, 70, 80, 90].map(t => {
-        const speed = Math.min(SPEED.BASE_SPEED + SPEED.ACCELERATION * t, SPEED.MAX_SPEED);
+        const speed = Math.min(speedCfg.BASE_SPEED + speedCfg.ACCELERATION * t, speedCfg.MAX_SPEED);
         const spawnInt = Math.max(
-          SPEED.MIN_SPAWN_INTERVAL,
-          SPEED.BASE_SPAWN_INTERVAL * (SPEED.BASE_SPEED / speed)
+          speedCfg.MIN_SPAWN_INTERVAL,
+          speedCfg.BASE_SPAWN_INTERVAL * (speedCfg.BASE_SPEED / speed)
         );
         const dangerZoneMs = Math.round((getWidth() * 0.3) / speed * 1000);
         return {
@@ -53,7 +54,7 @@ export function createDifficulty() {
           speed_px_s: Math.round(speed),
           spawn_interval_s: spawnInt.toFixed(2),
           danger_zone_ms: dangerZoneMs,
-          difficulty: speed >= SPEED.MAX_SPEED ? 'CAPPED' :
+          difficulty: speed >= speedCfg.MAX_SPEED ? 'CAPPED' :
                      t < 20 ? 'easy' : t < 40 ? 'medium' : 'hard'
         };
       })
@@ -84,7 +85,7 @@ export function penalizeSpeed() {
  * @returns {number} current speed in px/s
  */
 export function getCurrentSpeed() {
-  return Math.min(SPEED.BASE_SPEED + SPEED.ACCELERATION * elapsedTime, SPEED.MAX_SPEED);
+  return Math.min(speedCfg.BASE_SPEED + speedCfg.ACCELERATION * elapsedTime, speedCfg.MAX_SPEED);
 }
 
 /**
@@ -95,7 +96,7 @@ export function getCurrentSpeed() {
  * @returns {number} minimum gap in pixels
  */
 export function getMinGap(currentSpeed) {
-  const reactionGap = currentSpeed * (SPEED.MIN_REACTION_MS / 1000) + GAME.OBSTACLE_WIDTH;
+  const reactionGap = currentSpeed * (speedCfg.MIN_REACTION_MS / 1000) + GAME.OBSTACLE_WIDTH;
   return Math.max(GAME.OBSTACLE_WIDTH * 2.5, reactionGap);
 }
 
@@ -104,7 +105,7 @@ export function getMinGap(currentSpeed) {
  * @returns {boolean}
  */
 export function isWarmupComplete() {
-  return elapsedTime >= SPEED.WARMUP_TIME;
+  return elapsedTime >= speedCfg.WARMUP_TIME;
 }
 
 /**
@@ -115,6 +116,7 @@ export function resetDifficulty() {
   destroyCount = 0;
   currentLevel = 1;
   elapsedTime = 0;
+  speedCfg = getSpeedConfig();
 }
 
 /**
@@ -150,8 +152,8 @@ export function getDifficultyParams() {
   // Spawn interval derived from speed: inversely proportional
   // At BASE_SPEED (140): 2.5s. At MAX_SPEED (280): 1.25s. Floor at 0.8s.
   tierParams.spawnInterval = Math.max(
-    SPEED.MIN_SPAWN_INTERVAL,
-    SPEED.BASE_SPAWN_INTERVAL * (SPEED.BASE_SPEED / speed)
+    speedCfg.MIN_SPAWN_INTERVAL,
+    speedCfg.BASE_SPAWN_INTERVAL * (speedCfg.BASE_SPEED / speed)
   );
 
   return tierParams;
