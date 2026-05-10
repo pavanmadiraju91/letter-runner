@@ -1,5 +1,13 @@
-import { GAME, COLORS, COMBO } from '../config.js';
+import { GAME, COLORS, COMBO, OBSTACLE_VFX } from '../config.js';
+import { getWidth } from '../core/canvas.js';
 import { events } from '../core/events.js';
+
+/**
+ * Determine if an obstacle is within the danger zone (left 30% of canvas).
+ */
+function isInDangerZone(obs) {
+  return obs.x <= getWidth() * GAME.DANGER_ZONE_START;
+}
 
 /**
  * Factory function for obstacle objects.
@@ -56,6 +64,7 @@ export function cleanupOffscreen(pool) {
 /**
  * Render a combo obstacle with per-letter visual state.
  * Each letter cell shows: green (completed), pulsing yellow (next target), red (pending).
+ * Uses screen-blend glow in danger zone (VIS-04) and 26px bold outlined letters (VIS-05).
  */
 function renderComboObstacle(ctx, obs) {
   const x = Math.round(obs.x);
@@ -63,10 +72,21 @@ function renderComboObstacle(ctx, obs) {
   const w = obs.width;
   const h = obs.height;
   const cellWidth = COMBO.WIDTH_PER_LETTER;
+  const inDanger = isInDangerZone(obs);
 
-  // Neon glow effect
-  ctx.shadowColor = COLORS.PALETTE.OBSTACLE_GLOW;
-  ctx.shadowBlur = 8;
+  // Screen-blend glow (replaces shadowBlur) -- VIS-04
+  if (inDanger) {
+    // Pulsing glow intensity when in danger zone -- VIS-03
+    const pulse = OBSTACLE_VFX.GLOW_MIN_ALPHA +
+      OBSTACLE_VFX.GLOW_RANGE * Math.sin(Date.now() * OBSTACLE_VFX.GLOW_PULSE_SPEED);
+    const pad = OBSTACLE_VFX.GLOW_PADDING;
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha = pulse;
+    ctx.fillStyle = COLORS.PALETTE.OBSTACLE_GLOW;
+    ctx.fillRect(x - pad, y - pad, w + pad * 2, h + pad * 2);
+    ctx.restore();
+  }
 
   // Body fill (full width)
   ctx.fillStyle = COLORS.PALETTE.OBSTACLE_BODY;
@@ -77,25 +97,25 @@ function renderComboObstacle(ctx, obs) {
   ctx.lineWidth = 2;
   ctx.strokeRect(x + 1, y + 1, w - 2, h - 2);
 
-  // Reset shadow before text
-  ctx.shadowBlur = 0;
-
   // Render each letter cell
+  const fontSize = OBSTACLE_VFX.LETTER_FONT_SIZE;
+  const outlineWidth = OBSTACLE_VFX.LETTER_OUTLINE_WIDTH;
+
   for (let i = 0; i < obs.letters.length; i++) {
     const cellX = x + i * cellWidth;
 
     // Determine letter color based on progress
     let color;
     if (i < obs.progress) {
-      // Completed — green
+      // Completed -- green
       color = COLORS.PALETTE.GREEN;
     } else if (i === obs.progress) {
-      // Next target — pulsing yellow
+      // Next target -- pulsing yellow
       const pulse = 0.7 + 0.3 * Math.sin(Date.now() * 0.008);
       color = COLORS.PALETTE.YELLOW;
       ctx.globalAlpha = pulse;
     } else {
-      // Pending — red
+      // Pending -- red
       color = COLORS.PALETTE.MAGENTA;
     }
 
@@ -110,34 +130,46 @@ function renderComboObstacle(ctx, obs) {
       ctx.stroke();
     }
 
-    // Draw letter centered in cell
-    ctx.fillStyle = color;
-    ctx.font = 'bold 20px monospace';
+    // Draw letter centered in cell -- VIS-05: bold 26px with dark outline
+    ctx.font = `bold ${fontSize}px monospace`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
+    // Dark outline (stroke first, then fill)
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = outlineWidth;
+    ctx.strokeText(obs.letters[i], cellX + cellWidth / 2, y + h / 2);
+    ctx.fillStyle = color;
     ctx.fillText(obs.letters[i], cellX + cellWidth / 2, y + h / 2);
 
     // Reset alpha after pulsing letter
     ctx.globalAlpha = 1;
   }
-
-  // Reset shadow
-  ctx.shadowColor = 'transparent';
-  ctx.shadowBlur = 0;
 }
 
 /**
- * Render a single-letter obstacle — neon-styled block with glow, border, and centered letter.
+ * Render a single-letter obstacle -- neon-styled block with screen-blend glow,
+ * danger-zone pulse, and large outlined letter.
  */
 function renderSingleObstacle(ctx, obs) {
   const x = Math.round(obs.x);
   const y = Math.round(obs.y);
   const w = obs.width;
   const h = obs.height;
+  const inDanger = isInDangerZone(obs);
 
-  // Neon glow effect
-  ctx.shadowColor = COLORS.PALETTE.OBSTACLE_GLOW;
-  ctx.shadowBlur = 8;
+  // Screen-blend glow (replaces shadowBlur) -- VIS-04
+  if (inDanger) {
+    // Pulsing glow intensity when in danger zone -- VIS-03
+    const pulse = OBSTACLE_VFX.GLOW_MIN_ALPHA +
+      OBSTACLE_VFX.GLOW_RANGE * Math.sin(Date.now() * OBSTACLE_VFX.GLOW_PULSE_SPEED);
+    const pad = OBSTACLE_VFX.GLOW_PADDING;
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha = pulse;
+    ctx.fillStyle = COLORS.PALETTE.OBSTACLE_GLOW;
+    ctx.fillRect(x - pad, y - pad, w + pad * 2, h + pad * 2);
+    ctx.restore();
+  }
 
   // Body fill
   ctx.fillStyle = COLORS.PALETTE.OBSTACLE_BODY;
@@ -148,19 +180,22 @@ function renderSingleObstacle(ctx, obs) {
   ctx.lineWidth = 2;
   ctx.strokeRect(x + 1, y + 1, w - 2, h - 2);
 
-  // Reset shadow before text
-  ctx.shadowBlur = 0;
-
-  // Centered letter
-  ctx.fillStyle = COLORS.PALETTE.OBSTACLE_LETTER;
-  ctx.font = 'bold 22px monospace';
+  // Letter -- VIS-05: 26px bold with dark outline for readability
+  const fontSize = OBSTACLE_VFX.LETTER_FONT_SIZE;
+  const outlineWidth = OBSTACLE_VFX.LETTER_OUTLINE_WIDTH;
+  ctx.font = `bold ${fontSize}px monospace`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
+  // Dark outline (stroke first, then fill)
+  ctx.strokeStyle = '#000000';
+  ctx.lineWidth = outlineWidth;
+  ctx.strokeText(obs.letter, x + w / 2, y + h / 2);
+  ctx.fillStyle = COLORS.PALETTE.OBSTACLE_LETTER;
   ctx.fillText(obs.letter, x + w / 2, y + h / 2);
 }
 
 /**
- * Render all obstacles — dispatches to combo or single rendering.
+ * Render all obstacles -- dispatches to combo or single rendering.
  */
 export function renderObstacles(ctx, obstacles) {
   for (let i = 0; i < obstacles.length; i++) {
@@ -171,8 +206,4 @@ export function renderObstacles(ctx, obstacles) {
       renderSingleObstacle(ctx, obs);
     }
   }
-
-  // Ensure shadow is fully reset after loop
-  ctx.shadowColor = 'transparent';
-  ctx.shadowBlur = 0;
 }
