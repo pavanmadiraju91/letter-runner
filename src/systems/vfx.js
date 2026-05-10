@@ -3,6 +3,7 @@
  * - VFX-04: Obstacle shatter particles (multi-colored burst on destroy)
  * - VFX-05: Player white flash on correct key press (~100ms)
  * - VFX-06: Screen red flash on life lost (~200ms fade)
+ * - VFX-07: Screen shake on obstacle destroy
  */
 
 import { events } from '../core/events.js';
@@ -11,9 +12,14 @@ import { getPalette } from '../core/theme.js';
 
 const FLASH_DURATION = 0.1; // 100ms white flash
 const SCREEN_FLASH_DURATION = 0.2; // 200ms red flash (VFX-06)
+const SHAKE_DURATION = 0.1; // 100ms screen shake
+const SHAKE_INTENSITY_SINGLE = 2; // px for single letter destroy
+const SHAKE_INTENSITY_COMBO = 4; // px for combo destroy
 
 let playerFlashTimer = 0;
 let screenFlashTimer = 0;
+let shakeTimer = 0;
+let shakeIntensity = 0;
 
 const SHATTER_CONFIG = {
   minSpeed: 80,
@@ -45,9 +51,12 @@ function spawnDestroyParticles(x, y) {
  * Initialize VFX system — subscribe to game events.
  */
 export function createVFX() {
-  events.on('OBSTACLE_DESTROYED', ({ x, y }) => {
+  events.on('OBSTACLE_DESTROYED', ({ x, y, isCombo, comboSize }) => {
     spawnDestroyParticles(x, y);
     playerFlashTimer = FLASH_DURATION;
+    // VFX-07: Screen shake — bigger for combos
+    shakeTimer = SHAKE_DURATION;
+    shakeIntensity = (isCombo && comboSize > 1) ? SHAKE_INTENSITY_COMBO : SHAKE_INTENSITY_SINGLE;
   });
 
   // VFX-06: Red screen flash on life lost
@@ -58,6 +67,8 @@ export function createVFX() {
   events.on('GAME_RESTART', () => {
     playerFlashTimer = 0;
     screenFlashTimer = 0;
+    shakeTimer = 0;
+    shakeIntensity = 0;
   });
 }
 
@@ -72,6 +83,9 @@ export function updateVFX(dt) {
   }
   if (screenFlashTimer > 0) {
     screenFlashTimer = Math.max(0, screenFlashTimer - dt);
+  }
+  if (shakeTimer > 0) {
+    shakeTimer = Math.max(0, shakeTimer - dt);
   }
 }
 
@@ -91,5 +105,20 @@ export function getScreenFlash() {
   return {
     active: screenFlashTimer > 0,
     alpha: screenFlashTimer / SCREEN_FLASH_DURATION
+  };
+}
+
+/**
+ * Get current screen shake offset (VFX-07).
+ * Returns { x, y } offset in pixels to apply to rendering context.
+ * Decays to 0 over SHAKE_DURATION.
+ */
+export function getScreenShake() {
+  if (shakeTimer <= 0) return { x: 0, y: 0 };
+  const progress = shakeTimer / SHAKE_DURATION; // 1.0 -> 0.0
+  const currentIntensity = shakeIntensity * progress;
+  return {
+    x: (Math.random() * 2 - 1) * currentIntensity,
+    y: (Math.random() * 2 - 1) * currentIntensity
   };
 }

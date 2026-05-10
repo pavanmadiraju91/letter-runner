@@ -17,7 +17,7 @@ import { createScore, resetScore, updateScore, getScore } from './systems/score.
 import { createHUD, renderHUD } from './systems/hud.js';
 import { createFPSMonitor, updateFPS } from './systems/fps-monitor.js';
 import { createParticleSystem, updateParticles, renderParticles } from './systems/particles.js';
-import { createVFX, updateVFX, getPlayerFlash, getScreenFlash } from './systems/vfx.js';
+import { createVFX, updateVFX, getPlayerFlash, getScreenFlash, getScreenShake } from './systems/vfx.js';
 import { createAudioSystem } from './systems/audio.js';
 import { createDifficulty, resetDifficulty, getDifficultyParams, tickSpeed } from './systems/difficulty.js';
 import { createLevelAnnounce, updateLevelAnnounce, renderLevelAnnounce } from './systems/level-announce.js';
@@ -120,6 +120,11 @@ function render() {
     return;
   }
 
+  // VFX-07: Apply screen shake offset
+  const shake = getScreenShake();
+  ctx.save();
+  ctx.translate(shake.x, shake.y);
+
   ctx.fillStyle = getBG();
   ctx.fillRect(0, 0, w, h);
   renderBackground(ctx, background, w, h);
@@ -148,7 +153,10 @@ function render() {
     ctx.restore();
   }
 
-  // Game Over screen
+  // Restore from shake transform
+  ctx.restore();
+
+  // Game Over screen (rendered outside shake so it's stable)
   if (getState() === STATES.GAME_OVER) {
     renderGameOverScreen(ctx, w, h);
   }
