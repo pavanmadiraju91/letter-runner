@@ -129,11 +129,11 @@ export function renderStartScreen(ctx, width, height) {
   ctx.fillText(best > 0 ? `BEST: ${best}` : 'BEST: ---', width / 2, height * 0.80);
   ctx.restore();
 
-  // --- Music hint at bottom ---
+  // --- Music hint at bottom center (visible) ---
   ctx.save();
-  ctx.font = "11px 'Courier New', monospace";
-  ctx.fillStyle = P.DIM;
+  ctx.font = "14px 'Courier New', monospace";
+  ctx.fillStyle = P.MID;
   const musicHint = isMusicPlaying() ? '[Tab] Music Off' : '[Tab] Music On';
-  ctx.fillText(musicHint, width / 2, height * 0.90);
+  ctx.fillText(musicHint, width / 2, height * 0.92);
   ctx.restore();
 }

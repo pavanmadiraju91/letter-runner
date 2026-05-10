@@ -70,7 +70,12 @@ export function createAudioSystem() {
 
       audioReady = true;
 
-      // Pre-load the music track
+      // Start music immediately if buffer is already loaded (unlikely but safe)
+      if (musicEnabled) {
+        startMusic();
+      }
+
+      // Pre-load the music track (startMusic called again once buffer decoded)
       loadMusic();
     }).catch(() => {
       // Safari may reject resume() silently — ignore to prevent unhandled rejection
