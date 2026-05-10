@@ -1,7 +1,8 @@
 import { events } from '../core/events.js';
 import { getScore } from '../systems/score.js';
 import { getLives } from '../systems/lives.js';
-import { GAME, COLORS } from '../config.js';
+import { GAME } from '../config.js';
+import { getPalette } from '../core/theme.js';
 
 let currentLevel = 1;
 
@@ -43,18 +44,19 @@ function drawHeart(ctx, x, y, size, color) {
  * Call after entity rendering but before overlays.
  */
 export function renderHUD(ctx, canvasWidth) {
+  const palette = getPalette();
   ctx.save();
 
   // Score — top-left
   ctx.textAlign = 'left';
   ctx.textBaseline = 'top';
   ctx.font = 'bold 20px monospace';
-  ctx.fillStyle = COLORS.PALETTE.SCORE_TEXT;
+  ctx.fillStyle = palette.SCORE_TEXT;
   ctx.fillText('SCORE ' + getScore(), 16, 12);
 
   // Level — top-center
   ctx.textAlign = 'center';
-  ctx.fillStyle = COLORS.PALETTE.LEVEL_TEXT;
+  ctx.fillStyle = palette.LEVEL_TEXT;
   ctx.fillText('LV ' + currentLevel, canvasWidth / 2, 12);
 
   // Lives — top-right as heart icons
@@ -67,7 +69,7 @@ export function renderHUD(ctx, canvasWidth) {
 
   for (let i = 0; i < totalLives; i++) {
     const hx = startX - (i * spacing);
-    const color = i < remaining ? COLORS.PALETTE.HEART_FULL : COLORS.PALETTE.HEART_EMPTY;
+    const color = i < remaining ? palette.HEART_FULL : palette.HEART_EMPTY;
     drawHeart(ctx, hx, heartY, heartSize, color);
   }
 

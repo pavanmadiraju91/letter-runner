@@ -7,19 +7,13 @@
 
 import { events } from '../core/events.js';
 import { canSpawnParticles, spawnParticles } from './particles.js';
-import { COLORS } from '../config.js';
+import { getPalette } from '../core/theme.js';
 
 const FLASH_DURATION = 0.1; // 100ms white flash
 const SCREEN_FLASH_DURATION = 0.2; // 200ms red flash (VFX-06)
 
 let playerFlashTimer = 0;
 let screenFlashTimer = 0;
-
-const SHATTER_COLORS = [
-  COLORS.PALETTE.MAGENTA,
-  COLORS.PALETTE.CYAN,
-  COLORS.PALETTE.YELLOW,
-];
 
 const SHATTER_CONFIG = {
   minSpeed: 80,
@@ -37,10 +31,12 @@ const SHATTER_CONFIG = {
 function spawnDestroyParticles(x, y) {
   if (!canSpawnParticles()) return;
 
-  for (let i = 0; i < SHATTER_COLORS.length; i++) {
+  const P = getPalette();
+  const colors = [P.MAGENTA, P.CYAN, P.YELLOW];
+  for (let i = 0; i < colors.length; i++) {
     spawnParticles(x, y, 3, {
       ...SHATTER_CONFIG,
-      color: SHATTER_COLORS[i],
+      color: colors[i],
     });
   }
 }

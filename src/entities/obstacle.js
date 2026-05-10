@@ -1,6 +1,7 @@
-import { GAME, COLORS, COMBO, OBSTACLE_VFX } from '../config.js';
+import { GAME, COMBO, OBSTACLE_VFX } from '../config.js';
 import { getWidth } from '../core/canvas.js';
 import { events } from '../core/events.js';
+import { getPalette } from '../core/theme.js';
 
 /**
  * Determine if an obstacle is within the danger zone (left 30% of canvas).
@@ -67,6 +68,7 @@ export function cleanupOffscreen(pool) {
  * Uses screen-blend glow in danger zone (VIS-04) and 26px bold outlined letters (VIS-05).
  */
 function renderComboObstacle(ctx, obs) {
+  const P = getPalette();
   const x = Math.round(obs.x);
   const y = Math.round(obs.y);
   const w = obs.width;
@@ -83,17 +85,17 @@ function renderComboObstacle(ctx, obs) {
     ctx.save();
     ctx.globalCompositeOperation = 'lighter';
     ctx.globalAlpha = pulse;
-    ctx.fillStyle = COLORS.PALETTE.OBSTACLE_GLOW;
+    ctx.fillStyle = P.OBSTACLE_GLOW;
     ctx.fillRect(x - pad, y - pad, w + pad * 2, h + pad * 2);
     ctx.restore();
   }
 
   // Body fill (full width)
-  ctx.fillStyle = COLORS.PALETTE.OBSTACLE_BODY;
+  ctx.fillStyle = P.OBSTACLE_BODY;
   ctx.fillRect(x, y, w, h);
 
   // Neon border (2px inset)
-  ctx.strokeStyle = COLORS.PALETTE.OBSTACLE_BORDER;
+  ctx.strokeStyle = P.OBSTACLE_BORDER;
   ctx.lineWidth = 2;
   ctx.strokeRect(x + 1, y + 1, w - 2, h - 2);
 
@@ -108,21 +110,21 @@ function renderComboObstacle(ctx, obs) {
     let color;
     if (i < obs.progress) {
       // Completed -- green
-      color = COLORS.PALETTE.GREEN;
+      color = P.GREEN;
     } else if (i === obs.progress) {
       // Next target -- pulsing yellow
       const pulse = 0.7 + 0.3 * Math.sin(Date.now() * 0.008);
-      color = COLORS.PALETTE.YELLOW;
+      color = P.YELLOW;
       ctx.globalAlpha = pulse;
     } else {
       // Pending -- red
-      color = COLORS.PALETTE.MAGENTA;
+      color = P.MAGENTA;
     }
 
     // Vertical separator between cells (skip first)
     if (i > 0) {
       ctx.globalAlpha = 1;
-      ctx.strokeStyle = COLORS.PALETTE.DIM;
+      ctx.strokeStyle = P.DIM;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(cellX, y + 4);
@@ -151,6 +153,7 @@ function renderComboObstacle(ctx, obs) {
  * danger-zone pulse, and large outlined letter.
  */
 function renderSingleObstacle(ctx, obs) {
+  const P = getPalette();
   const x = Math.round(obs.x);
   const y = Math.round(obs.y);
   const w = obs.width;
@@ -166,17 +169,17 @@ function renderSingleObstacle(ctx, obs) {
     ctx.save();
     ctx.globalCompositeOperation = 'lighter';
     ctx.globalAlpha = pulse;
-    ctx.fillStyle = COLORS.PALETTE.OBSTACLE_GLOW;
+    ctx.fillStyle = P.OBSTACLE_GLOW;
     ctx.fillRect(x - pad, y - pad, w + pad * 2, h + pad * 2);
     ctx.restore();
   }
 
   // Body fill
-  ctx.fillStyle = COLORS.PALETTE.OBSTACLE_BODY;
+  ctx.fillStyle = P.OBSTACLE_BODY;
   ctx.fillRect(x, y, w, h);
 
   // Neon border (2px inset)
-  ctx.strokeStyle = COLORS.PALETTE.OBSTACLE_BORDER;
+  ctx.strokeStyle = P.OBSTACLE_BORDER;
   ctx.lineWidth = 2;
   ctx.strokeRect(x + 1, y + 1, w - 2, h - 2);
 
@@ -190,7 +193,7 @@ function renderSingleObstacle(ctx, obs) {
   ctx.strokeStyle = '#000000';
   ctx.lineWidth = outlineWidth;
   ctx.strokeText(obs.letter, x + w / 2, y + h / 2);
-  ctx.fillStyle = COLORS.PALETTE.OBSTACLE_LETTER;
+  ctx.fillStyle = P.OBSTACLE_LETTER;
   ctx.fillText(obs.letter, x + w / 2, y + h / 2);
 }
 

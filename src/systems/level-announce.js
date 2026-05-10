@@ -1,5 +1,5 @@
 import { events } from '../core/events.js';
-import { COLORS } from '../config.js';
+import { getPalette } from '../core/theme.js';
 
 let active = false;
 let timer = 0;
@@ -46,14 +46,16 @@ export function updateLevelAnnounce(dt) {
 export function renderLevelAnnounce(ctx, width, height) {
   if (!active) return;
 
+  const palette = getPalette();
+
   // Calculate alpha with quadratic ease-out (snappier fade)
   let alpha = timer / DURATION;
   alpha = alpha * alpha;
 
   ctx.save();
   ctx.globalAlpha = alpha;
-  ctx.fillStyle = COLORS.PALETTE.WHITE;
-  ctx.shadowColor = COLORS.PALETTE.CYAN;
+  ctx.fillStyle = palette.WHITE;
+  ctx.shadowColor = palette.CYAN;
   ctx.shadowBlur = 30;
   ctx.font = 'bold 64px monospace';
   ctx.textAlign = 'center';
