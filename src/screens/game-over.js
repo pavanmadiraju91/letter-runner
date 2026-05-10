@@ -79,32 +79,23 @@ export function renderGameOverScreen(ctx, width, height) {
   ctx.fillText('SCORE: ' + finalScore, width / 2, scoreY);
   ctx.restore();
 
-  // --- Personal best below score ---
-  ctx.save();
-  ctx.font = "bold 20px 'Courier New', monospace";
-  ctx.fillStyle = P.BEST_TEXT;
-  ctx.fillText('BEST: ' + personalBest, width / 2, scoreY + 40);
-  ctx.restore();
-
-  // --- Delta indicator ---
-  const deltaY = scoreY + 68;
-  const delta = finalScore - personalBest;
+  // --- Personal best or NEW BEST! ---
   if (isNewBest) {
-    // NEW BEST! pulsing in gold
+    // NEW BEST! pulsing in gold (replaces the BEST line)
     const pulse = 0.6 + 0.4 * Math.sin(elapsedTime * 6);
     ctx.save();
     ctx.globalAlpha = pulse;
-    ctx.font = "bold 18px 'Courier New', monospace";
+    ctx.font = "bold 22px 'Courier New', monospace";
     ctx.fillStyle = P.BEST_TEXT;
     ctx.shadowColor = P.BEST_TEXT;
-    ctx.shadowBlur = 8;
-    ctx.fillText('NEW BEST!', width / 2, deltaY);
+    ctx.shadowBlur = 10;
+    ctx.fillText('NEW BEST!', width / 2, scoreY + 44);
     ctx.restore();
-  } else if (delta < 0) {
+  } else {
     ctx.save();
-    ctx.font = "16px 'Courier New', monospace";
-    ctx.fillStyle = P.MAGENTA;
-    ctx.fillText(String(delta), width / 2, deltaY);
+    ctx.font = "bold 20px 'Courier New', monospace";
+    ctx.fillStyle = P.BEST_TEXT;
+    ctx.fillText('BEST: ' + personalBest, width / 2, scoreY + 44);
     ctx.restore();
   }
 
