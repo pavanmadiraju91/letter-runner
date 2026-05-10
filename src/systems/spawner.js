@@ -6,6 +6,17 @@ const CHARACTER_POOL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 const POOL_SIZE = CHARACTER_POOL.length; // 36 characters
 
 /**
+ * Randomize case for a character: letters get 50/50 upper/lower,
+ * digits stay as-is.
+ */
+function randomizeCase(ch) {
+  if (ch >= 'A' && ch <= 'Z') {
+    return Math.random() < 0.5 ? ch.toLowerCase() : ch;
+  }
+  return ch; // digits unchanged
+}
+
+/**
  * Create a spawner state object tied to an obstacle pool.
  */
 export function createSpawner(pool) {
@@ -112,7 +123,7 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
         comboSize = 0;
         break;
       }
-      comboLetters.push(picked);
+      comboLetters.push(randomizeCase(picked));
     }
 
     if (comboSize > 0) {
@@ -169,7 +180,7 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
   obs.height = isTall ? GAME.OBSTACLE_HEIGHT * 1.5 : GAME.OBSTACLE_HEIGHT;
   obs.y = groundY - obs.height;
 
-  obs.letter = letter;
+  obs.letter = randomizeCase(letter);
   obs.letters = [];
   obs.progress = 0;
   obs.isCombo = false;

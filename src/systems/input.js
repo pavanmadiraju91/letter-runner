@@ -12,7 +12,8 @@ let onKeyUp;
 let onVisibilityChange;
 
 /**
- * Initialize keyboard input — emits KEY_PRESS for A-Z keys.
+ * Initialize keyboard input — emits KEY_PRESS for A-Z (case-sensitive), and 0-9.
+ * Case-sensitive: 'a' and 'A' are different keys — player must match exact case.
  * Does not call preventDefault to avoid breaking browser shortcuts.
  * Handles wrong-key penalty delay at level 4+ and LEVEL_UP tracking.
  * Pauses game on tab blur, resumes on tab focus (unless game over).
@@ -22,15 +23,19 @@ export function initInput() {
     if (e.repeat) return;
     if (inputLocked) return;
 
-    const key = e.key.toUpperCase();
-    if (key.length === 1 && ((key >= 'A' && key <= 'Z') || (key >= '0' && key <= '9'))) {
-      pressed.add(key);
-      events.emit('KEY_PRESS', { key });
+    const key = e.key;
+    // Accept single printable characters: letters (case-sensitive) and digits
+    if (key.length === 1) {
+      const upper = key.toUpperCase();
+      if ((upper >= 'A' && upper <= 'Z') || (key >= '0' && key <= '9')) {
+        pressed.add(key);
+        events.emit('KEY_PRESS', { key });
+      }
     }
   };
 
   onKeyUp = (e) => {
-    const key = e.key.toUpperCase();
+    const key = e.key;
     pressed.delete(key);
   };
 
