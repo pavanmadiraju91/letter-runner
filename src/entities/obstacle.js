@@ -173,12 +173,12 @@ function renderComboObstacle(ctx, obs) {
       ctx.fillStyle = '#ff6666';
     } else {
       ctx.shadowColor = glowColor;
-      ctx.shadowBlur = 10 + dangerGlow;
+      ctx.shadowBlur = 8 + dangerGlow;
       ctx.fillStyle = color;
     }
 
     ctx.fillText(obs.letters[i], centerX, centerY);
-    ctx.shadowBlur = wrongFlash ? 6 : (5 + dangerGlow * 0.5);
+    ctx.shadowBlur = wrongFlash ? 6 : (8 + dangerGlow * 0.5);
     ctx.fillText(obs.letters[i], centerX, centerY);
     ctx.restore();
 
@@ -240,13 +240,13 @@ function renderSingleObstacle(ctx, obs) {
     ctx.fillStyle = '#ff6666';
   } else {
     ctx.shadowColor = P.OBSTACLE_GLOW || P.MAGENTA;
-    ctx.shadowBlur = 12 + dangerGlow;
+    ctx.shadowBlur = 8 + dangerGlow;
     ctx.fillStyle = P.OBSTACLE_LETTER;
   }
 
   ctx.fillText(obs.letter, centerX, centerY);
   // Double-draw for stronger glow
-  ctx.shadowBlur = wrongFlash ? 8 : (6 + dangerGlow * 0.5);
+  ctx.shadowBlur = wrongFlash ? 8 : (8 + dangerGlow * 0.5);
   ctx.fillText(obs.letter, centerX, centerY);
   ctx.restore();
 }
