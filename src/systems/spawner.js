@@ -77,10 +77,12 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
   // Determine if this spawn should be a combo obstacle
   const level = getLevel();
   const activeComboCount = active.filter(o => o.isCombo).length;
-  let comboSize = 0; // 0 = single, 2 = 2-letter, 3 = 3-letter
+  let comboSize = 0; // 0 = single, 2 = 2-letter, 3 = 3-letter, 4 = 4-letter
 
   if (activeComboCount < COMBO.MAX_ON_SCREEN) {
-    if (level >= COMBO.MIN_LEVEL_3LETTER && Math.random() < COMBO.SPAWN_CHANCE_3LETTER) {
+    if (level >= COMBO.MIN_LEVEL_4LETTER && Math.random() < COMBO.SPAWN_CHANCE_4LETTER) {
+      comboSize = 4;
+    } else if (level >= COMBO.MIN_LEVEL_3LETTER && Math.random() < COMBO.SPAWN_CHANCE_3LETTER) {
       comboSize = 3;
     } else if (level >= COMBO.MIN_LEVEL_2LETTER && Math.random() < COMBO.SPAWN_CHANCE_2LETTER) {
       comboSize = 2;
