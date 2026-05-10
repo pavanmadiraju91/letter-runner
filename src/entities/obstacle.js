@@ -14,7 +14,11 @@ export function createObstacleFactory() {
       height: GAME.OBSTACLE_HEIGHT,
       letter: '',
       speed: 0,
-      active: false
+      active: false,
+      // Combo fields
+      letters: [],
+      progress: 0,
+      isCombo: false
     };
   };
 }
@@ -39,7 +43,11 @@ export function cleanupOffscreen(pool) {
     const obs = active[i];
     if (obs.x + obs.width < 0) {
       obs.active = false;
-      events.emit('OBSTACLE_MISSED', { letter: obs.letter });
+      events.emit('OBSTACLE_MISSED', {
+        letter: obs.letter,
+        letters: obs.letters,
+        isCombo: obs.isCombo
+      });
       pool.release(obs);
     }
   }

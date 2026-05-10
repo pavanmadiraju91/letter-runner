@@ -91,6 +91,17 @@ export const SPEED = {
   MIN_SPAWN_INTERVAL: 0.8,  // floor — never spawn faster than this
 };
 
+export const COMBO = {
+  MIN_LEVEL_2LETTER: 4,       // COMBO-01: 2-letter combos appear at level 4+
+  MIN_LEVEL_3LETTER: 7,       // COMBO-02: 3-letter combos appear at level 7+
+  SPAWN_CHANCE_2LETTER: 0.30, // 30% chance a spawn becomes a 2-letter combo
+  SPAWN_CHANCE_3LETTER: 0.25, // 25% chance (of remaining 70%) becomes 3-letter
+  WIDTH_PER_LETTER: 44,       // each letter cell is 44px wide
+  MULTIPLIER_2LETTER: 2.5,    // COMBO-07: scoring multiplier for 2-letter
+  MULTIPLIER_3LETTER: 4.0,    // COMBO-07: scoring multiplier for 3-letter
+  MAX_ON_SCREEN: 1,           // COMBO-08: only 1 combo obstacle at a time
+};
+
 export const GAME = {
   TARGET_FPS: 60,
   MAX_DT: 1 / 30,
