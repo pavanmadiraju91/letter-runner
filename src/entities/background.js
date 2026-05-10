@@ -1,27 +1,41 @@
-// Parallax background — tiles bg-dark.png horizontally, scrolls at 10% of game speed
+// Parallax background — tiles bg image horizontally, scrolls at 10% of game speed
+// Theme-aware: switches between bg-dark.png and bg-light.png
 
-const bgImage = new Image();
-bgImage.src = './bg-dark.png';
+import { getTheme } from '../core/theme.js';
+import { events } from '../core/events.js';
+
+const bgDark = new Image();
+bgDark.src = './bg-dark.png';
+const bgLight = new Image();
+bgLight.src = './bg-light.png';
+
+function getCurrentBg() {
+  return getTheme() === 'dark' ? bgDark : bgLight;
+}
 
 export function createBackground() {
-  return { offset: 0 };
+  const bg = { offset: 0 };
+  events.on('THEME_CHANGE', () => { bg.offset = 0; });
+  return bg;
 }
 
 export function updateBackground(bg, dt, scrollSpeed) {
-  bg.offset = (bg.offset + scrollSpeed * 0.1 * dt) % (bgImage.width || 1);
+  const img = getCurrentBg();
+  bg.offset = (bg.offset + scrollSpeed * 0.1 * dt) % (img.width || 1);
 }
 
 export function renderBackground(ctx, bg, canvasWidth, canvasHeight) {
-  if (!bgImage.complete || !bgImage.width) return;
+  const img = getCurrentBg();
+  if (!img.complete || !img.width) return;
 
-  const imgW = bgImage.width;
-  const imgH = bgImage.height;
+  const imgW = img.width;
+  const imgH = img.height;
   // Scale to fill canvas height
   const scale = canvasHeight / imgH;
   const drawW = imgW * scale;
   const startX = -(bg.offset * scale) % drawW;
 
   for (let x = startX; x < canvasWidth; x += drawW) {
-    ctx.drawImage(bgImage, x, 0, drawW, canvasHeight);
+    ctx.drawImage(img, x, 0, drawW, canvasHeight);
   }
 }

@@ -1,6 +1,7 @@
 import { initCanvas, getCtx, getWidth, getHeight } from './core/canvas.js';
 import { startLoop } from './core/game-loop.js';
 import { events } from './core/events.js';
+import { initTheme, getBG } from './core/theme.js';
 import { createStateMachine, getState, STATES, requestRestart, requestStart } from './core/state.js';
 import { COLORS, GAME } from './config.js';
 import { createPlayer, resetPlayer, updatePlayer, renderPlayer } from './entities/player.js';
@@ -25,6 +26,7 @@ import { createGameOverScreen, updateGameOverScreen, renderGameOverScreen } from
 import { getPersonalBest, setPersonalBest } from './systems/storage.js';
 
 initCanvas();
+initTheme();
 events.emit('CANVAS_READY', { width: getWidth(), height: getHeight() });
 
 createStateMachine();
@@ -118,7 +120,7 @@ function render() {
     return;
   }
 
-  ctx.fillStyle = COLORS.BG;
+  ctx.fillStyle = getBG();
   ctx.fillRect(0, 0, w, h);
   renderBackground(ctx, background, w, h);
 
