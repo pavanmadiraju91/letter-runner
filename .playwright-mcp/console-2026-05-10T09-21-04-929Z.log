@@ -43,3 +43,19 @@
 [  405847ms] [LOG] %c[Speed Curve] color: #00ffcc; font-weight: bold @ http://localhost:3001/src/systems/difficulty.js?t=1778405196695:30
 [  405847ms] [TABLE] [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object] @ http://localhost:3001/src/systems/difficulty.js?t=1778405196695:31
 [  405848ms] [LOG] [Letter Runner] Game loop started @ http://localhost:3001/src/main.js?t=1778405270403:167
+[ 1001060ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:3001/@vite/client:963
+[ 1001270ms] [LOG] %c[Speed Curve] color: #00ffcc; font-weight: bold @ http://localhost:3001/src/systems/difficulty.js?t=1778405196695:30
+[ 1001270ms] [TABLE] [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object] @ http://localhost:3001/src/systems/difficulty.js?t=1778405196695:31
+[ 1001271ms] [LOG] [Letter Runner] Game loop started @ http://localhost:3001/src/main.js?t=1778405270403:167
+[ 1140572ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3001/favicon.ico:0
+[ 1186849ms] [LOG] %c[Speed Curve] color: #00ffcc; font-weight: bold @ http://localhost:3001/src/systems/difficulty.js?t=1778405196695:30
+[ 1186849ms] [TABLE] [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object] @ http://localhost:3001/src/systems/difficulty.js?t=1778405196695:31
+[ 1186850ms] [LOG] [Letter Runner] Game loop started @ http://localhost:3001/src/main.js?t=1778406051645:167
+[ 1267287ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3001/favicon.ico:0
+[ 1323483ms] [LOG] %c[Speed Curve] color: #00ffcc; font-weight: bold @ http://localhost:3001/src/systems/difficulty.js?t=1778405196695:30
+[ 1323483ms] [TABLE] [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object] @ http://localhost:3001/src/systems/difficulty.js?t=1778405196695:31
+[ 1323485ms] [LOG] [Letter Runner] Game loop started @ http://localhost:3001/src/main.js?t=1778406187322:159
+[ 1359984ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3001/favicon.ico:0
+[ 1690327ms] [LOG] %c[Speed Curve] color: #00ffcc; font-weight: bold @ http://localhost:3001/src/systems/difficulty.js?t=1778406555077:30
+[ 1690328ms] [TABLE] [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object] @ http://localhost:3001/src/systems/difficulty.js?t=1778406555077:31
+[ 1690328ms] [LOG] [Letter Runner] Game loop started @ http://localhost:3001/src/main.js?t=1778406555077:159
