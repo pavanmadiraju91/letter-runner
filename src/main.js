@@ -3,7 +3,8 @@ import { startLoop } from './core/game-loop.js';
 import { events } from './core/events.js';
 import { createStateMachine, getState, STATES, requestRestart, requestStart } from './core/state.js';
 import { COLORS, GAME } from './config.js';
-import { createPlayer, resetPlayer, renderPlayer } from './entities/player.js';
+import { createPlayer, resetPlayer, updatePlayer, renderPlayer } from './entities/player.js';
+import { createBackground, updateBackground, renderBackground } from './entities/background.js';
 import { createGround, updateGround, renderGround } from './entities/ground.js';
 import { createObstacleFactory, updateObstacles, cleanupOffscreen, renderObstacles } from './entities/obstacle.js';
 import { createPool } from './systems/pool.js';
@@ -42,6 +43,7 @@ createVFX();
 createAudioSystem();
 
 const ground = createGround();
+const background = createBackground();
 const player = createPlayer();
 const obstaclePool = createPool(createObstacleFactory(), 20);
 const spawner = createSpawner(obstaclePool);
@@ -92,6 +94,8 @@ function update(dt) {
 
   tickSpeed(dt);
   const params = getDifficultyParams();
+  updateBackground(background, dt, params.scrollSpeed);
+  updatePlayer(player, dt);
   updateGround(ground, dt, params.scrollSpeed);
   const groundY = getHeight() - GAME.GROUND_HEIGHT;
   updateSpawner(spawner, dt, params, groundY);
@@ -116,6 +120,7 @@ function render() {
 
   ctx.fillStyle = COLORS.BG;
   ctx.fillRect(0, 0, w, h);
+  renderBackground(ctx, background, w, h);
 
   renderGround(ctx, ground, w, h);
   renderObstacles(ctx, obstaclePool.getActive());
