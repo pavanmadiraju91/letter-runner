@@ -59,7 +59,7 @@ const spawner = createSpawner(obstaclePool);
 resetPlayer(player, getWidth(), getHeight(), GAME.GROUND_HEIGHT);
 initInput();
 initMatcher(obstaclePool);
-initObstacleEffects();
+initObstacleEffects(obstaclePool);
 
 events.on('CANVAS_RESIZE', ({ width, height }) => {
   resetPlayer(player, width, height, GAME.GROUND_HEIGHT);

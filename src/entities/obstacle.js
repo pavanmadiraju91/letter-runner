@@ -38,12 +38,19 @@ export function createObstacleFactory() {
 
 /**
  * Initialize obstacle visual effects — subscribes to WRONG_KEY event
- * to trigger subtle red flash on the target obstacle.
+ * to trigger subtle red flash on ALL obstacles in the danger zone.
  */
-export function initObstacleEffects() {
-  events.on('WRONG_KEY', ({ targetObs }) => {
-    if (targetObs) {
-      targetObs.wrongFlashTimer = 0.2;
+let activePoolRef = null;
+
+export function initObstacleEffects(pool) {
+  activePoolRef = pool;
+  events.on('WRONG_KEY', () => {
+    if (!activePoolRef) return;
+    const active = activePoolRef.getActive();
+    for (let i = 0; i < active.length; i++) {
+      if (isInDangerZone(active[i])) {
+        active[i].wrongFlashTimer = 0.15;
+      }
     }
   });
 }
@@ -149,30 +156,29 @@ function renderComboObstacle(ctx, obs) {
       glowColor = P.MAGENTA;
     }
 
-    // Danger zone pulse glow behind letter
-    if (inDanger) {
-      const pulse = OBSTACLE_VFX.GLOW_MIN_ALPHA +
-        OBSTACLE_VFX.GLOW_RANGE * Math.sin(Date.now() * OBSTACLE_VFX.GLOW_PULSE_SPEED);
-      ctx.save();
-      ctx.globalCompositeOperation = 'lighter';
-      ctx.globalAlpha = pulse * 0.6;
-      ctx.fillStyle = wrongFlash ? '#ff3333' : glowColor;
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, fontSize * 0.7, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-    }
+    // Danger zone: stronger glow on the letter (no circle)
+    const dangerGlow = inDanger
+      ? 6 + 4 * Math.sin(Date.now() * OBSTACLE_VFX.GLOW_PULSE_SPEED)
+      : 0;
 
-    // Letter glow (subtle shadowBlur)
+    // Letter glow
     ctx.save();
     ctx.font = `bold ${fontSize}px 'Arial Black', 'Arial', sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.shadowColor = wrongFlash ? '#ff3333' : glowColor;
-    ctx.shadowBlur = wrongFlash ? 12 : 10;
-    ctx.fillStyle = color;
+
+    if (wrongFlash) {
+      ctx.shadowColor = '#ff3333';
+      ctx.shadowBlur = 14;
+      ctx.fillStyle = '#ff6666';
+    } else {
+      ctx.shadowColor = glowColor;
+      ctx.shadowBlur = 10 + dangerGlow;
+      ctx.fillStyle = color;
+    }
+
     ctx.fillText(obs.letters[i], centerX, centerY);
-    // Double-draw for stronger glow
+    ctx.shadowBlur = wrongFlash ? 6 : (5 + dangerGlow * 0.5);
     ctx.fillText(obs.letters[i], centerX, centerY);
     ctx.restore();
 
@@ -216,31 +222,31 @@ function renderSingleObstacle(ctx, obs) {
   const centerX = x + w / 2;
   const centerY = y + h / 2;
 
-  // Danger zone pulse: glowing circle behind letter
-  if (inDanger) {
-    const pulse = OBSTACLE_VFX.GLOW_MIN_ALPHA +
-      OBSTACLE_VFX.GLOW_RANGE * Math.sin(Date.now() * OBSTACLE_VFX.GLOW_PULSE_SPEED);
-    ctx.save();
-    ctx.globalCompositeOperation = 'lighter';
-    ctx.globalAlpha = pulse * 0.5;
-    ctx.fillStyle = wrongFlash ? '#ff3333' : P.OBSTACLE_GLOW;
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, fontSize * 0.8, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-  }
+  // Danger zone: letter glows more intensely (no circle, just stronger shadow on the letter itself)
+  const dangerGlow = inDanger
+    ? 6 + 4 * Math.sin(Date.now() * OBSTACLE_VFX.GLOW_PULSE_SPEED)
+    : 0;
 
   // Letter with glow — the primary and only visual
   ctx.save();
   ctx.font = `bold ${fontSize}px 'Arial Black', 'Arial', sans-serif`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.shadowColor = wrongFlash ? '#ff3333' : (P.OBSTACLE_GLOW || P.MAGENTA);
-  ctx.shadowBlur = wrongFlash ? 14 : 12;
-  ctx.fillStyle = P.OBSTACLE_LETTER;
+
+  if (wrongFlash) {
+    // Wrong key: red glow, slightly brighter
+    ctx.shadowColor = '#ff3333';
+    ctx.shadowBlur = 16;
+    ctx.fillStyle = '#ff6666';
+  } else {
+    ctx.shadowColor = P.OBSTACLE_GLOW || P.MAGENTA;
+    ctx.shadowBlur = 12 + dangerGlow;
+    ctx.fillStyle = P.OBSTACLE_LETTER;
+  }
+
   ctx.fillText(obs.letter, centerX, centerY);
   // Double-draw for stronger glow
-  ctx.shadowBlur = wrongFlash ? 8 : 6;
+  ctx.shadowBlur = wrongFlash ? 8 : (6 + dangerGlow * 0.5);
   ctx.fillText(obs.letter, centerX, centerY);
   ctx.restore();
 }

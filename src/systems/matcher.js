@@ -115,16 +115,16 @@ export function initMatcher(obstaclePool) {
     // No match found in danger zone — check ALL active obstacles before penalizing.
     // If the key matches ANY visible obstacle (even outside danger zone), suppress penalty.
     // This prevents "wrong key" when a matching obstacle is approaching but not yet in zone.
-    if (hasObstaclesInZone) {
-      for (let i = 0; i < active.length; i++) {
-        const obs = active[i];
-        if (obs.isCombo) {
-          if (obs.letters[obs.progress] === key) return; // matches upcoming combo letter
-        } else {
-          if (obs.letter === key) return; // matches a visible single obstacle
-        }
+    for (let i = 0; i < active.length; i++) {
+      const obs = active[i];
+      if (obs.isCombo) {
+        if (obs.letters[obs.progress] === key) return; // matches upcoming combo letter
+      } else {
+        if (obs.letter === key) return; // matches a visible single obstacle
       }
-      // Key doesn't match ANY visible obstacle — it's truly a wrong key
+    }
+    // Key doesn't match ANY visible obstacle — it's truly a wrong key
+    if (active.length > 0) {
       const targetObs = singlesInZone.length > 0 ? singlesInZone[0] : null;
       events.emit('WRONG_KEY', { key, comboReset: false, targetObs });
     }
