@@ -3,29 +3,24 @@ import { GAME, SPEED } from '../config.js';
 import { getCurrentSpeed } from '../systems/difficulty.js';
 
 const STAR_COUNT = 40;
+const COLORED_STAR_COUNT = 15;
 const stars = [];
-let initialized = false;
+const coloredStars = [];
 
-// City skyline uses a long non-repeating sequence via seeded noise
-const CITY_LENGTH = 200;
-const cityHeights = [];
+// Nebula blobs (large semi-transparent gradient circles)
+const nebulae = [];
 
 // Speed lines for high velocity effect
 const MAX_SPEED_LINES = 12;
 const speedLines = [];
 
-function seededRandom(seed) {
-  let s = seed;
-  return () => {
-    s = (s * 1664525 + 1013904223) & 0xffffffff;
-    return (s >>> 0) / 0xffffffff;
-  };
-}
+let initialized = false;
 
 function init(canvasWidth, canvasHeight) {
   if (initialized) return;
   initialized = true;
 
+  // Regular white stars
   for (let i = 0; i < STAR_COUNT; i++) {
     stars.push({
       x: Math.random() * canvasWidth * 3,
@@ -35,18 +30,37 @@ function init(canvasWidth, canvasHeight) {
     });
   }
 
-  const rng = seededRandom(42);
-  for (let i = 0; i < CITY_LENGTH; i++) {
-    const base = 10 + rng() * 35;
-    const tall = rng() < 0.15 ? base + 20 + rng() * 30 : base;
-    cityHeights.push(Math.round(tall));
+  // Colored stars (faint blue, purple, red)
+  const starColors = [
+    'rgba(100, 150, 255, 0.6)',  // faint blue
+    'rgba(180, 100, 255, 0.5)',  // faint purple
+    'rgba(255, 100, 120, 0.5)',  // faint red
+    'rgba(80, 200, 255, 0.5)',   // faint cyan-blue
+    'rgba(200, 80, 255, 0.4)',   // faint violet
+  ];
+  for (let i = 0; i < COLORED_STAR_COUNT; i++) {
+    coloredStars.push({
+      x: Math.random() * canvasWidth * 3,
+      y: Math.random() * canvasHeight * 0.7,
+      size: Math.random() < 0.3 ? 2 : 1.5,
+      speed: 0.003 + Math.random() * 0.012,
+      color: starColors[Math.floor(Math.random() * starColors.length)],
+      twinkleOffset: Math.random() * Math.PI * 2
+    });
   }
+
+  // Nebula blobs — very faint, large colored circles
+  nebulae.push(
+    { x: canvasWidth * 0.2, y: canvasHeight * 0.3, radius: 120, color: 'rgba(100, 40, 180, 1)', alpha: 0.03, speed: 0.002 },
+    { x: canvasWidth * 0.7, y: canvasHeight * 0.5, radius: 150, color: 'rgba(20, 40, 140, 1)', alpha: 0.04, speed: 0.001 },
+    { x: canvasWidth * 0.5, y: canvasHeight * 0.15, radius: 100, color: 'rgba(80, 20, 160, 1)', alpha: 0.025, speed: 0.003 }
+  );
 
   // Pre-allocate speed lines
   for (let i = 0; i < MAX_SPEED_LINES; i++) {
     speedLines.push({
       x: Math.random() * canvasWidth,
-      y: Math.random() * canvasHeight * 0.6 + canvasHeight * 0.1, // avoid top HUD and bottom ground
+      y: Math.random() * canvasHeight * 0.6 + canvasHeight * 0.1,
       length: 30 + Math.random() * 60,
       speed: 400 + Math.random() * 300,
     });
@@ -82,10 +96,26 @@ export function renderBackground(ctx, bg, canvasWidth, canvasHeight) {
   init(canvasWidth, canvasHeight);
 
   // Deep dark background
-  ctx.fillStyle = palette.BG;
+  ctx.fillStyle = palette.BG || '#0a0a0f';
   ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-  // Subtle stars (very slow parallax)
+  // Nebula blobs — very faint large gradient circles with slow parallax
+  for (let i = 0; i < nebulae.length; i++) {
+    const neb = nebulae[i];
+    const nx = ((neb.x - bg.offset * neb.speed) % (canvasWidth + neb.radius * 2) + canvasWidth + neb.radius * 2) % (canvasWidth + neb.radius * 2) - neb.radius;
+    ctx.save();
+    ctx.globalAlpha = neb.alpha;
+    const grad = ctx.createRadialGradient(nx, neb.y, 0, nx, neb.y, neb.radius);
+    grad.addColorStop(0, neb.color);
+    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(nx, neb.y, neb.radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // Regular white stars (very slow parallax)
   ctx.fillStyle = palette.DIM || '#333';
   ctx.globalAlpha = 0.35;
   for (let i = 0; i < stars.length; i++) {
@@ -97,23 +127,21 @@ export function renderBackground(ctx, bg, canvasWidth, canvasHeight) {
   }
   ctx.globalAlpha = 1;
 
-  // City skyline (long non-repeating sequence, very subtle)
-  ctx.globalAlpha = 0.03;
-  ctx.fillStyle = palette.CYAN || '#00ffcc';
-  const segW = 40;
-  const totalCityWidth = CITY_LENGTH * segW;
-  const cityScrollOffset = (bg.offset * 0.2) % totalCityWidth;
-  const startSeg = Math.floor(cityScrollOffset / segW);
-  const pixelOffset = cityScrollOffset % segW;
-
-  for (let screenX = -pixelOffset, i = 0; screenX < canvasWidth; screenX += segW, i++) {
-    const idx = (startSeg + i) % CITY_LENGTH;
-    const h = cityHeights[idx];
-    ctx.fillRect(Math.round(screenX), groundY - h, segW - 2, h);
+  // Colored stars with subtle twinkle
+  const now = Date.now() * 0.001;
+  for (let i = 0; i < coloredStars.length; i++) {
+    const s = coloredStars[i];
+    const x = ((s.x - bg.offset * s.speed) % (canvasWidth * 3) + canvasWidth * 3) % (canvasWidth * 3);
+    if (x < canvasWidth) {
+      const twinkle = 0.4 + 0.6 * Math.abs(Math.sin(now * 1.5 + s.twinkleOffset));
+      ctx.globalAlpha = twinkle;
+      ctx.fillStyle = s.color;
+      ctx.fillRect(Math.round(x), Math.round(s.y), s.size, s.size);
+    }
   }
   ctx.globalAlpha = 1;
 
-  // THE GROUND LINE — single glowing cyan line
+  // THE GROUND LINE — single glowing cyan line (energy beam in space)
   ctx.save();
   ctx.strokeStyle = palette.CYAN || '#00ffcc';
   ctx.lineWidth = 2;
