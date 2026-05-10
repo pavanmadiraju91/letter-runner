@@ -2,3 +2,8 @@ node_modules/
 dist/
 *.local
 .DS_Store
+.playwright-mcp/
+ChatGPT*
+FreeCatCharacterAnimations/
+LetterRunner_PRD.docx
+"Tension Pixels.mp3"
