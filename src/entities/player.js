@@ -42,16 +42,6 @@ export function renderPlayer(ctx, player) {
   const dx = Math.round(player.x);
   const dy = Math.round(player.y + bobY);
 
-  // Neon border frame around player (like Stitch reference)
-  ctx.save();
-  ctx.strokeStyle = '#00ffcc';
-  ctx.lineWidth = 1.5;
-  ctx.shadowColor = '#00ffcc';
-  ctx.shadowBlur = 4;
-  ctx.strokeRect(dx - 2, dy - 2, player.width + 4, player.height + 4);
-  ctx.restore();
-
-  // Draw sprite
   ctx.drawImage(
     spriteSheet,
     srcX, 0, frameW, frameH,
