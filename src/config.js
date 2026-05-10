@@ -150,7 +150,7 @@ export const OBSTACLE_VFX = {
   GLOW_MIN_ALPHA: 0.4,       // minimum glow brightness
   GLOW_RANGE: 0.4,           // alpha oscillation range
   GLOW_PADDING: 3,           // px padding around obstacle for glow rect
-  LETTER_FONT_SIZE: 26,      // px
+  LETTER_FONT_SIZE: 34,      // px
   LETTER_OUTLINE_WIDTH: 3,   // px dark outline
 };
 
