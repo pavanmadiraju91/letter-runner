@@ -33,7 +33,7 @@ Letter Runner goes from empty repo to shippable game across 10 phases. The build
 - [x] **Phase 12: Speed & Difficulty** - Chrome dino-style speed progression with typing-research calibration
 - [x] **Phase 13: Multi-Letter Combos** - 2-3 letter sequence obstacles at higher levels
 - [x] **Phase 14: Audio** - MP3 background track replacing procedural oscillator music
-- [ ] **Phase 15: Visual Polish** - Player animation, parallax background, glow performance, letter readability
+- [x] **Phase 15: Visual Polish** - Player animation, parallax background, glow performance, letter readability
 - [ ] **Phase 16: Theme** - System-aware dark/light mode with reactive switching
 
 ## Phase Details
