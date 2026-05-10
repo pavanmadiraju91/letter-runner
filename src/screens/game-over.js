@@ -10,20 +10,16 @@ let personalBest = 0;
 let isNewBest = false;
 let elapsedTime = 0;
 
-// Load cat sprite for game over display
 const catSprite = new Image();
 catSprite.src = './cat-run.png';
 
-/**
- * Initialize the game over screen system.
- * Subscribes to STATE_CHANGE events.
- */
+const SCANLINE_GAP = 4;
+
 export function createGameOverScreen() {
   events.on('STATE_CHANGE', ({ state }) => {
     if (state === STATES.GAME_OVER) {
       finalScore = getScore();
       const prevBest = getPersonalBest();
-      // Check BEFORE storage updates (storage.js may update best on same event)
       isNewBest = finalScore > prevBest;
       personalBest = isNewBest ? finalScore : prevBest;
       elapsedTime = 0;
@@ -31,115 +27,202 @@ export function createGameOverScreen() {
   });
 }
 
-/**
- * Update game over screen (advance timer for animations).
- * @param {number} dt - delta time in seconds
- */
 export function updateGameOverScreen(dt) {
   elapsedTime += dt;
 }
 
-/**
- * Render the full game over screen with polished indie game aesthetics.
- * @param {CanvasRenderingContext2D} ctx
- * @param {number} width - canvas width
- * @param {number} height - canvas height
- */
 export function renderGameOverScreen(ctx, width, height) {
   const P = getPalette();
+  const now = Date.now();
   ctx.save();
 
-  // Dark semi-transparent overlay
-  ctx.fillStyle = P.PANEL;
+  // --- Overlay: fade in from transparent ---
+  const overlayAlpha = Math.min(0.88, elapsedTime * 3);
+  ctx.fillStyle = '#000000';
+  ctx.globalAlpha = overlayAlpha;
   ctx.fillRect(0, 0, width, height);
+  ctx.globalAlpha = 1;
 
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-
-  // --- "GAME OVER" title with magenta/red glow ---
-  const titleY = height * 0.20;
-  ctx.save();
-  ctx.font = "bold 48px 'Arial Black', 'Courier New', monospace";
-  ctx.fillStyle = P.MAGENTA;
-  ctx.shadowColor = P.MAGENTA;
-  ctx.shadowBlur = 15;
-  ctx.fillText('GAME OVER', width / 2, titleY);
-  // Double-draw for stronger glow
-  ctx.shadowBlur = 30;
-  ctx.fillText('GAME OVER', width / 2, titleY);
-  ctx.restore();
-
-  // --- Score section at 40% ---
-  const scoreY = height * 0.40;
-  ctx.save();
-  ctx.font = "bold 36px 'Arial Black', 'Courier New', monospace";
-  ctx.fillStyle = P.WHITE;
-  ctx.shadowColor = P.WHITE;
-  ctx.shadowBlur = 4;
-  ctx.fillText('SCORE: ' + finalScore, width / 2, scoreY);
-  ctx.restore();
-
-  // --- Personal best or NEW BEST! ---
-  if (isNewBest) {
-    // NEW BEST! pulsing in gold (replaces the BEST line)
-    const pulse = 0.6 + 0.4 * Math.sin(elapsedTime * 6);
+  // --- Glitch bars (brief, dramatic, first 0.5s only) ---
+  if (elapsedTime < 0.5) {
+    const glitchIntensity = 1 - elapsedTime * 2;
     ctx.save();
-    ctx.globalAlpha = pulse;
-    ctx.font = "bold 22px 'Courier New', monospace";
-    ctx.fillStyle = P.BEST_TEXT;
-    ctx.shadowColor = P.BEST_TEXT;
-    ctx.shadowBlur = 10;
-    ctx.fillText('NEW BEST!', width / 2, scoreY + 44);
-    ctx.restore();
-  } else {
-    ctx.save();
-    ctx.font = "bold 20px 'Courier New', monospace";
-    ctx.fillStyle = P.BEST_TEXT;
-    ctx.fillText('BEST: ' + personalBest, width / 2, scoreY + 44);
+    ctx.globalAlpha = glitchIntensity * 0.6;
+    for (let i = 0; i < 5; i++) {
+      const barY = Math.random() * height;
+      const barH = 2 + Math.random() * 6;
+      const offsetX = (Math.random() - 0.5) * 20;
+      ctx.fillStyle = Math.random() < 0.5 ? P.MAGENTA : P.CYAN;
+      ctx.fillRect(offsetX, barY, width, barH);
+    }
     ctx.restore();
   }
 
-  // --- Cat sprite (idle/dead look — use frame 0, slightly darkened) ---
-  const catY = height * 0.58;
-  if (catSprite.complete && catSprite.naturalWidth > 0) {
+  // --- "GAME OVER" with glitch offset on reveal ---
+  const titleReveal = Math.min(1, elapsedTime * 4);
+  const titleY = height * 0.22;
+  const titleText = 'GAME OVER';
+  const titleSize = Math.min(56, width * 0.05);
+
+  // Chromatic aberration effect (first 0.8s)
+  const aberration = Math.max(0, (0.8 - elapsedTime) * 4);
+  if (aberration > 0) {
+    ctx.save();
+    ctx.globalAlpha = titleReveal * 0.3;
+    ctx.font = `bold ${titleSize}px 'Arial Black', sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    // Red channel offset
+    ctx.fillStyle = '#ff0000';
+    ctx.fillText(titleText, width / 2 - aberration, titleY);
+    // Blue channel offset
+    ctx.fillStyle = '#0066ff';
+    ctx.fillText(titleText, width / 2 + aberration, titleY + aberration * 0.5);
+    ctx.restore();
+  }
+
+  // Main title
+  ctx.save();
+  ctx.globalAlpha = titleReveal;
+  ctx.font = `bold ${titleSize}px 'Arial Black', sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = P.MAGENTA;
+  ctx.shadowColor = P.MAGENTA;
+  ctx.shadowBlur = 15 + Math.sin(now * 0.008) * 5;
+  ctx.fillText(titleText, width / 2, titleY);
+  ctx.shadowBlur = 30;
+  ctx.fillText(titleText, width / 2, titleY);
+  ctx.restore();
+
+  // --- Horizontal accent line under title ---
+  if (titleReveal >= 1) {
+    const lineAlpha = Math.min(1, (elapsedTime - 0.25) * 3);
+    ctx.save();
+    ctx.globalAlpha = lineAlpha * 0.4;
+    ctx.strokeStyle = P.MAGENTA;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    const lineW = width * 0.3;
+    ctx.moveTo(width / 2 - lineW / 2, titleY + titleSize * 0.6);
+    ctx.lineTo(width / 2 + lineW / 2, titleY + titleSize * 0.6);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // --- Score (large, centered, reveals after title) ---
+  const scoreDelay = 0.4;
+  const scoreAlpha = Math.min(1, Math.max(0, (elapsedTime - scoreDelay) * 3));
+  const scoreY = height * 0.42;
+
+  if (scoreAlpha > 0) {
+    ctx.save();
+    ctx.globalAlpha = scoreAlpha;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    // Score number (big, white, glowing)
+    const scoreSize = Math.min(48, width * 0.04);
+    ctx.font = `bold ${scoreSize}px 'Arial Black', sans-serif`;
+    ctx.fillStyle = P.WHITE;
+    ctx.shadowColor = P.WHITE;
+    ctx.shadowBlur = 6;
+    ctx.fillText(String(finalScore), width / 2, scoreY);
+    ctx.restore();
+
+    // Label above score
+    ctx.save();
+    ctx.globalAlpha = scoreAlpha * 0.6;
+    ctx.font = "12px 'Courier New', monospace";
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = P.MID;
+    ctx.fillText('SCORE', width / 2, scoreY - scoreSize * 0.7);
+    ctx.restore();
+  }
+
+  // --- Personal best / NEW BEST! ---
+  const bestDelay = 0.7;
+  const bestAlpha = Math.min(1, Math.max(0, (elapsedTime - bestDelay) * 3));
+  const bestY = scoreY + 60;
+
+  if (bestAlpha > 0) {
+    ctx.save();
+    ctx.globalAlpha = bestAlpha;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    if (isNewBest) {
+      const pulse = 0.6 + 0.4 * Math.sin(elapsedTime * 8);
+      ctx.globalAlpha = bestAlpha * pulse;
+      ctx.font = "bold 20px 'Courier New', monospace";
+      ctx.fillStyle = P.BEST_TEXT;
+      ctx.shadowColor = P.BEST_TEXT;
+      ctx.shadowBlur = 12;
+      ctx.fillText('★ NEW HIGH SCORE ★', width / 2, bestY);
+    } else {
+      ctx.font = "16px 'Courier New', monospace";
+      ctx.fillStyle = P.BEST_TEXT;
+      ctx.fillText(`BEST: ${personalBest}`, width / 2, bestY);
+    }
+    ctx.restore();
+  }
+
+  // --- Cat sprite (fallen/static, slight tilt) ---
+  const catDelay = 0.9;
+  const catAlpha = Math.min(0.5, Math.max(0, (elapsedTime - catDelay) * 2));
+  const catY = height * 0.62;
+  if (catAlpha > 0 && catSprite.complete && catSprite.naturalWidth > 0) {
     const frameCount = 10;
     const frameW = catSprite.width / frameCount;
     const frameH = catSprite.height;
-    const drawSize = 64;
+    const drawSize = 56;
     ctx.save();
-    ctx.globalAlpha = 0.6; // Darker/dimmer to suggest defeat
-    ctx.drawImage(
-      catSprite,
-      0, 0, frameW, frameH, // frame 0 (idle/static)
-      width / 2 - drawSize / 2, catY - drawSize / 2,
-      drawSize, drawSize
-    );
+    ctx.globalAlpha = catAlpha;
+    ctx.translate(width / 2, catY);
+    ctx.rotate(0.15); // slight tilt — fallen
+    ctx.drawImage(catSprite, 0, 0, frameW, frameH, -drawSize / 2, -drawSize / 2, drawSize, drawSize);
     ctx.restore();
   }
 
-  // --- "Press any key to play again" with opacity pulse ---
-  const promptY = height * 0.72;
-  const pulse = 0.4 + 0.6 * (0.5 + 0.5 * Math.sin(elapsedTime * 4));
-  ctx.save();
-  ctx.globalAlpha = pulse;
-  ctx.font = "18px 'Courier New', monospace";
-  ctx.fillStyle = P.WHITE;
-  ctx.fillText('Press any key to play again', width / 2, promptY);
-  ctx.restore();
+  // --- Retry prompt ---
+  const retryDelay = 1.2;
+  const retryBase = Math.min(1, Math.max(0, (elapsedTime - retryDelay) * 2));
+  if (retryBase > 0) {
+    const breathe = 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(now * 0.004));
+    ctx.save();
+    ctx.globalAlpha = retryBase * breathe;
+    ctx.font = "bold 16px 'Courier New', monospace";
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = P.WHITE;
+    ctx.fillText('[ PRESS ANY KEY TO RETRY ]', width / 2, height * 0.76);
+    ctx.restore();
+  }
 
-  // --- Music hint at bottom ---
-  ctx.save();
-  ctx.font = "11px 'Courier New', monospace";
-  ctx.fillStyle = P.DIM;
-  const musicHint = isMusicPlaying() ? '[Tab] Music Off' : '[Tab] Music On';
-  ctx.fillText(musicHint, width / 2, height * 0.88);
-  ctx.restore();
+  // --- Bottom info ---
+  const infoAlpha = Math.min(1, Math.max(0, (elapsedTime - 1.5) * 2));
+  if (infoAlpha > 0) {
+    ctx.save();
+    ctx.globalAlpha = infoAlpha * 0.7;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
 
-  // --- GitHub repo link ---
+    ctx.font = "11px 'Courier New', monospace";
+    ctx.fillStyle = P.DIM;
+    ctx.fillText(isMusicPlaying() ? '[Tab] Music Off' : '[Tab] Music On', width / 2, height * 0.88);
+    ctx.fillText('github.com/pavanmadiraju91/letter-runner', width / 2, height * 0.94);
+
+    ctx.restore();
+  }
+
+  // --- Scanlines (very subtle) ---
   ctx.save();
-  ctx.font = "11px 'Courier New', monospace";
-  ctx.fillStyle = P.DIM;
-  ctx.fillText('github.com/pavanmadiraju91/letter-runner', width / 2, height * 0.94);
+  ctx.globalAlpha = 0.04;
+  ctx.fillStyle = '#000000';
+  for (let y = 0; y < height; y += SCANLINE_GAP) {
+    ctx.fillRect(0, y, width, 1);
+  }
   ctx.restore();
 
   ctx.restore();
