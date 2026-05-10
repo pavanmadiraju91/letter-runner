@@ -16,19 +16,13 @@ let mobileInputEl = null;
 export const isTouchDevice = ('ontouchstart' in window);
 
 /**
- * Focus the hidden mobile input to trigger virtual keyboard.
- * Uses readOnly trick: set readOnly briefly to prevent zoom on iOS,
- * then remove it so the keyboard appears.
+ * Focus the mobile input field.
+ * The input is visible at the bottom — user taps it directly to open keyboard.
+ * This is only called as a convenience after game start.
  */
 export function focusMobileInput() {
   if (isTouchDevice && mobileInputEl) {
-    mobileInputEl.readOnly = true;
     mobileInputEl.focus();
-    setTimeout(() => {
-      mobileInputEl.readOnly = false;
-      mobileInputEl.focus();
-      mobileInputEl.click();
-    }, 100);
   }
 }
 
@@ -42,6 +36,11 @@ export function focusMobileInput() {
  */
 export function initInput() {
   mobileInputEl = document.getElementById('mobile-input');
+
+  // On touch devices, show the mobile input and add body class
+  if (isTouchDevice && mobileInputEl) {
+    document.body.classList.add('mobile-active');
+  }
 
   onKeyDown = (e) => {
     if (e.repeat) return;
@@ -86,17 +85,6 @@ export function initInput() {
       }
     };
     mobileInputEl.addEventListener('input', onMobileInput);
-
-    // Re-focus if keyboard dismisses during gameplay
-    mobileInputEl.addEventListener('blur', () => {
-      if (gameState === 'playing') {
-        setTimeout(() => {
-          if (gameState === 'playing' && !document.hidden) {
-            mobileInputEl.focus();
-          }
-        }, 300);
-      }
-    });
   }
 
   // Wrong-key penalty: lock input briefly at level 4+

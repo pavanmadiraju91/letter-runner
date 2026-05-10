@@ -61,10 +61,9 @@ initInput();
 initMatcher(obstaclePool);
 initObstacleEffects(obstaclePool);
 
-// Mobile: tap on canvas triggers game start and focuses hidden input for virtual keyboard
+// Mobile: tap on canvas focuses the input (keyboard opens) and starts/restarts game
 if (isTouchDevice) {
   const canvas = document.getElementById('game');
-  // Use touchend for Android (keyboard activation requires completed gesture)
   canvas.addEventListener('touchend', (e) => {
     e.preventDefault();
     focusMobileInput();
@@ -75,7 +74,6 @@ if (isTouchDevice) {
       restartGame();
     }
   }, { passive: false });
-  // Prevent default on touchstart to avoid scroll/zoom but don't focus here
   canvas.addEventListener('touchstart', (e) => {
     e.preventDefault();
   }, { passive: false });
