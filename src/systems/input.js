@@ -44,8 +44,8 @@ export function initInput() {
     if (key.length === 1) {
       const upper = key.toUpperCase();
       if ((upper >= 'A' && upper <= 'Z') || (key >= '0' && key <= '9')) {
-        // Mobile early levels: force uppercase (no case sensitivity)
-        if (isTouchDevice && currentLevel < 5) {
+        // Early levels: force uppercase (no case sensitivity yet)
+        if ((isTouchDevice && currentLevel < 5) || (!isTouchDevice && currentLevel < 4)) {
           key = key.toUpperCase();
         }
         pressed.add(key);

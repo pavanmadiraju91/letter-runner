@@ -6,40 +6,48 @@ import { isTouchDevice } from './input.js';
 const LETTERS_UPPER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const LETTERS_LOWER = 'abcdefghijklmnopqrstuvwxyz';
 const DIGITS = '0123456789';
-const CHARACTER_POOL = LETTERS_UPPER + DIGITS;
-const POOL_SIZE = CHARACTER_POOL.length; // 36 characters
 
 /**
  * Get the character pool based on device type and current level.
- * Mobile eases in complexity:
- *   Levels 1-4: uppercase only (26 chars)
- *   Levels 5-7: uppercase + lowercase (52 chars)
- *   Levels 8+:  uppercase + lowercase + digits (62 chars)
- * Desktop: full pool (A-Z + 0-9) from the start.
+ *
+ * Desktop progression:
+ *   Levels 1-3: uppercase only (simple start)
+ *   Levels 4-7: uppercase + lowercase (case-sensitive)
+ *   Levels 8+:  uppercase + lowercase + digits (extremely hard)
+ *
+ * Mobile progression (slower ramp, digits are super late):
+ *   Levels 1-4: uppercase only
+ *   Levels 5-8: uppercase + lowercase
+ *   Levels 9-11: uppercase + lowercase (more combos, no digits)
+ *   Levels 12+: uppercase + lowercase + digits (extreme)
  */
 function getCharacterPool() {
-  if (!isTouchDevice) {
-    return CHARACTER_POOL; // desktop: uppercase + digits (case randomized later)
-  }
   const level = getLevel();
-  if (level >= 8) {
-    return LETTERS_UPPER + LETTERS_LOWER + DIGITS;
+
+  if (isTouchDevice) {
+    if (level >= 12) return LETTERS_UPPER + LETTERS_LOWER + DIGITS;
+    if (level >= 5) return LETTERS_UPPER + LETTERS_LOWER;
+    return LETTERS_UPPER;
   }
-  if (level >= 5) {
-    return LETTERS_UPPER + LETTERS_LOWER;
-  }
+
+  // Desktop
+  if (level >= 8) return LETTERS_UPPER + LETTERS_LOWER + DIGITS;
+  if (level >= 4) return LETTERS_UPPER + LETTERS_LOWER;
   return LETTERS_UPPER;
 }
 
 /**
- * Randomize case for a character: letters get 50/50 upper/lower,
- * digits stay as-is.
- * On mobile at early levels (< 5), always returns uppercase.
+ * Randomize case for a character.
+ * Only applies when the pool includes lowercase (level 4+ desktop, 5+ mobile).
+ * At early levels, always returns the character as-is (uppercase from pool).
  */
 function randomizeCase(ch) {
-  if (isTouchDevice && getLevel() < 5) {
-    return ch.toUpperCase();
-  }
+  const level = getLevel();
+  // Mobile: no case variation until level 5
+  if (isTouchDevice && level < 5) return ch;
+  // Desktop: no case variation until level 4
+  if (!isTouchDevice && level < 4) return ch;
+  // If character is uppercase letter, 50/50 flip to lowercase
   if (ch >= 'A' && ch <= 'Z') {
     return Math.random() < 0.5 ? ch.toLowerCase() : ch;
   }
