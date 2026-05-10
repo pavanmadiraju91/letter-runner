@@ -78,7 +78,18 @@ export function initMatcher(obstaclePool) {
         }
       }
 
-      // No single matched either — wrong key resets combo progress
+      // No single in zone matched — check ALL active obstacles before penalizing.
+      // If key matches any visible obstacle outside the danger zone, suppress penalty.
+      for (let i = 0; i < active.length; i++) {
+        const obs = active[i];
+        if (obs === comboInZone) continue; // already checked
+        if (obs.isCombo) {
+          if (obs.letters[obs.progress] === key) return;
+        } else {
+          if (obs.letter === key) return;
+        }
+      }
+      // Truly wrong key — reset combo progress
       comboInZone.progress = 0;
       events.emit('WRONG_KEY', { key, comboReset: true, targetObs: comboInZone });
       return;
@@ -101,9 +112,19 @@ export function initMatcher(obstaclePool) {
       }
     }
 
-    // No match found — emit WRONG_KEY only if there were targets in the zone
+    // No match found in danger zone — check ALL active obstacles before penalizing.
+    // If the key matches ANY visible obstacle (even outside danger zone), suppress penalty.
+    // This prevents "wrong key" when a matching obstacle is approaching but not yet in zone.
     if (hasObstaclesInZone) {
-      // Target the closest obstacle (rightmost in danger zone = first in singlesInZone)
+      for (let i = 0; i < active.length; i++) {
+        const obs = active[i];
+        if (obs.isCombo) {
+          if (obs.letters[obs.progress] === key) return; // matches upcoming combo letter
+        } else {
+          if (obs.letter === key) return; // matches a visible single obstacle
+        }
+      }
+      // Key doesn't match ANY visible obstacle — it's truly a wrong key
       const targetObs = singlesInZone.length > 0 ? singlesInZone[0] : null;
       events.emit('WRONG_KEY', { key, comboReset: false, targetObs });
     }
