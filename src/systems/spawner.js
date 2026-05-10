@@ -135,7 +135,8 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
 
       const isTall = difficultyParams.tallObstacles && Math.random() < 0.4;
       obs.height = isTall ? GAME.OBSTACLE_HEIGHT * 1.5 : GAME.OBSTACLE_HEIGHT;
-      obs.y = groundY - obs.height;
+      // Combo obstacles stay closer to ground (0-30px offset) for readability
+      obs.y = groundY - obs.height - Math.random() * 30;
 
       obs.letter = '';
       obs.letters = comboLetters;
@@ -181,7 +182,8 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
 
   const isTall = difficultyParams.tallObstacles && Math.random() < 0.4;
   obs.height = isTall ? GAME.OBSTACLE_HEIGHT * 1.5 : GAME.OBSTACLE_HEIGHT;
-  obs.y = groundY - obs.height;
+  // Single obstacles float at varying heights (0-80px above ground)
+  obs.y = groundY - obs.height - Math.random() * 80;
 
   obs.letter = randomizeCase(letter);
   obs.letters = [];
