@@ -93,6 +93,14 @@ export const AUDIO = {
   MUSIC: { baseFreq: 110, filterFreq: 800 }
 };
 
+export const SPEED = {
+  BASE_SPEED: 140,          // px/s at run start — 240px danger zone in 1.7s
+  MAX_SPEED: 280,           // px/s hard cap (2x base) — danger zone in 0.85s
+  ACCELERATION: 2.0,        // px/s gained per second of play
+  WARMUP_TIME: 2.0,         // seconds before first obstacle may spawn
+  MIN_REACTION_MS: 200,     // ms guaranteed reaction time for gap calculation
+};
+
 export const GAME = {
   TARGET_FPS: 60,
   MAX_DT: 1 / 30,
