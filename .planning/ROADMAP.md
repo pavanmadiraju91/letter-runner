@@ -29,8 +29,8 @@ Letter Runner goes from empty repo to shippable game across 10 phases. The build
 
 ### v1.1 Polish & Depth
 
-- [ ] **Phase 11: Cleanup** - Remove leaderboard UI, name entry, and module to simplify game-over flow
-- [ ] **Phase 12: Speed & Difficulty** - Chrome dino-style speed progression with typing-research calibration
+- [x] **Phase 11: Cleanup** - Remove leaderboard UI, name entry, and module to simplify game-over flow
+- [x] **Phase 12: Speed & Difficulty** - Chrome dino-style speed progression with typing-research calibration
 - [ ] **Phase 13: Multi-Letter Combos** - 2-3 letter sequence obstacles at higher levels
 - [ ] **Phase 14: Audio** - MP3 background track replacing procedural oscillator music
 - [ ] **Phase 15: Visual Polish** - Player animation, parallax background, glow performance, letter readability
@@ -66,12 +66,11 @@ Plans:
 4. Minimum gap between obstacles always allows a physically possible reaction (never unfair deaths)
 5. Most player deaths occur in the 30-60 second engagement window
 
-**Plans:** TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 12-01: Speed formula and acceleration rework (Chrome dino model)
-- [ ] 12-02: Obstacle gap fairness and warm-up grace period
-- [ ] 12-03: Playtesting and engagement window tuning
+- [ ] 12-01-PLAN.md — Continuous speed formula, warm-up gate, and dynamic gap fairness
+- [ ] 12-02-PLAN.md — Spawn interval derivation, config cleanup, and engagement tuning
 
 ---
 
@@ -163,7 +162,7 @@ Phases execute in numeric order: 11 -> 12 -> 13 -> 14 -> 15 -> 16
 | Phase | Plans Complete | Status | Completed |
 |-------|---------------|--------|-----------|
 | 11. Cleanup | 0/1 | Not started | - |
-| 12. Speed & Difficulty | 0/3 | Not started | - |
+| 12. Speed & Difficulty | 0/2 | Not started | - |
 | 13. Multi-Letter Combos | 0/3 | Not started | - |
 | 14. Audio | 0/2 | Not started | - |
 | 15. Visual Polish | 0/4 | Not started | - |
