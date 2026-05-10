@@ -1,42 +1,82 @@
+export const PALETTE_DARK = {
+  // Neon accents
+  CYAN: '#00ffcc',
+  MAGENTA: '#ff2266',
+  YELLOW: '#ffcc00',
+  GREEN: '#00ff88',
+  BLUE: '#4488ff',
+  PURPLE: '#aa44ff',
+  ORANGE: '#ff8844',
+
+  // UI tones
+  WHITE: '#ffffff',
+  LIGHT: '#ccddee',
+  MID: '#667788',
+  DIM: '#334455',
+  DARK: '#1a1a2e',
+  DARKER: '#12121f',
+  PANEL: 'rgba(0, 0, 0, 0.85)',
+
+  // Entity-specific
+  PLAYER_PRIMARY: '#00ffcc',
+  PLAYER_SECONDARY: '#008866',
+  PLAYER_EYE: '#ffffff',
+  OBSTACLE_BODY: '#1a1a2e',
+  OBSTACLE_BORDER: '#ff2266',
+  OBSTACLE_LETTER: '#ffffff',
+  OBSTACLE_GLOW: '#ff2266',
+  GROUND_BASE: '#1a1a2e',
+  GROUND_LINE: '#2a2a4e',
+  HEART_FULL: '#ff3366',
+  HEART_EMPTY: '#2a2a3a',
+  SCORE_TEXT: '#ffffff',
+  LEVEL_TEXT: '#00ffcc',
+  BEST_TEXT: '#ffcc00',
+};
+
+export const PALETTE_LIGHT = {
+  // Muted accents for light backgrounds
+  CYAN: '#009988',
+  MAGENTA: '#cc2255',
+  YELLOW: '#cc9900',
+  GREEN: '#008855',
+  BLUE: '#2255cc',
+  PURPLE: '#7733bb',
+  ORANGE: '#cc6633',
+
+  // UI tones (inverted for light mode)
+  WHITE: '#1a1a2e',
+  LIGHT: '#2a2a3e',
+  MID: '#556677',
+  DIM: '#99aabb',
+  DARK: '#e8e8f0',
+  DARKER: '#f0f0f8',
+  PANEL: 'rgba(255, 255, 255, 0.9)',
+
+  // Entity-specific
+  PLAYER_PRIMARY: '#009988',
+  PLAYER_SECONDARY: '#006655',
+  PLAYER_EYE: '#1a1a2e',
+  OBSTACLE_BODY: '#e0e0ee',
+  OBSTACLE_BORDER: '#cc2255',
+  OBSTACLE_LETTER: '#1a1a2e',
+  OBSTACLE_GLOW: '#cc2255',
+  GROUND_BASE: '#d8d8e8',
+  GROUND_LINE: '#c0c0d0',
+  HEART_FULL: '#cc2255',
+  HEART_EMPTY: '#d0d0dd',
+  SCORE_TEXT: '#1a1a2e',
+  LEVEL_TEXT: '#009988',
+  BEST_TEXT: '#cc9900',
+};
+
 export const COLORS = {
   BG: '#0a0a0f',
+  BG_LIGHT: '#f4f4fa',
   DEBUG_TEXT: '#3a3a4a',
 
-  PALETTE: {
-    // Neon accents
-    CYAN: '#00ffcc',
-    MAGENTA: '#ff2266',
-    YELLOW: '#ffcc00',
-    GREEN: '#00ff88',
-    BLUE: '#4488ff',
-    PURPLE: '#aa44ff',
-    ORANGE: '#ff8844',
-
-    // UI tones
-    WHITE: '#ffffff',
-    LIGHT: '#ccddee',
-    MID: '#667788',
-    DIM: '#334455',
-    DARK: '#1a1a2e',
-    DARKER: '#12121f',
-    PANEL: 'rgba(0, 0, 0, 0.85)',
-
-    // Entity-specific
-    PLAYER_PRIMARY: '#00ffcc',
-    PLAYER_SECONDARY: '#008866',
-    PLAYER_EYE: '#ffffff',
-    OBSTACLE_BODY: '#1a1a2e',
-    OBSTACLE_BORDER: '#ff2266',
-    OBSTACLE_LETTER: '#ffffff',
-    OBSTACLE_GLOW: '#ff2266',
-    GROUND_BASE: '#1a1a2e',
-    GROUND_LINE: '#2a2a4e',
-    HEART_FULL: '#ff3366',
-    HEART_EMPTY: '#2a2a3a',
-    SCORE_TEXT: '#ffffff',
-    LEVEL_TEXT: '#00ffcc',
-    BEST_TEXT: '#ffcc00',
-  }
+  // Backward-compatible reference (dark palette is default for existing consumers)
+  PALETTE: PALETTE_DARK,
 };
 
 export const SCORE = {
