@@ -26,6 +26,10 @@ import { renderStartScreen } from './screens/start.js';
 import { createGameOverScreen, updateGameOverScreen, renderGameOverScreen } from './screens/game-over.js';
 import { getPersonalBest, setPersonalBest } from './systems/storage.js';
 
+// Hitstop (death slow-mo) state
+let hitstopTimer = 0;
+const HITSTOP_DURATION = 0.08; // 80ms freeze on final death
+
 initCanvas();
 initTheme();
 events.emit('CANVAS_READY', { width: getWidth(), height: getHeight() });
@@ -64,6 +68,8 @@ events.on('CANVAS_RESIZE', ({ width, height }) => {
 events.on('STATE_CHANGE', ({ state }) => {
   if (state === STATES.GAME_OVER) {
     setPersonalBest(getScore());
+    // Trigger hitstop freeze on death
+    hitstopTimer = HITSTOP_DURATION;
   }
 });
 
@@ -73,6 +79,7 @@ function restartGame() {
   resetScore();
   resetCombo();
   resetDifficulty();
+  hitstopTimer = 0;
   obstaclePool.getActive().slice().forEach(o => obstaclePool.release(o));
   spawner.timer = 0;
   requestRestart();
@@ -90,6 +97,12 @@ events.on('KEY_PRESS', () => {
 
 function update(dt) {
   updateFPS(dt);
+
+  // Death hitstop: freeze everything for HITSTOP_DURATION after final death
+  if (hitstopTimer > 0) {
+    hitstopTimer -= dt;
+    return; // Skip all updates — frame stays frozen
+  }
 
   if (getState() === STATES.GAME_OVER) {
     updateGameOverScreen(dt);
@@ -159,8 +172,8 @@ function render() {
   // Restore from shake transform
   ctx.restore();
 
-  // Game Over screen (rendered outside shake so it's stable)
-  if (getState() === STATES.GAME_OVER) {
+  // Game Over screen (rendered outside shake so it's stable, suppressed during hitstop)
+  if (getState() === STATES.GAME_OVER && hitstopTimer <= 0) {
     renderGameOverScreen(ctx, w, h);
   }
 }
