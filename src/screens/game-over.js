@@ -132,7 +132,14 @@ export function renderGameOverScreen(ctx, width, height) {
   ctx.font = "11px 'Courier New', monospace";
   ctx.fillStyle = P.DIM;
   const musicHint = isMusicPlaying() ? '[Tab] Music Off' : '[Tab] Music On';
-  ctx.fillText(musicHint, width / 2, height * 0.90);
+  ctx.fillText(musicHint, width / 2, height * 0.88);
+  ctx.restore();
+
+  // --- GitHub repo link ---
+  ctx.save();
+  ctx.font = "11px 'Courier New', monospace";
+  ctx.fillStyle = P.DIM;
+  ctx.fillText('github.com/pavanmadiraju91/letter-runner', width / 2, height * 0.94);
   ctx.restore();
 
   ctx.restore();

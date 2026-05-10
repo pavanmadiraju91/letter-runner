@@ -134,6 +134,13 @@ export function renderStartScreen(ctx, width, height) {
   ctx.font = "14px 'Courier New', monospace";
   ctx.fillStyle = P.MID;
   const musicHint = isMusicPlaying() ? '[Tab] Music Off' : '[Tab] Music On';
-  ctx.fillText(musicHint, width / 2, height * 0.92);
+  ctx.fillText(musicHint, width / 2, height * 0.89);
+  ctx.restore();
+
+  // --- GitHub repo link ---
+  ctx.save();
+  ctx.font = "11px 'Courier New', monospace";
+  ctx.fillStyle = P.DIM;
+  ctx.fillText('github.com/pavanmadiraju91/letter-runner', width / 2, height * 0.95);
   ctx.restore();
 }
