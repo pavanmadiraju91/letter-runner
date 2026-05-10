@@ -122,9 +122,9 @@ export const AUDIO = {
 };
 
 export const SPEED = {
-  BASE_SPEED: 140,          // px/s at run start — 240px danger zone in 1.7s
-  MAX_SPEED: 280,           // px/s hard cap (2x base) — danger zone in 0.85s
-  ACCELERATION: 2.0,        // px/s gained per second of play
+  BASE_SPEED: 200,          // px/s at run start — faster initial pace
+  MAX_SPEED: 450,           // px/s hard cap — much faster ceiling for intensity
+  ACCELERATION: 3.0,        // px/s gained per second of play — reaches hard faster
   WARMUP_TIME: 2.0,         // seconds before first obstacle may spawn
   MIN_REACTION_MS: 200,     // ms guaranteed reaction time for gap calculation
   BASE_SPAWN_INTERVAL: 2.5, // seconds between spawns at BASE_SPEED
