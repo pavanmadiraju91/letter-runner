@@ -30,6 +30,10 @@ import { getPersonalBest, setPersonalBest } from './systems/storage.js';
 let hitstopTimer = 0;
 const HITSTOP_DURATION = 0.08; // 80ms freeze on final death
 
+// Restart cooldown: prevent accidental restart from typing momentum
+let restartCooldown = 0;
+const RESTART_COOLDOWN = 1.5; // seconds to wait before restart input is accepted
+
 initCanvas();
 initTheme();
 events.emit('CANVAS_READY', { width: getWidth(), height: getHeight() });
@@ -70,7 +74,7 @@ if (isTouchDevice) {
     const state = getState();
     if (state === STATES.MENU) {
       requestStart();
-    } else if (state === STATES.GAME_OVER) {
+    } else if (state === STATES.GAME_OVER && restartCooldown <= 0) {
       restartGame();
     }
   }, { passive: false });
@@ -87,8 +91,8 @@ events.on('CANVAS_RESIZE', ({ width, height }) => {
 events.on('STATE_CHANGE', ({ state }) => {
   if (state === STATES.GAME_OVER) {
     setPersonalBest(getScore());
-    // Trigger hitstop freeze on death
     hitstopTimer = HITSTOP_DURATION;
+    restartCooldown = RESTART_COOLDOWN;
   }
 });
 
@@ -109,7 +113,7 @@ events.on('KEY_PRESS', () => {
   const state = getState();
   if (state === STATES.MENU) {
     requestStart();
-  } else if (state === STATES.GAME_OVER) {
+  } else if (state === STATES.GAME_OVER && restartCooldown <= 0) {
     restartGame();
   }
 });
@@ -146,6 +150,7 @@ function update(dt) {
   }
 
   if (getState() === STATES.GAME_OVER) {
+    if (restartCooldown > 0) restartCooldown -= dt;
     updateGameOverScreen(dt);
     return;
   }
