@@ -173,7 +173,7 @@ export function renderStartScreen(ctx, width, height) {
     ctx.fillStyle = P.WHITE;
     ctx.shadowColor = P.CYAN;
     ctx.shadowBlur = 6;
-    ctx.fillText(isTouchDevice ? '[ TAP TO START ]' : '[ PRESS ANY KEY ]', width / 2, height * 0.70);
+    ctx.fillText(isTouchDevice ? '[ TYPE TO START ]' : '[ PRESS ANY KEY ]', width / 2, height * 0.70);
     ctx.restore();
 
     // On touch devices, draw a visible tap area indicator
