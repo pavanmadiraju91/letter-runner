@@ -48,10 +48,10 @@ export function updateObstacles(pool, dt) {
  */
 export function cleanupOffscreen(pool) {
   const active = pool.getActive();
-  const playerX = getWidth() * GAME.PLAYER_X_PERCENT;
+  const playerRight = getWidth() * GAME.PLAYER_X_PERCENT + GAME.PLAYER_WIDTH;
   for (let i = active.length - 1; i >= 0; i--) {
     const obs = active[i];
-    if (obs.x + obs.width < playerX) {
+    if (obs.x + obs.width < playerRight) {
       obs.active = false;
       events.emit('OBSTACLE_MISSED', {
         letter: obs.letter,
@@ -175,14 +175,20 @@ function renderSingleObstacle(ctx, obs) {
     ctx.restore();
   }
 
-  // Body fill
+  // Body fill (semi-transparent to let background show through)
+  ctx.globalAlpha = 0.15;
   ctx.fillStyle = P.OBSTACLE_BODY;
   ctx.fillRect(x, y, w, h);
+  ctx.globalAlpha = 1;
 
-  // Neon border (2px inset)
+  // Neon border (2px) — the primary visual element
+  ctx.save();
   ctx.strokeStyle = P.OBSTACLE_BORDER;
   ctx.lineWidth = 2;
+  ctx.shadowColor = P.OBSTACLE_BORDER;
+  ctx.shadowBlur = 6;
   ctx.strokeRect(x + 1, y + 1, w - 2, h - 2);
+  ctx.restore();
 
   // Letter -- VIS-05: 26px bold with dark outline for readability
   const fontSize = OBSTACLE_VFX.LETTER_FONT_SIZE;
