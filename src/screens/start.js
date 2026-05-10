@@ -62,7 +62,7 @@ export function renderStartScreen(ctx, width, height) {
   ctx.globalAlpha = 1;
 
   // --- Responsive font sizes ---
-  const titleFont = Math.min(56, width * 0.12);
+  const titleFont = Math.min(56, width * 0.085);
   const subtitleFont = Math.min(16, width * 0.04);
   const promptFont = Math.min(18, width * 0.045);
   const infoFont = Math.min(14, width * 0.035);
