@@ -8,52 +8,59 @@ A browser-based endless runner game where obstacles carry letters and players de
 
 The game must feel immediately fun: start instantly, see letters clearly, press keys satisfyingly, and feel the difficulty rising in a way that challenges without frustrating.
 
+## Current Milestone: v1.1 Polish & Depth
+
+**Goal:** Make the game feel like a polished Chrome dino-quality experience with deeper typing challenge, better visuals, real music, and system-aware theming.
+
+**Target features:**
+- Remove leaderboard (simplify game-over flow)
+- Multi-letter combos at higher levels (XY, ABC — short sequences)
+- Research-driven speed scaling (Chrome dino pacing + typing test data)
+- MP3 background track ("Tension Pixels") at low volume
+- Improved pixel-art visuals (front-end design quality)
+- Dark/light mode respecting system preference
+- Live-tested difficulty feel
+
 ## Requirements
 
 ### Validated
 
-(None yet — ship to validate)
+- ✓ Player runs on scrolling ground, letter obstacles destroyed by keypress — v1.0
+- ✓ 3-life system with game over and instant restart — v1.0
+- ✓ Scoring with level multiplier and survival bonus — v1.0
+- ✓ 6-tier difficulty progression with logarithmic scaling — v1.0
+- ✓ Start screen, game-over screen, personal best persistence — v1.0
+- ✓ Pixel-art neon aesthetic with particle effects — v1.0
+- ✓ Procedural audio feedback (pop, thud, game-over, level-up) — v1.0
+- ✓ Cross-browser, responsive, deployed to GitHub Pages — v1.0
 
 ### Active
 
-- [ ] Player character runs automatically left-to-right on a side-scrolling ground plane
-- [ ] Obstacles scroll from right edge, each displaying a single uppercase letter (A–Z)
-- [ ] Pressing the matching key while obstacle is in the danger zone destroys it with particle effects
-- [ ] 3-life system — obstacle crossing player position costs a life, all lives lost ends the run
-- [ ] Scoring: +10 × level multiplier per destroyed obstacle, +1/sec survival bonus
-- [ ] Difficulty scales every 10 destroyed obstacles (speed, spawn rate, multiplier, obstacle count)
-- [ ] Wrong key press introduces a small delay penalty at level 4+
-- [ ] Up to 4 simultaneous on-screen obstacles (unique letters, no repeats among visible)
-- [ ] Start screen with "Press any key to start", personal best, and placeholder global score
-- [ ] HUD: score (top-left), level (top-center), lives as hearts (top-right), level-up announcement
-- [ ] Game Over screen: final score, personal best, delta, leaderboard UI (mocked), share button, play again
-- [ ] Leaderboard UI shows top 10 with initials and score (local mock data for now)
-- [ ] Name entry (3-char initials) on game over if score is in top 10
-- [ ] Share button copies score text snippet to clipboard
-- [ ] Personal best stored in localStorage
-- [ ] Pixel-art aesthetic with neon-on-dark colour palette
-- [ ] Correct key: obstacle shatters into particles + brief white flash
-- [ ] Life lost: screen red-flash ~200ms, life icon dims
-- [ ] Level up: full-screen overlay text fade in/out
-- [ ] Audio: correct key pop, obstacle pass thud, game over descending tone
-- [ ] Optional lo-fi background loop, muted by default
-- [ ] 60fps target on mid-range laptop
-- [ ] All assets under 500KB total
-- [ ] Playable within 2s of page load on 10Mbps connection
-- [ ] Works in Chrome, Firefox, Safari, Edge (latest 2 versions)
-- [ ] Minimum viewport 800×400px with responsive canvas scaling
-- [ ] Deployable as static files to GitHub Pages or Netlify
+- [ ] Remove leaderboard UI and name entry from game-over screen
+- [ ] Multi-letter combo obstacles (2-3 chars) appear at higher levels
+- [ ] Speed scaling informed by Chrome dino game research + typing test data
+- [ ] Background music: "Tension Pixels.mp3" at low volume, toggle with M key
+- [ ] Improved pixel-art visuals (higher quality sprites, effects, environment)
+- [ ] Dark/light mode: detect system preference, neon palette for dark, alternate for light
+- [ ] Difficulty tested live and tuned for satisfying feel
 
 ### Out of Scope
 
-- Mobile / touch support — desktop keyboard game, mobile adds complexity with no clear gain for v1
+- Real leaderboard backend — removed entirely for simplicity
+- Share button — deferred
+- Daily challenge mode — deferred
+- Word obstacles (real words) — only short random combos for now
+- Mobile support — still desktop only
+
+### Out of Scope
+
+- Mobile / touch support — desktop keyboard game, mobile adds complexity with no clear gain
 - Multiplayer or co-op — single-player is the core experience
 - Power-ups or special abilities — keep the loop pure (type to destroy)
-- Multiple character skins — defer to post-launch
-- Multi-letter / word obstacles — single keys only for v1
+- Multiple character skins — defer to post v1.1
 - Offline / PWA mode — unnecessary for a web game with no account
-- Real leaderboard backend — mock the UI, build backend post-launch
-- Daily challenge mode — v1.1 feature per PRD
+- Real leaderboard backend — removed for simplicity
+- Daily challenge mode — deferred to v2.0
 
 ## Context
 
@@ -85,4 +92,4 @@ The game must feel immediately fun: start instantly, see letters clearly, press 
 | Static hosting (GH Pages / Netlify) | Zero cost, simple deploy, matches no-server constraint | — Pending |
 
 ---
-*Last updated: 2026-05-09 after initialization*
+*Last updated: 2026-05-10 after milestone v1.1 initialization*
