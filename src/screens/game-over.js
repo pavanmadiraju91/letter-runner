@@ -2,7 +2,7 @@ import { events } from '../core/events.js';
 import { STATES } from '../core/state.js';
 import { getScore } from '../systems/score.js';
 import { getPersonalBest } from '../systems/storage.js';
-import { COLORS } from '../config.js';
+import { getPalette } from '../core/theme.js';
 
 let finalScore = 0;
 let personalBest = 0;
@@ -37,46 +37,47 @@ export function updateGameOverScreen(dt) {
  * @param {number} height - canvas height
  */
 export function renderGameOverScreen(ctx, width, height) {
+  const palette = getPalette();
   ctx.save();
 
   // Dark overlay
-  ctx.fillStyle = COLORS.PALETTE.PANEL;
+  ctx.fillStyle = palette.PANEL;
   ctx.fillRect(0, 0, width, height);
 
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
 
   // GAME OVER title with magenta glow
-  ctx.fillStyle = COLORS.PALETTE.MAGENTA;
-  ctx.shadowColor = COLORS.PALETTE.MAGENTA;
+  ctx.fillStyle = palette.MAGENTA;
+  ctx.shadowColor = palette.MAGENTA;
   ctx.shadowBlur = 15;
   ctx.font = 'bold 36px monospace';
   ctx.fillText('GAME OVER', width / 2, height * 0.15);
   ctx.shadowBlur = 0;
 
   // Final score
-  ctx.fillStyle = COLORS.PALETTE.WHITE;
+  ctx.fillStyle = palette.WHITE;
   ctx.font = 'bold 28px monospace';
   ctx.fillText('SCORE: ' + finalScore, width / 2, height * 0.35);
 
   // Personal best and delta
   ctx.font = '18px monospace';
-  ctx.fillStyle = COLORS.PALETTE.BEST_TEXT;
+  ctx.fillStyle = palette.BEST_TEXT;
   ctx.fillText('BEST: ' + personalBest, width / 2, height * 0.45);
 
   const delta = finalScore - personalBest;
   if (delta > 0) {
-    ctx.fillStyle = COLORS.PALETTE.GREEN;
+    ctx.fillStyle = palette.GREEN;
     ctx.fillText('+' + delta + ' NEW BEST!', width / 2, height * 0.52);
   } else if (delta < 0) {
-    ctx.fillStyle = COLORS.PALETTE.MAGENTA;
+    ctx.fillStyle = palette.MAGENTA;
     ctx.fillText(String(delta), width / 2, height * 0.52);
   }
 
   // Play again prompt (blinking)
   const show = Math.floor(flashTimer * 2) % 2 === 0;
   if (show) {
-    ctx.fillStyle = COLORS.PALETTE.WHITE;
+    ctx.fillStyle = palette.WHITE;
     ctx.font = '18px monospace';
     ctx.fillText('Press any key to play again', width / 2, height * 0.75);
   }

@@ -1,9 +1,10 @@
 import { initCanvas, getCtx, getWidth, getHeight } from './core/canvas.js';
 import { startLoop } from './core/game-loop.js';
 import { events } from './core/events.js';
-import { initTheme, getBG } from './core/theme.js';
+import { initTheme, getPalette, getBG } from './core/theme.js';
 import { createStateMachine, getState, STATES, requestRestart, requestStart } from './core/state.js';
-import { COLORS, GAME } from './config.js';
+import { GAME } from './config.js';
+import { getPalette } from './core/theme.js';
 import { createPlayer, resetPlayer, updatePlayer, renderPlayer } from './entities/player.js';
 import { createBackground, updateBackground, renderBackground } from './entities/background.js';
 import { createGround, updateGround, renderGround } from './entities/ground.js';
@@ -131,7 +132,7 @@ function render() {
   if (getPlayerFlash()) {
     ctx.save();
     ctx.globalAlpha = 0.6;
-    ctx.fillStyle = COLORS.PALETTE.WHITE;
+    ctx.fillStyle = getPalette().WHITE;
     ctx.fillRect(player.x, player.y, player.width, player.height);
     ctx.restore();
   }
@@ -139,7 +140,7 @@ function render() {
   // Music toggle hint (bottom-right, dim)
   ctx.save();
   ctx.font = '10px monospace';
-  ctx.fillStyle = COLORS.PALETTE.DIM;
+  ctx.fillStyle = getPalette().DIM;
   ctx.textAlign = 'right';
   ctx.fillText('[M] Music', w - 8, getHeight() - 8);
   ctx.restore();
@@ -151,7 +152,7 @@ function render() {
   if (flash.active) {
     ctx.save();
     ctx.globalAlpha = flash.alpha * 0.3; // max 30% opacity — noticeable but not blinding
-    ctx.fillStyle = COLORS.PALETTE.MAGENTA;
+    ctx.fillStyle = getPalette().MAGENTA;
     ctx.fillRect(0, 0, w, h);
     ctx.restore();
   }
