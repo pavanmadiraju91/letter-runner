@@ -10,6 +10,7 @@ let elapsedTime = 0;
  * Initialize the difficulty system.
  * Subscribes to events:
  * - OBSTACLE_DESTROYED: tracks destroys, emits LEVEL_UP every DESTROYS_PER_LEVEL
+ * - LIFE_LOST: penalizes speed (drops elapsed time by 30%)
  * - GAME_RESTART: resets difficulty to level 1
  */
 export function createDifficulty() {
@@ -20,6 +21,10 @@ export function createDifficulty() {
       currentLevel = newLevel;
       events.emit('LEVEL_UP', { level: currentLevel, ...getDifficultyParams() });
     }
+  });
+
+  events.on('LIFE_LOST', () => {
+    penalizeSpeed();
   });
 
   events.on('GAME_RESTART', () => {
@@ -56,6 +61,15 @@ export function createDifficulty() {
  */
 export function tickSpeed(dt) {
   elapsedTime += dt;
+}
+
+/**
+ * Penalize speed on life lost: reduces elapsed time by 30%.
+ * This effectively drops the current speed back, making the game feel slower
+ * as punishment for losing a life. Speed will ramp back up naturally.
+ */
+export function penalizeSpeed() {
+  elapsedTime *= 0.7; // 30% reduction
 }
 
 /**
