@@ -7,8 +7,24 @@ let sfxGain = null;
 let musicGain = null;
 let audioReady = false;
 let musicEnabled = false;
-let musicOsc = null;
-let musicFilter = null;
+
+// MP3 music state
+let musicBuffer = null;
+let musicSource = null;
+
+/**
+ * Load the background music MP3 into an AudioBuffer.
+ */
+async function loadMusic() {
+  try {
+    const response = await fetch(AUDIO.MUSIC_FILE);
+    const arrayBuffer = await response.arrayBuffer();
+    musicBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+  } catch (e) {
+    // Silently fail — music is optional, SFX still work
+    console.warn('Failed to load music:', e);
+  }
+}
 
 /**
  * Initialize the audio system.
@@ -38,6 +54,9 @@ export function createAudioSystem() {
       musicGain.connect(masterGain);
 
       audioReady = true;
+
+      // Pre-load the music track
+      loadMusic();
     }).catch(() => {
       // Safari may reject resume() silently — ignore to prevent unhandled rejection
     });
@@ -170,36 +189,26 @@ export function playLevelUp() {
 
 /**
  * Start the background music loop (internal).
- * Low-frequency sawtooth through a lowpass filter.
+ * Plays the decoded MP3 buffer via BufferSourceNode with loop enabled.
  */
 function startMusic() {
-  if (!audioReady || musicOsc) return;
+  if (!audioReady || !musicBuffer || musicSource) return;
 
-  musicOsc = audioCtx.createOscillator();
-  musicFilter = audioCtx.createBiquadFilter();
-
-  musicOsc.type = 'sawtooth';
-  musicOsc.frequency.value = AUDIO.MUSIC.baseFreq;
-
-  musicFilter.type = 'lowpass';
-  musicFilter.frequency.value = AUDIO.MUSIC.filterFreq;
-
-  musicOsc.connect(musicFilter);
-  musicFilter.connect(musicGain);
-
-  musicOsc.start(audioCtx.currentTime);
+  musicSource = audioCtx.createBufferSource();
+  musicSource.buffer = musicBuffer;
+  musicSource.loop = true;
+  musicSource.connect(musicGain);
+  musicSource.start(0);
 }
 
 /**
  * Stop the background music loop (internal).
  */
 function stopMusic() {
-  if (musicOsc) {
-    try { musicOsc.stop(audioCtx.currentTime); } catch (_) { /* Safari: already stopped */ }
-    musicOsc.disconnect();
-    musicFilter.disconnect();
-    musicOsc = null;
-    musicFilter = null;
+  if (musicSource) {
+    try { musicSource.stop(); } catch (_) { /* already stopped */ }
+    musicSource.disconnect();
+    musicSource = null;
   }
 }
 
