@@ -3,8 +3,8 @@
 ## Current Status
 
 **Active milestone:** v1.1 Polish & Depth
-**Active phase:** None (defining requirements)
-**Last action:** Milestone v1.1 started
+**Active phase:** Phase 11 (Cleanup) — ready to plan
+**Last action:** v1.1 roadmap created (6 phases, 36 requirements)
 **Last updated:** 2026-05-10
 
 ## Project Reference
@@ -16,7 +16,16 @@ See: .planning/PROJECT.md (updated 2026-05-10)
 
 ## Phase Progress
 
-(Roadmap not yet created for v1.1)
+| Phase | Status |
+|-------|--------|
+| 11. Cleanup | Not started |
+| 12. Speed & Difficulty | Not started |
+| 13. Multi-Letter Combos | Not started |
+| 14. Audio | Not started |
+| 15. Visual Polish | Not started |
+| 16. Theme | Not started |
+
+Progress: [░░░░░░░░░░] 0% (0/15 plans)
 
 ## Performance Metrics
 
@@ -25,16 +34,20 @@ See: .planning/PROJECT.md (updated 2026-05-10)
 - Average duration: ~50 seconds
 - Total execution time: ~20 minutes
 
+**v1.1:** No plans executed yet.
+
 ## Accumulated Context
 
 ### Decisions
 
 - Vanilla JS + Canvas (no frameworks)
-- Vite 6.4.2, es2022 target, relative base
 - Event bus architecture (pub/sub)
 - Object pooling for obstacles and particles
-- Procedural audio via Web Audio API
+- Procedural audio via Web Audio API (to be partially replaced by MP3 in Phase 14)
 - GitHub Pages deployment via Actions
+- Chrome dino speed model: linear acceleration with hard cap at 2x (Phase 12)
+- Multi-letter combos: sequential state machine, no input queue (Phase 13)
+- Glow: replace shadowBlur with screen-blend pre-rendered sprites (Phase 15)
 
 ### Pending Todos
 
@@ -42,12 +55,13 @@ None.
 
 ### Blockers/Concerns
 
-- MP3 track (1.7MB) will push total assets above 500KB — need to verify acceptable for v1.1
-- System dark/light detection needs testing across browsers
+- MP3 track (1.7MB) will push total assets above 500KB — acceptable for v1.1
+- System dark/light detection needs testing across browsers (Phase 16)
+- Light mode glow effects require different rendering approach (Phase 16)
 
 ## Context for Next Session
 
 - v1.0 complete: 10 phases, 51 requirements, all verified
-- v1.1 scope: remove leaderboard, add MP3 music, multi-letter combos, speed research, visual polish, dark/light mode
-- Audio track: "Tension Pixels.mp3" (1.7MB, 64kbps, 48kHz stereo) in project root
-- Next step: research phase (Chrome dino mechanics + typing test speed data)
+- v1.1 roadmap: 6 phases (11-16), 36 requirements, 15 plans
+- Research completed: Chrome dino mechanics, typing speed data, multi-letter design, visual polish
+- Next step: Plan Phase 11 (Cleanup — remove leaderboard)

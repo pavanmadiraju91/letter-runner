@@ -86,48 +86,48 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| REM-01 | — | Pending |
-| REM-02 | — | Pending |
-| REM-03 | — | Pending |
-| REM-04 | — | Pending |
-| COMBO-01 | — | Pending |
-| COMBO-02 | — | Pending |
-| COMBO-03 | — | Pending |
-| COMBO-04 | — | Pending |
-| COMBO-05 | — | Pending |
-| COMBO-06 | — | Pending |
-| COMBO-07 | — | Pending |
-| COMBO-08 | — | Pending |
-| COMBO-09 | — | Pending |
-| SPD-01 | — | Pending |
-| SPD-02 | — | Pending |
-| SPD-03 | — | Pending |
-| SPD-04 | — | Pending |
-| SPD-05 | — | Pending |
-| SPD-06 | — | Pending |
-| SPD-07 | — | Pending |
-| MUS-01 | — | Pending |
-| MUS-02 | — | Pending |
-| MUS-03 | — | Pending |
-| MUS-04 | — | Pending |
-| MUS-05 | — | Pending |
-| VIS-01 | — | Pending |
-| VIS-02 | — | Pending |
-| VIS-03 | — | Pending |
-| VIS-04 | — | Pending |
-| VIS-05 | — | Pending |
-| VIS-06 | — | Pending |
-| THM-01 | — | Pending |
-| THM-02 | — | Pending |
-| THM-03 | — | Pending |
-| THM-04 | — | Pending |
-| THM-05 | — | Pending |
+| REM-01 | Phase 11 | Pending |
+| REM-02 | Phase 11 | Pending |
+| REM-03 | Phase 11 | Pending |
+| REM-04 | Phase 11 | Pending |
+| COMBO-01 | Phase 13 | Pending |
+| COMBO-02 | Phase 13 | Pending |
+| COMBO-03 | Phase 13 | Pending |
+| COMBO-04 | Phase 13 | Pending |
+| COMBO-05 | Phase 13 | Pending |
+| COMBO-06 | Phase 13 | Pending |
+| COMBO-07 | Phase 13 | Pending |
+| COMBO-08 | Phase 13 | Pending |
+| COMBO-09 | Phase 13 | Pending |
+| SPD-01 | Phase 12 | Pending |
+| SPD-02 | Phase 12 | Pending |
+| SPD-03 | Phase 12 | Pending |
+| SPD-04 | Phase 12 | Pending |
+| SPD-05 | Phase 12 | Pending |
+| SPD-06 | Phase 12 | Pending |
+| SPD-07 | Phase 12 | Pending |
+| MUS-01 | Phase 14 | Pending |
+| MUS-02 | Phase 14 | Pending |
+| MUS-03 | Phase 14 | Pending |
+| MUS-04 | Phase 14 | Pending |
+| MUS-05 | Phase 14 | Pending |
+| VIS-01 | Phase 15 | Pending |
+| VIS-02 | Phase 15 | Pending |
+| VIS-03 | Phase 15 | Pending |
+| VIS-04 | Phase 15 | Pending |
+| VIS-05 | Phase 15 | Pending |
+| VIS-06 | Phase 15 | Pending |
+| THM-01 | Phase 16 | Pending |
+| THM-02 | Phase 16 | Pending |
+| THM-03 | Phase 16 | Pending |
+| THM-04 | Phase 16 | Pending |
+| THM-05 | Phase 16 | Pending |
 
 **Coverage:**
 - v1.1 requirements: 36 total
-- Mapped to phases: 0
-- Unmapped: 36 ⚠️
+- Mapped to phases: 36
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-05-10*
-*Last updated: 2026-05-10 after milestone v1.1 initialization*
+*Last updated: 2026-05-10 after v1.1 roadmap creation*
