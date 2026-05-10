@@ -1,6 +1,7 @@
 import { getPalette, getBG } from '../core/theme.js';
 import { getPersonalBest } from '../systems/storage.js';
 import { isMusicPlaying } from '../systems/audio.js';
+import { isTouchDevice } from '../systems/input.js';
 
 const catSprite = new Image();
 catSprite.src = './cat-run.png';
@@ -176,7 +177,7 @@ export function renderStartScreen(ctx, width, height) {
     ctx.fillStyle = P.WHITE;
     ctx.shadowColor = P.CYAN;
     ctx.shadowBlur = 6;
-    ctx.fillText('[ PRESS ANY KEY ]', width / 2, height * 0.70);
+    ctx.fillText(isTouchDevice ? '[ TAP TO START ]' : '[ PRESS ANY KEY ]', width / 2, height * 0.70);
     ctx.restore();
   }
 

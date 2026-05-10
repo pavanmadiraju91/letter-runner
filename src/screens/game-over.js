@@ -4,6 +4,7 @@ import { getScore } from '../systems/score.js';
 import { getPersonalBest } from '../systems/storage.js';
 import { getPalette } from '../core/theme.js';
 import { isMusicPlaying } from '../systems/audio.js';
+import { isTouchDevice } from '../systems/input.js';
 
 let finalScore = 0;
 let personalBest = 0;
@@ -196,7 +197,7 @@ export function renderGameOverScreen(ctx, width, height) {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = P.WHITE;
-    ctx.fillText('[ PRESS ANY KEY TO RETRY ]', width / 2, height * 0.76);
+    ctx.fillText(isTouchDevice ? '[ TAP TO RETRY ]' : '[ PRESS ANY KEY TO RETRY ]', width / 2, height * 0.76);
     ctx.restore();
   }
 

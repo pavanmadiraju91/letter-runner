@@ -10,6 +10,19 @@ let gameState = 'playing'; // tracks state via STATE_CHANGE events
 let onKeyDown;
 let onKeyUp;
 let onVisibilityChange;
+let onMobileInput;
+let mobileInputEl = null;
+
+export const isTouchDevice = ('ontouchstart' in window);
+
+/**
+ * Focus the hidden mobile input to trigger virtual keyboard.
+ */
+export function focusMobileInput() {
+  if (isTouchDevice && mobileInputEl) {
+    mobileInputEl.focus();
+  }
+}
 
 /**
  * Initialize keyboard input — emits KEY_PRESS for A-Z (case-sensitive), and 0-9.
@@ -17,8 +30,11 @@ let onVisibilityChange;
  * Does not call preventDefault to avoid breaking browser shortcuts.
  * Handles wrong-key penalty delay at level 4+ and LEVEL_UP tracking.
  * Pauses game on tab blur, resumes on tab focus (unless game over).
+ * On touch devices, also listens to a hidden input for virtual keyboard support.
  */
 export function initInput() {
+  mobileInputEl = document.getElementById('mobile-input');
+
   onKeyDown = (e) => {
     if (e.repeat) return;
     if (inputLocked) return;
@@ -38,6 +54,23 @@ export function initInput() {
     const key = e.key;
     pressed.delete(key);
   };
+
+  // Mobile virtual keyboard support: listen for input events on hidden field
+  if (isTouchDevice && mobileInputEl) {
+    onMobileInput = () => {
+      if (inputLocked) return;
+      const value = mobileInputEl.value;
+      if (value.length > 0) {
+        const key = value[value.length - 1];
+        const upper = key.toUpperCase();
+        if ((upper >= 'A' && upper <= 'Z') || (key >= '0' && key <= '9')) {
+          events.emit('KEY_PRESS', { key });
+        }
+        mobileInputEl.value = '';
+      }
+    };
+    mobileInputEl.addEventListener('input', onMobileInput);
+  }
 
   // Wrong-key penalty: lock input briefly at level 4+
   events.on('WRONG_KEY', () => {
@@ -92,5 +125,8 @@ export function destroyInput() {
   window.removeEventListener('keydown', onKeyDown);
   window.removeEventListener('keyup', onKeyUp);
   document.removeEventListener('visibilitychange', onVisibilityChange);
+  if (mobileInputEl && onMobileInput) {
+    mobileInputEl.removeEventListener('input', onMobileInput);
+  }
   pressed.clear();
 }

@@ -10,7 +10,7 @@ import { createGround, updateGround, renderGround } from './entities/ground.js';
 import { createObstacleFactory, updateObstacles, cleanupOffscreen, renderObstacles, initObstacleEffects } from './entities/obstacle.js';
 import { createPool } from './systems/pool.js';
 import { createSpawner, updateSpawner } from './systems/spawner.js';
-import { initInput } from './systems/input.js';
+import { initInput, focusMobileInput, isTouchDevice } from './systems/input.js';
 import { initMatcher } from './systems/matcher.js';
 import { createLives, resetLives } from './systems/lives.js';
 import { createScore, resetScore, updateScore, getScore } from './systems/score.js';
@@ -60,6 +60,21 @@ resetPlayer(player, getWidth(), getHeight(), GAME.GROUND_HEIGHT);
 initInput();
 initMatcher(obstaclePool);
 initObstacleEffects(obstaclePool);
+
+// Mobile: tap on canvas triggers game start and focuses hidden input for virtual keyboard
+if (isTouchDevice) {
+  const canvas = document.getElementById('game');
+  canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    focusMobileInput();
+    const state = getState();
+    if (state === STATES.MENU) {
+      requestStart();
+    } else if (state === STATES.GAME_OVER) {
+      restartGame();
+    }
+  }, { passive: false });
+}
 
 events.on('CANVAS_RESIZE', ({ width, height }) => {
   resetPlayer(player, width, height, GAME.GROUND_HEIGHT);
