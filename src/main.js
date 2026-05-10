@@ -20,7 +20,7 @@ import { createAudioSystem } from './systems/audio.js';
 import { createDifficulty, resetDifficulty, getDifficultyParams } from './systems/difficulty.js';
 import { createLevelAnnounce, updateLevelAnnounce, renderLevelAnnounce } from './systems/level-announce.js';
 import { renderStartScreen } from './screens/start.js';
-import { createGameOverScreen, updateGameOverScreen, renderGameOverScreen, isReadyToRestart } from './screens/game-over.js';
+import { createGameOverScreen, updateGameOverScreen, renderGameOverScreen } from './screens/game-over.js';
 import { getPersonalBest, setPersonalBest } from './systems/storage.js';
 
 initCanvas();
@@ -76,7 +76,7 @@ events.on('KEY_PRESS', () => {
   const state = getState();
   if (state === STATES.MENU) {
     requestStart();
-  } else if (state === STATES.GAME_OVER && isReadyToRestart()) {
+  } else if (state === STATES.GAME_OVER) {
     restartGame();
   }
 });
