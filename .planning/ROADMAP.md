@@ -31,7 +31,7 @@ Letter Runner goes from empty repo to shippable game across 10 phases. The build
 
 - [x] **Phase 11: Cleanup** - Remove leaderboard UI, name entry, and module to simplify game-over flow
 - [x] **Phase 12: Speed & Difficulty** - Chrome dino-style speed progression with typing-research calibration
-- [ ] **Phase 13: Multi-Letter Combos** - 2-3 letter sequence obstacles at higher levels
+- [x] **Phase 13: Multi-Letter Combos** - 2-3 letter sequence obstacles at higher levels
 - [ ] **Phase 14: Audio** - MP3 background track replacing procedural oscillator music
 - [ ] **Phase 15: Visual Polish** - Player animation, parallax background, glow performance, letter readability
 - [ ] **Phase 16: Theme** - System-aware dark/light mode with reactive switching
@@ -85,12 +85,12 @@ Plans:
 4. Typing a wrong key mid-combo resets progress to zero and triggers the wrong-key penalty
 5. Combo scoring awards 2.5x for 2-letter and 4x for 3-letter completions
 
-**Plans:** TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 13-01: Combo obstacle entity, spawner integration, and uniqueness rules
-- [ ] 13-02: Matcher logic for sequential input and combo reset penalty
-- [ ] 13-03: Combo rendering with per-letter visual state and scoring
+- [ ] 13-01-PLAN.md — Combo obstacle entity, spawner integration, and uniqueness rules
+- [ ] 13-02-PLAN.md — Matcher logic for sequential combo input and reset penalty
+- [ ] 13-03-PLAN.md — Combo rendering with per-letter visual state and scoring
 
 ---
 
