@@ -25,21 +25,21 @@
     #github-link:hover { color: #00ffcc; }
     #github-link.hidden { opacity: 0; pointer-events: none; }
     #mobile-input {
-      position: fixed; bottom: 0; left: 0; width: 100%; height: 50px;
-      font-size: 16px; text-align: center;
-      background: rgba(0, 0, 0, 0.8); color: #00ffcc;
-      border: none; border-top: 1px solid #00ffcc33;
-      outline: none; caret-color: #00ffcc;
-      z-index: 100;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      font-size: 16px;
+      background: transparent; color: transparent;
+      border: none; outline: none;
+      caret-color: transparent;
+      z-index: 50;
       display: none;
+      -webkit-tap-highlight-color: transparent;
     }
-    #mobile-input::placeholder { color: #33665580; }
     body.mobile-active #mobile-input { display: block; }
   </style>
 </head>
 <body>
   <canvas id="game"></canvas>
-  <input id="mobile-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="text" enterkeyhint="go" placeholder="Tap here to type">
+  <input id="mobile-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="text" enterkeyhint="go">
   <a id="github-link" href="https://github.com/pavanmadiraju91/letter-runner" target="_blank">
     github.com/pavanmadiraju91/letter-runner
   </a>
