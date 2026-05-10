@@ -1,6 +1,6 @@
-import { GAME } from '../config.js';
+import { GAME, COMBO } from '../config.js';
 import { getWidth } from '../core/canvas.js';
-import { isWarmupComplete, getMinGap, getCurrentSpeed } from './difficulty.js';
+import { isWarmupComplete, getMinGap, getCurrentSpeed, getLevel } from './difficulty.js';
 
 /**
  * Create a spawner state object tied to an obstacle pool.
@@ -47,13 +47,92 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
   }
 
   // DIFF-07/DIFF-08: All visible obstacles must have unique letters.
-  // We collect all active obstacle letters, then pick randomly from remaining.
-  // With MAX_OBSTACLES_CAP=4, we always have 22+ available letters — collision impossible.
+  // Collect ALL used letters across single and combo obstacles.
   const usedLetters = new Set();
   for (let i = 0; i < active.length; i++) {
-    usedLetters.add(active[i].letter);
+    const obs = active[i];
+    if (obs.isCombo && obs.letters.length > 0) {
+      for (let j = 0; j < obs.letters.length; j++) {
+        usedLetters.add(obs.letters[j]);
+      }
+    } else if (obs.letter) {
+      usedLetters.add(obs.letter);
+    }
   }
 
+  // Determine if this spawn should be a combo obstacle
+  const level = getLevel();
+  const activeComboCount = active.filter(o => o.isCombo).length;
+  let comboSize = 0; // 0 = single, 2 = 2-letter, 3 = 3-letter
+
+  if (activeComboCount < COMBO.MAX_ON_SCREEN) {
+    if (level >= COMBO.MIN_LEVEL_3LETTER && Math.random() < COMBO.SPAWN_CHANCE_3LETTER) {
+      comboSize = 3;
+    } else if (level >= COMBO.MIN_LEVEL_2LETTER && Math.random() < COMBO.SPAWN_CHANCE_2LETTER) {
+      comboSize = 2;
+    }
+  }
+
+  // Check if enough letters are available for the combo size
+  const availableCount = 26 - usedLetters.size;
+  if (comboSize > 0 && availableCount < comboSize) {
+    comboSize = availableCount >= 1 ? 0 : 0; // Fall back to single or skip
+  }
+
+  // Pick letters
+  if (comboSize > 0) {
+    // Combo spawn: pick N unique letters
+    const comboLetters = [];
+    for (let n = 0; n < comboSize; n++) {
+      let picked = '';
+      for (let attempt = 0; attempt < 26; attempt++) {
+        const candidate = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+        if (!usedLetters.has(candidate)) {
+          picked = candidate;
+          usedLetters.add(candidate); // Prevent duplicates within the combo
+          break;
+        }
+      }
+      // Deterministic fallback
+      if (!picked) {
+        for (let code = 65; code <= 90; code++) {
+          const c = String.fromCharCode(code);
+          if (!usedLetters.has(c)) {
+            picked = c;
+            usedLetters.add(c);
+            break;
+          }
+        }
+      }
+      if (!picked) {
+        // Not enough letters available, abort combo — fall back to single
+        comboSize = 0;
+        break;
+      }
+      comboLetters.push(picked);
+    }
+
+    if (comboSize > 0) {
+      // Acquire from pool and configure as combo
+      const obs = spawner.pool.acquire();
+      obs.x = screenWidth + 10;
+
+      const isTall = difficultyParams.tallObstacles && Math.random() < 0.4;
+      obs.height = isTall ? GAME.OBSTACLE_HEIGHT * 1.5 : GAME.OBSTACLE_HEIGHT;
+      obs.y = groundY - obs.height;
+
+      obs.letter = '';
+      obs.letters = comboLetters;
+      obs.progress = 0;
+      obs.isCombo = true;
+      obs.width = COMBO.WIDTH_PER_LETTER * comboSize;
+      obs.speed = getCurrentSpeed();
+      obs.active = true;
+      return;
+    }
+  }
+
+  // Single-letter spawn (default path)
   let letter = '';
   for (let attempt = 0; attempt < 26; attempt++) {
     const candidate = String.fromCharCode(65 + Math.floor(Math.random() * 26));
@@ -63,8 +142,7 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
     }
   }
 
-  // If random didn't find one (theoretically impossible with cap=4),
-  // iterate deterministically as final safety net
+  // Deterministic fallback
   if (!letter) {
     for (let code = 65; code <= 90; code++) {
       const c = String.fromCharCode(code);
@@ -80,7 +158,7 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
     return;
   }
 
-  // Acquire from pool and configure
+  // Acquire from pool and configure as single-letter obstacle
   const obs = spawner.pool.acquire();
   obs.x = screenWidth + 10;
 
@@ -89,6 +167,10 @@ export function updateSpawner(spawner, dt, difficultyParams, groundY) {
   obs.y = groundY - obs.height;
 
   obs.letter = letter;
+  obs.letters = [];
+  obs.progress = 0;
+  obs.isCombo = false;
+  obs.width = GAME.OBSTACLE_WIDTH;
   obs.speed = getCurrentSpeed();
   obs.active = true;
 }
