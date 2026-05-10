@@ -7,7 +7,7 @@ let masterGain = null;
 let sfxGain = null;
 let musicGain = null;
 let audioReady = false;
-let musicEnabled = false;
+let musicEnabled = true;
 
 // MP3 music state
 let musicBuffer = null;
@@ -24,12 +24,17 @@ let lastMilestone = 0;
 
 /**
  * Load the background music MP3 into an AudioBuffer.
+ * If music is enabled and game is already playing, start immediately after load.
  */
 async function loadMusic() {
   try {
     const response = await fetch(AUDIO.MUSIC_FILE);
     const arrayBuffer = await response.arrayBuffer();
     musicBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+    // If music is enabled, start playback immediately after loading
+    if (musicEnabled && !musicSource) {
+      startMusic();
+    }
   } catch (e) {
     // Silently fail — music is optional, SFX still work
     console.warn('Failed to load music:', e);
@@ -40,7 +45,7 @@ async function loadMusic() {
  * Initialize the audio system.
  * Registers a one-time keydown listener to create and resume AudioContext
  * (browser autoplay policy compliance — AUD-05).
- * Music starts muted by default (AUD-04).
+ * Music starts unmuted by default — plays automatically after first keypress.
  */
 export function createAudioSystem() {
   const initAudio = () => {
@@ -58,9 +63,9 @@ export function createAudioSystem() {
       sfxGain.gain.value = AUDIO.SFX_VOLUME;
       sfxGain.connect(masterGain);
 
-      // Music gain (muted by default)
+      // Music gain (unmuted by default — plays on first interaction)
       musicGain = audioCtx.createGain();
-      musicGain.gain.value = 0;
+      musicGain.gain.value = AUDIO.MUSIC_VOLUME;
       musicGain.connect(masterGain);
 
       audioReady = true;
@@ -286,7 +291,7 @@ function stopMusic() {
 
 /**
  * Toggle background music on/off (AUD-04).
- * Music is muted by default.
+ * Music is unmuted by default.
  */
 export function toggleMusic() {
   if (!audioReady) return;

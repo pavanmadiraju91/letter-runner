@@ -19,7 +19,7 @@ import { createHUD, renderHUD } from './systems/hud.js';
 import { createFPSMonitor, updateFPS } from './systems/fps-monitor.js';
 import { createParticleSystem, updateParticles, renderParticles } from './systems/particles.js';
 import { createVFX, updateVFX, getPlayerFlash, getScreenFlash, getScreenShake } from './systems/vfx.js';
-import { createAudioSystem } from './systems/audio.js';
+import { createAudioSystem, isMusicPlaying } from './systems/audio.js';
 import { createDifficulty, resetDifficulty, getDifficultyParams, tickSpeed } from './systems/difficulty.js';
 import { createLevelAnnounce, updateLevelAnnounce, renderLevelAnnounce } from './systems/level-announce.js';
 import { renderStartScreen } from './screens/start.js';
@@ -149,12 +149,13 @@ function render() {
   renderObstacles(ctx, obstaclePool.getActive());
   renderPlayer(ctx, player);
   renderHUD(ctx, w);
-  // Music toggle hint (bottom-right, dim)
+  // Music toggle hint (bottom-right, dim) — dynamic based on state
   ctx.save();
   ctx.font = '10px \'Courier New\', monospace';
   ctx.fillStyle = getPalette().DIM;
   ctx.textAlign = 'right';
-  ctx.fillText('[Tab] Music', w - 8, getHeight() - 8);
+  const musicHint = isMusicPlaying() ? '[Tab] Music Off' : '[Tab] Music On';
+  ctx.fillText(musicHint, w - 8, getHeight() - 8);
   ctx.restore();
   renderLevelAnnounce(ctx, w, h);
   renderParticles(ctx);
